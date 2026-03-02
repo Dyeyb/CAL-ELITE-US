@@ -1,0 +1,2001 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CAL ELITE · Service Panel</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Rajdhani:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #c9a020;
+            --gold-bright: #f0c040;
+            --gold-dim: rgba(201, 160, 32, 0.10);
+            --gold-border: rgba(201, 160, 32, 0.22);
+            --gold-glow: rgba(201, 160, 32, 0.18);
+            --obsidian: #060606;
+            --onyx: #0d0d0d;
+            --graphite: #111111;
+            --charcoal: #191919;
+            --steel: #222222;
+            --iron: #2c2c2c;
+            --platinum: #f0f0f0;
+            --silver: #c8c8c8;
+            --ash: rgba(200, 200, 200, 0.55);
+            --dim: rgba(200, 200, 200, 0.28);
+            --green: #22c55e;
+            --green-dim: rgba(34, 197, 94, 0.12);
+            --amber: #f59e0b;
+            --amber-dim: rgba(245, 158, 11, 0.12);
+            --red: #ef4444;
+            --red-dim: rgba(239, 68, 68, 0.12);
+            --blue: #3b82f6;
+            --blue-dim: rgba(59, 130, 246, 0.12);
+            --t: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            --sidebar-w: 240px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--onyx);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--gold), var(--gold-bright));
+            border-radius: 2px;
+        }
+
+        body {
+            font-family: "Rajdhani", sans-serif;
+            background: var(--obsidian);
+            color: var(--silver);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.018;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px;
+        }
+
+        /* ══════════════════════════════
+       SIDEBAR
+    ══════════════════════════════ */
+        .sidebar {
+            width: var(--sidebar-w);
+            min-height: 100vh;
+            background: var(--graphite);
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+        }
+
+        .sidebar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(180deg, transparent, var(--gold-border) 30%, var(--gold-border) 70%, transparent);
+        }
+
+        .sb-brand {
+            padding: 28px 24px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sb-logo-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--obsidian);
+            flex-shrink: 0;
+            box-shadow: 0 4px 20px rgba(201, 160, 32, 0.3);
+        }
+
+        .sb-brand-text {
+            line-height: 1.1;
+        }
+
+        .sb-brand-name {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--platinum);
+        }
+
+        .sb-brand-name em {
+            color: var(--gold-bright);
+            font-style: italic;
+        }
+
+        .sb-brand-sub {
+            font-family: "DM Mono", monospace;
+            font-size: 7.5px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-top: 2px;
+        }
+
+        .sb-nav {
+            flex: 1;
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .sb-section-label {
+            font-family: "DM Mono", monospace;
+            font-size: 7px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.4;
+            padding: 10px 12px 6px;
+        }
+
+        .sb-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: var(--t);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--ash);
+            border: 1px solid transparent;
+            text-decoration: none;
+        }
+
+        .sb-item:hover {
+            color: var(--gold-bright);
+            background: rgba(201, 160, 32, 0.06);
+        }
+
+        .sb-item.active {
+            color: var(--gold-bright);
+            background: rgba(201, 160, 32, 0.1);
+            border-color: var(--gold-border);
+        }
+
+        .sb-item-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: var(--t);
+        }
+
+        .sb-item-icon svg {
+            width: 14px;
+            height: 14px;
+            opacity: 0.4;
+            transition: var(--t);
+            stroke: currentColor;
+        }
+
+        .sb-item:hover .sb-item-icon,
+        .sb-item.active .sb-item-icon {
+            background: var(--gold-dim);
+            border-color: var(--gold-border);
+        }
+
+        .sb-item:hover .sb-item-icon svg,
+        .sb-item.active .sb-item-icon svg {
+            opacity: 1;
+            stroke: var(--gold-bright);
+        }
+
+        .sb-badge {
+            margin-left: auto;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            font-weight: 700;
+            background: rgba(201, 160, 32, 0.2);
+            color: var(--gold-bright);
+            flex-shrink: 0;
+        }
+
+        .sb-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.04);
+            margin: 8px 12px;
+        }
+
+        .sb-footer {
+            padding: 16px 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .sb-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .sb-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+            color: var(--obsidian);
+            font-family: "Cormorant Garamond", serif;
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .sb-user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--platinum);
+        }
+
+        .sb-user-role {
+            font-family: "DM Mono", monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            color: var(--gold);
+            opacity: 0.6;
+            text-transform: uppercase;
+        }
+
+        /* ══════════════════════════════
+       MAIN CONTENT
+    ══════════════════════════════ */
+        .main {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top header bar */
+        .topbar {
+            height: 64px;
+            padding: 0 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            background: var(--graphite);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(12px);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .topbar-title {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--platinum);
+        }
+
+        .topbar-title em {
+            color: var(--gold-bright);
+            font-style: italic;
+        }
+
+        .topbar-crumb {
+            font-family: "DM Mono", monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .topbar-crumb span {
+            color: var(--gold);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .topbar-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            background: var(--steel);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: var(--t);
+        }
+
+        .topbar-search:focus-within {
+            border-color: var(--gold-border);
+            background: var(--charcoal);
+        }
+
+        .topbar-search svg {
+            width: 13px;
+            height: 13px;
+            opacity: 0.3;
+            flex-shrink: 0;
+            stroke: var(--silver);
+        }
+
+        .topbar-search input {
+            background: none;
+            border: none;
+            outline: none;
+            font-family: "Rajdhani", sans-serif;
+            font-size: 13px;
+            color: var(--platinum);
+            width: 180px;
+        }
+
+        .topbar-search input::placeholder {
+            color: var(--dim);
+        }
+
+        .topbar-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            background: var(--steel);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            cursor: pointer;
+            transition: var(--t);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ash);
+            position: relative;
+        }
+
+        .topbar-btn:hover {
+            border-color: var(--gold-border);
+            color: var(--gold-bright);
+            background: var(--gold-dim);
+        }
+
+        .topbar-btn svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        .topbar-notif {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gold-bright);
+            border: 1.5px solid var(--graphite);
+            display: none;
+        }
+
+        .topbar-notif.on {
+            display: block;
+        }
+
+        /* ── Page Body ── */
+        .page-body {
+            padding: 28px 32px 60px;
+            flex: 1;
+        }
+
+        /* ── Stat Cards ── */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: var(--charcoal);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: var(--t);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold-border), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .stat-num {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--platinum);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-family: "DM Mono", monospace;
+            font-size: 8px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-top: 4px;
+        }
+
+        .stat-delta {
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .delta-up {
+            color: var(--green);
+        }
+
+        .delta-down {
+            color: var(--red);
+        }
+
+        /* ── Filter Tab Bar ── */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 0;
+        }
+
+        .filter-tab {
+            padding: 12px 20px;
+            font-family: "Rajdhani", sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--ash);
+            cursor: pointer;
+            transition: var(--t);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            white-space: nowrap;
+        }
+
+        .filter-tab:hover {
+            color: var(--platinum);
+        }
+
+        .filter-tab.active {
+            color: var(--gold-bright);
+            border-bottom-color: var(--gold-bright);
+        }
+
+        .filter-tab .tab-count {
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            background: rgba(201, 160, 32, 0.15);
+            color: var(--gold);
+            padding: 1px 6px;
+            border-radius: 10px;
+        }
+
+        .filter-tab.active .tab-count {
+            background: rgba(201, 160, 32, 0.25);
+            color: var(--gold-bright);
+        }
+
+        /* ── Orders Table ── */
+        .orders-panel {
+            background: var(--charcoal);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .orders-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .orders-toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toolbar-label {
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        .toolbar-sort {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 5px;
+            background: var(--steel);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            font-family: "Rajdhani", sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--ash);
+            cursor: pointer;
+            transition: var(--t);
+        }
+
+        .toolbar-sort:hover {
+            border-color: var(--gold-border);
+            color: var(--gold-bright);
+        }
+
+        .toolbar-sort svg {
+            width: 11px;
+            height: 11px;
+            opacity: 0.5;
+        }
+
+        .toolbar-export {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: 5px;
+            background: var(--gold-dim);
+            border: 1px solid var(--gold-border);
+            font-family: "Rajdhani", sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--gold-bright);
+            cursor: pointer;
+            transition: var(--t);
+        }
+
+        .toolbar-export:hover {
+            background: rgba(201, 160, 32, 0.18);
+        }
+
+        .toolbar-export svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* Table head */
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .orders-table thead tr {
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .orders-table th {
+            font-family: "DM Mono", monospace;
+            font-size: 8px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--dim);
+            font-weight: 400;
+            padding: 12px 16px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .orders-table th:last-child {
+            text-align: right;
+        }
+
+        /* Order Row — Shopee style */
+        .order-row {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .order-row:last-child {
+            border-bottom: none;
+        }
+
+        .order-row:hover {
+            background: rgba(255, 255, 255, 0.018);
+        }
+
+        .order-row td {
+            padding: 0;
+            vertical-align: top;
+        }
+
+        .order-row-inner {
+            padding: 16px 16px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        /* Row top: order id + date + status */
+        .order-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px 9px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.025);
+            background: rgba(255, 255, 255, 0.015);
+        }
+
+        .order-id-tag {
+            font-family: "DM Mono", monospace;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: 0.5px;
+        }
+
+        .order-sep {
+            color: rgba(255, 255, 255, 0.08);
+            font-size: 12px;
+        }
+
+        .order-date-tag {
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            color: var(--dim);
+        }
+
+        .order-store-tag {
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            color: var(--ash);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .order-store-tag svg {
+            width: 10px;
+            height: 10px;
+            opacity: 0.5;
+            stroke: var(--gold);
+        }
+
+        .order-status-tag {
+            margin-left: auto;
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 3px;
+        }
+
+        .status-pending {
+            background: var(--amber-dim);
+            color: var(--amber);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+
+        .status-success {
+            background: var(--green-dim);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+        }
+
+        .status-cancelled {
+            background: var(--red-dim);
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        .status-dispatch {
+            background: var(--blue-dim);
+            color: var(--blue);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+        }
+
+        /* Row body: service info */
+        .order-body {
+            padding: 14px 16px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .order-svc-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 7px;
+            flex-shrink: 0;
+            background: var(--gold-dim);
+            border: 1px solid var(--gold-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .order-svc-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--gold);
+        }
+
+        .order-svc-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .order-svc-name {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--platinum);
+            line-height: 1.2;
+            margin-bottom: 5px;
+        }
+
+        .order-svc-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            color: var(--dim);
+        }
+
+        .order-svc-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .order-svc-meta svg {
+            width: 10px;
+            height: 10px;
+            opacity: 0.5;
+            stroke: currentColor;
+        }
+
+        .order-svc-meta .highlight {
+            color: var(--ash);
+        }
+
+        /* Row footer: price + actions */
+        .order-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px 14px;
+            margin-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.025);
+        }
+
+        .order-price-block {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .order-price-label {
+            font-family: "DM Mono", monospace;
+            font-size: 8px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        .order-price-val {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gold-bright);
+        }
+
+        .order-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .act-btn {
+            padding: 7px 14px;
+            border-radius: 4px;
+            font-family: "Rajdhani", sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--t);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .act-btn svg {
+            width: 11px;
+            height: 11px;
+        }
+
+        .act-detail {
+            background: var(--steel);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            color: var(--ash);
+        }
+
+        .act-detail:hover {
+            border-color: var(--gold-border);
+            color: var(--gold-bright);
+            background: var(--gold-dim);
+        }
+
+        .act-confirm {
+            background: var(--green-dim);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+            color: var(--green);
+        }
+
+        .act-confirm:hover {
+            background: rgba(34, 197, 94, 0.2);
+        }
+
+        .act-dispatch {
+            background: var(--blue-dim);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            color: var(--blue);
+        }
+
+        .act-dispatch:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .act-cancel {
+            background: var(--red-dim);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--red);
+        }
+
+        .act-cancel:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Progress bar inside row */
+        .order-progress-wrap {
+            padding: 0 16px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .order-progress-steps {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            position: relative;
+        }
+
+        .step-node {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            font-weight: 700;
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            background: var(--steel);
+            color: var(--dim);
+            transition: var(--t);
+        }
+
+        .step-node.done {
+            background: var(--green-dim);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .step-node.active {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            color: var(--gold-bright);
+            box-shadow: 0 0 10px var(--gold-glow);
+        }
+
+        .step-line {
+            flex: 1;
+            height: 1.5px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .step-line.done {
+            background: linear-gradient(90deg, var(--green), rgba(34, 197, 94, 0.3));
+        }
+
+        .step-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4px;
+        }
+
+        .step-lbl {
+            font-family: "DM Mono", monospace;
+            font-size: 7.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex: 1;
+            text-align: center;
+        }
+
+        .step-lbl:first-child {
+            text-align: left;
+        }
+
+        .step-lbl:last-child {
+            text-align: right;
+        }
+
+        .step-lbl.active {
+            color: var(--gold);
+        }
+
+        .step-lbl.done {
+            color: var(--green);
+        }
+
+        /* Empty state */
+        .empty-state {
+            padding: 80px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .empty-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            background: var(--gold-dim);
+            border: 1px solid var(--gold-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--gold);
+        }
+
+        .empty-title {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--platinum);
+        }
+
+        .empty-sub {
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--dim);
+        }
+
+        /* ── Detail Drawer ── */
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(6px);
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .drawer-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 460px;
+            background: var(--graphite);
+            border-left: 1px solid var(--gold-border);
+            z-index: 201;
+            transform: translateX(100%);
+            transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .drawer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-bright), var(--gold));
+        }
+
+        .drawer.open {
+            transform: translateX(0);
+        }
+
+        .drawer-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 24px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .drawer-title {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--platinum);
+        }
+
+        .drawer-title em {
+            color: var(--gold-bright);
+            font-style: italic;
+        }
+
+        .drawer-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 5px;
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            cursor: pointer;
+            color: var(--dim);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--t);
+        }
+
+        .drawer-close:hover {
+            color: var(--gold-bright);
+            border-color: var(--gold-border);
+            background: var(--gold-dim);
+        }
+
+        .drawer-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .d-section {
+            margin-bottom: 24px;
+        }
+
+        .d-section-title {
+            font-family: "DM Mono", monospace;
+            font-size: 8px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.6;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .d-section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--gold-border), transparent);
+        }
+
+        .d-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .d-row:last-child {
+            border-bottom: none;
+        }
+
+        .d-key {
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        .d-val {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--platinum);
+            text-align: right;
+            max-width: 60%;
+            word-break: break-word;
+        }
+
+        .d-val.gold {
+            color: var(--gold-bright);
+            font-family: "Cormorant Garamond", serif;
+            font-size: 18px;
+        }
+
+        .drawer-foot {
+            padding: 16px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            gap: 10px;
+        }
+
+        .drawer-action-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: "Rajdhani", sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--t);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .drawer-action-btn svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        /* Toast */
+        .toast-bar {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%) translateY(16px);
+            padding: 11px 20px;
+            border-radius: 5px;
+            font-family: "DM Mono", monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+        }
+
+        .toast-bar.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-ok {
+            background: #0f1e13;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: var(--green);
+        }
+
+        .toast-err {
+            background: #1e0f0f;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--red);
+        }
+
+        .toast-bar svg {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width:900px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .drawer {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ══ SIDEBAR ══ -->
+    <aside class="sidebar">
+        <div class="sb-brand">
+            <div class="sb-logo-mark">C</div>
+            <div class="sb-brand-text">
+                <div class="sb-brand-name"><em>Cal Elite</em></div>
+                <div class="sb-brand-sub">Service Panel</div>
+            </div>
+        </div>
+
+        <nav class="sb-nav">
+            <div class="sb-section-label">Management</div>
+
+            <a class="sb-item active" href="#">
+                <div class="sb-item-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg></div>
+                All Orders
+                <span class="sb-badge" id="sbBadgeAll">0</span>
+            </a>
+
+            <a class="sb-item" href="#" data-filter-nav="pending">
+                <div class="sb-item-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg></div>
+                Pending
+                <span class="sb-badge" id="sbBadgePending">0</span>
+            </a>
+
+            <a class="sb-item" href="#" data-filter-nav="dispatch">
+                <div class="sb-item-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+                    </svg></div>
+                In Dispatch
+                <span class="sb-badge" id="sbBadgeDispatch">0</span>
+            </a>
+
+            <a class="sb-item" href="#" data-filter-nav="success">
+                <div class="sb-item-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg></div>
+                Completed
+                <span class="sb-badge" id="sbBadgeSuccess">0</span>
+            </a>
+
+            <a class="sb-item" href="#" data-filter-nav="cancelled">
+                <div class="sb-item-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg></div>
+                Cancelled
+                <span class="sb-badge" id="sbBadgeCancelled">0</span>
+            </a>
+
+            <div class="sb-divider"></div>
+            <div class="sb-section-label">Navigation</div>
+
+            <a class="sb-item" href="services.html">
+                <div class="sb-item-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <circle cx="12" cy="12" r="3" />
+                    </svg></div>
+                Services Page
+            </a>
+
+            <a class="sb-item" href="index.html">
+                <div class="sb-item-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg></div>
+                Home
+            </a>
+        </nav>
+
+        <div class="sb-footer">
+            <div class="sb-user">
+                <div class="sb-avatar" id="sbAvatar">U</div>
+                <div>
+                    <div class="sb-user-name" id="sbName">Loading…</div>
+                    <div class="sb-user-role">Service Provider</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ══ MAIN ══ -->
+    <div class="main">
+
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="topbar-title">Service <em>Orders</em></div>
+                <div class="topbar-crumb">
+                    <span>Cal Elite</span> / Orders
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="topbar-search">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35" />
+                    </svg>
+                    <input type="text" placeholder="Search order ID, service…" id="searchInput" />
+                </div>
+                <button class="topbar-btn" id="refreshBtn" title="Refresh">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                </button>
+                <button class="topbar-btn" title="Notifications">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
+                    <div class="topbar-notif on" id="topbarNotif"></div>
+                </button>
+            </div>
+        </header>
+
+        <div class="page-body">
+
+            <!-- Stat Cards -->
+            <div class="stats-row" id="statsRow">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:var(--gold-dim);border:1px solid var(--gold-border);">
+                        <svg fill="none" stroke="var(--gold-bright)" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="stat-num" id="statTotal">0</div>
+                        <div class="stat-label">Total Orders</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:var(--amber-dim);border:1px solid rgba(245,158,11,0.2);">
+                        <svg fill="none" stroke="var(--amber)" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="stat-num" id="statPending">0</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:var(--green-dim);border:1px solid rgba(34,197,94,0.2);">
+                        <svg fill="none" stroke="var(--green)" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="stat-num" id="statDone">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:var(--gold-dim);border:1px solid var(--gold-border);">
+                        <svg fill="none" stroke="var(--gold-bright)" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="stat-num" id="statRevenue">$0</div>
+                        <div class="stat-label">Total Revenue</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Tabs + Orders Panel -->
+            <div class="orders-panel">
+
+                <!-- Tab bar -->
+                <div class="filter-bar" id="filterBar">
+                    <button class="filter-tab active" data-tab="all">All Orders <span class="tab-count"
+                            id="tcAll">0</span></button>
+                    <button class="filter-tab" data-tab="pending">Pending <span class="tab-count"
+                            id="tcPending">0</span></button>
+                    <button class="filter-tab" data-tab="dispatch">In Dispatch <span class="tab-count"
+                            id="tcDispatch">0</span></button>
+                    <button class="filter-tab" data-tab="success">Completed <span class="tab-count"
+                            id="tcSuccess">0</span></button>
+                    <button class="filter-tab" data-tab="cancelled">Cancelled <span class="tab-count"
+                            id="tcCancelled">0</span></button>
+                </div>
+
+                <!-- Toolbar -->
+                <div class="orders-toolbar">
+                    <div class="orders-toolbar-left">
+                        <span class="toolbar-label" id="toolbarLabel">Showing all orders</span>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                        <button class="toolbar-sort" id="sortBtn">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                            </svg>
+                            Newest First
+                        </button>
+                        <button class="toolbar-export">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            Export
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Orders list -->
+                <div id="ordersList"></div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Drawer -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="drawer" id="detailDrawer">
+        <div class="drawer-head">
+            <div class="drawer-title">Order <em>Details</em></div>
+            <button class="drawer-close" id="drawerClose">×</button>
+        </div>
+        <div class="drawer-body" id="drawerBody"></div>
+        <div class="drawer-foot" id="drawerFoot"></div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-bar" id="toastBar"></div>
+
+    <script>
+        (function () {
+
+            // ── Sample seed data so panel isn't empty on first load ──
+            const SEED = [
+                { id: 'BK-SEED01', service: 'House Detailing', date: '2025-06-10', address: '123 Rizal St, Makati City', origin: 'Foshan Central Hub', time: 'morning', price: 320, status: 'success', timestamp: '2025-06-09T08:00:00Z', notes: 'Please bring extra polish.' },
+                { id: 'BK-SEED02', service: 'Panel Installation', date: '2025-06-14', address: 'Block 7 Lot 3, BF Homes, Parañaque', origin: 'Nanhai Branch', time: 'afternoon', price: 550, status: 'dispatch', timestamp: '2025-06-13T11:30:00Z', notes: '' },
+                { id: 'BK-SEED03', service: 'Electrical Setup', date: '2025-06-20', address: 'Unit 4B Torre de Manila, Ermita', origin: 'Lishui Station', time: 'morning', price: 235, status: 'pending', timestamp: '2025-06-18T09:15:00Z', notes: 'Second floor unit.' },
+                { id: 'BK-SEED04', service: 'Custom Fabrication', date: '2025-06-22', address: 'Greenhills Shopping Center, San Juan', origin: 'Shunde Logistics', time: 'evening', price: 720, status: 'pending', timestamp: '2025-06-19T16:00:00Z', notes: 'Need custom sizes.' },
+                { id: 'BK-SEED05', service: 'Final Inspection', date: '2025-06-08', address: 'Eastwood City, Libis, QC', origin: 'Foshan Central Hub', time: 'morning', price: 195, status: 'cancelled', timestamp: '2025-06-07T10:00:00Z', notes: '' },
+                { id: 'BK-SEED06', service: 'On-Site Install', date: '2025-06-25', address: 'Ayala Triangle, Makati', origin: 'Nanhai Branch', time: 'afternoon', price: 490, status: 'success', timestamp: '2025-06-24T14:00:00Z', notes: 'Corporate lobby.' },
+                { id: 'BK-SEED07', service: 'Material Removal', date: '2025-06-28', address: 'Bonifacio Global City, Taguig', origin: 'Lishui Station', time: 'morning', price: 310, status: 'pending', timestamp: '2025-06-26T08:45:00Z', notes: 'Heavy lift required.' },
+                { id: 'BK-SEED08', service: 'Wall Cladding', date: '2025-07-02', address: 'Ortigas Center, Pasig', origin: 'Foshan Central Hub', time: 'afternoon', price: 560, status: 'dispatch', timestamp: '2025-07-01T12:00:00Z', notes: '8th floor.' },
+                { id: 'BK-SEED09', service: 'Surface Prep', date: '2025-07-05', address: 'Alabang Town Center, Muntinlupa', origin: 'Shunde Logistics', time: 'morning', price: 280, status: 'success', timestamp: '2025-07-04T09:00:00Z', notes: '' },
+                { id: 'BK-SEED10', service: 'LED Lighting Setup', date: '2025-07-08', address: 'SM Mall of Asia, Pasay', origin: 'Nanhai Branch', time: 'evening', price: 395, status: 'pending', timestamp: '2025-07-07T17:00:00Z', notes: 'Outdoor area.' },
+            ];
+
+            // ── Load bookings (merge localStorage + seed) ──
+            let stored = [];
+            try { stored = JSON.parse(localStorage.getItem('ceBookings') || '[]'); } catch (e) { }
+            // Check if seed already present
+            const storedIds = new Set(stored.map(b => b.id));
+            const merged = [...stored, ...SEED.filter(s => !storedIds.has(s.id))];
+            // Save merged back so panel stays populated
+            localStorage.setItem('ceBookings', JSON.stringify(merged));
+
+            let bookings = merged;
+            let currentTab = 'all';
+            let searchQ = '';
+            let sortAsc = false;
+
+            // ── User ──
+            const sessionUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+            const sbName = document.getElementById('sbName');
+            const sbAvatar = document.getElementById('sbAvatar');
+            if (sessionUser) {
+                const name = ((sessionUser.first_name || '') + ' ' + (sessionUser.last_name || '')).trim() || 'User';
+                sbName.textContent = name;
+                sbAvatar.textContent = name.charAt(0).toUpperCase();
+            } else {
+                sbName.textContent = 'Guest';
+                sbAvatar.textContent = 'G';
+            }
+
+            // ── Toast ──
+            function toast(msg, type = 'ok') {
+                const t = document.getElementById('toastBar');
+                const icon = type === 'ok'
+                    ? '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>'
+                    : '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>';
+                t.className = `toast-bar toast-${type}`;
+                t.innerHTML = icon + ' ' + msg;
+                requestAnimationFrame(() => t.classList.add('show'));
+                setTimeout(() => t.classList.remove('show'), 3200);
+            }
+
+            // ── Helpers ──
+            function fmtDate(d) {
+                if (!d) return '—';
+                try { return new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch (e) { return d; }
+            }
+            function fmtTime(t) {
+                const map = { morning: 'Morning (8AM–12PM)', afternoon: 'Afternoon (1PM–5PM)', evening: 'Evening (6PM–9PM)' };
+                return map[t] || t || '—';
+            }
+
+            const svcIcons = {
+                default: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>',
+                'House Detailing': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>',
+                'Electrical Setup': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>',
+                'LED Lighting Setup': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>',
+                'Final Inspection': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+            };
+
+            function getIcon(svc) { return svcIcons[svc] || svcIcons.default; }
+
+            // Status steps
+            const STEPS = ['Booked', 'Confirmed', 'In Dispatch', 'Completed'];
+            function stepIndex(status) {
+                if (status === 'pending') return 0;
+                if (status === 'dispatch') return 2;
+                if (status === 'success') return 3;
+                return 0;
+            }
+
+            function statusTag(s) {
+                const map = { pending: 'status-pending', success: 'status-success', cancelled: 'status-cancelled', dispatch: 'status-dispatch' };
+                const lbl = { pending: 'Pending', success: 'Completed', cancelled: 'Cancelled', dispatch: 'In Dispatch' };
+                return `<span class="order-status-tag ${map[s] || 'status-pending'}">${lbl[s] || s}</span>`;
+            }
+
+            // ── Filter + Render ──
+            function filtered() {
+                return bookings
+                    .filter(b => {
+                        if (currentTab !== 'all' && b.status !== currentTab) return false;
+                        if (searchQ) {
+                            const q = searchQ.toLowerCase();
+                            return (b.id || '').toLowerCase().includes(q)
+                                || (b.service || '').toLowerCase().includes(q)
+                                || (b.address || '').toLowerCase().includes(q);
+                        }
+                        return true;
+                    })
+                    .sort((a, b) => {
+                        const ta = new Date(a.timestamp || 0).getTime();
+                        const tb = new Date(b.timestamp || 0).getTime();
+                        return sortAsc ? ta - tb : tb - ta;
+                    });
+            }
+
+            function countOf(status) { return bookings.filter(b => status === 'all' || b.status === status).length; }
+            function revenue() { return bookings.filter(b => b.status === 'success').reduce((s, b) => s + (b.price || 0), 0); }
+
+            function updateStats() {
+                const all = bookings.length;
+                const pend = countOf('pending');
+                const done = countOf('success');
+                const canc = countOf('cancelled');
+                const disp = countOf('dispatch');
+                const rev = revenue();
+
+                document.getElementById('statTotal').textContent = all;
+                document.getElementById('statPending').textContent = pend;
+                document.getElementById('statDone').textContent = done;
+                document.getElementById('statRevenue').textContent = '$' + rev.toLocaleString();
+
+                document.getElementById('sbBadgeAll').textContent = all;
+                document.getElementById('sbBadgePending').textContent = pend;
+                document.getElementById('sbBadgeDispatch').textContent = disp;
+                document.getElementById('sbBadgeSuccess').textContent = done;
+                document.getElementById('sbBadgeCancelled').textContent = canc;
+
+                document.getElementById('tcAll').textContent = all;
+                document.getElementById('tcPending').textContent = pend;
+                document.getElementById('tcDispatch').textContent = disp;
+                document.getElementById('tcSuccess').textContent = done;
+                document.getElementById('tcCancelled').textContent = canc;
+            }
+
+            function renderOrders() {
+                updateStats();
+                const list = filtered();
+                const container = document.getElementById('ordersList');
+
+                document.getElementById('toolbarLabel').textContent =
+                    list.length === 0 ? 'No orders found' :
+                        list.length === 1 ? 'Showing 1 order' :
+                            `Showing ${list.length} orders`;
+
+                if (!list.length) {
+                    container.innerHTML = `<div class="empty-state">
+          <div class="empty-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/></svg></div>
+          <div class="empty-title">No Orders Yet</div>
+          <div class="empty-sub">Bookings will appear here once customers place orders</div>
+        </div>`;
+                    return;
+                }
+
+                container.innerHTML = list.map(b => {
+                    const si = stepIndex(b.status);
+                    const stepHtml = b.status !== 'cancelled' ? `
+          <div class="order-progress-wrap">
+            <div class="order-progress-steps">
+              ${STEPS.map((s, i) => `
+                ${i > 0 ? `<div class="step-line ${i <= si ? 'done' : ''}"></div>` : ''}
+                <div class="step-node ${i < si ? 'done' : i === si ? 'active' : ''}">${i < si ? '✓' : i + 1}</div>
+              `).join('')}
+            </div>
+            <div class="step-labels">
+              ${STEPS.map((s, i) => `<span class="step-lbl ${i < si ? 'done' : i === si ? 'active' : ''}">${s}</span>`).join('')}
+            </div>
+          </div>` : '';
+
+                    const actionsHtml = b.status === 'pending' ? `
+          <button class="act-btn act-confirm" data-id="${b.id}" data-action="dispatch">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Dispatch
+          </button>
+          <button class="act-btn act-cancel" data-id="${b.id}" data-action="cancel">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            Cancel
+          </button>` :
+                        b.status === 'dispatch' ? `
+          <button class="act-btn act-confirm" data-id="${b.id}" data-action="complete">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            Mark Done
+          </button>` : '';
+
+                    return `<div class="order-row" data-id="${b.id}">
+          <!-- Meta row -->
+          <div class="order-meta-row">
+            <span class="order-id-tag">${b.id}</span>
+            <span class="order-sep">·</span>
+            <span class="order-date-tag">${fmtDate(b.timestamp)}</span>
+            <span class="order-sep">·</span>
+            <span class="order-store-tag">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              ${b.origin || 'Foshan Central Hub'}
+            </span>
+            ${statusTag(b.status)}
+          </div>
+          <!-- Service info -->
+          <div class="order-body">
+            <div class="order-svc-icon">${getIcon(b.service)}</div>
+            <div class="order-svc-info">
+              <div class="order-svc-name">${b.service}</div>
+              <div class="order-svc-meta">
+                <span>
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  <span class="highlight">${fmtDate(b.date)}</span>
+                </span>
+                <span>
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <span class="highlight">${fmtTime(b.time)}</span>
+                </span>
+                <span>
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                  <span class="highlight">${b.address || '—'}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <!-- Progress tracker -->
+          ${stepHtml}
+          <!-- Footer: price + actions -->
+          <div class="order-footer">
+            <div class="order-price-block">
+              <span class="order-price-label">Total</span>
+              <span class="order-price-val">$${(b.price || 0).toLocaleString()}</span>
+            </div>
+            <div class="order-actions">
+              <button class="act-btn act-detail" data-id="${b.id}" data-action="detail">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                View Details
+              </button>
+              ${actionsHtml}
+            </div>
+          </div>
+        </div>`;
+                }).join('');
+
+                // Wire action buttons
+                container.querySelectorAll('[data-action]').forEach(btn => {
+                    btn.addEventListener('click', e => {
+                        e.stopPropagation();
+                        const id = btn.dataset.id;
+                        const action = btn.dataset.action;
+                        if (action === 'detail') { openDrawer(id); return; }
+                        const b = bookings.find(x => x.id === id);
+                        if (!b) return;
+                        if (action === 'dispatch') { b.status = 'dispatch'; toast('Order dispatched!', 'ok'); }
+                        else if (action === 'complete') { b.status = 'success'; toast('Order marked as completed!', 'ok'); }
+                        else if (action === 'cancel') { if (!confirm('Cancel this order?')) return; b.status = 'cancelled'; toast('Order cancelled.', 'err'); }
+                        save(); renderOrders();
+                    });
+                });
+
+                // Row click → drawer
+                container.querySelectorAll('.order-row').forEach(row => {
+                    row.addEventListener('click', () => openDrawer(row.dataset.id));
+                });
+            }
+
+            // ── Detail Drawer ──
+            function openDrawer(id) {
+                const b = bookings.find(x => x.id === id);
+                if (!b) return;
+                const body = document.getElementById('drawerBody');
+                const foot = document.getElementById('drawerFoot');
+
+                body.innerHTML = `
+        <div class="d-section">
+          <div class="d-section-title">Order Info</div>
+          <div class="d-row"><span class="d-key">Order ID</span><span class="d-val" style="color:var(--gold);font-family:'DM Mono',monospace;font-size:11px;">${b.id}</span></div>
+          <div class="d-row"><span class="d-key">Placed On</span><span class="d-val">${fmtDate(b.timestamp)}</span></div>
+          <div class="d-row"><span class="d-key">Status</span><span class="d-val">${statusTag(b.status)}</span></div>
+        </div>
+
+        <div class="d-section">
+          <div class="d-section-title">Service Details</div>
+          <div class="d-row"><span class="d-key">Service</span><span class="d-val" style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--platinum);">${b.service}</span></div>
+          <div class="d-row"><span class="d-key">Date</span><span class="d-val">${fmtDate(b.date)}</span></div>
+          <div class="d-row"><span class="d-key">Time Slot</span><span class="d-val">${fmtTime(b.time)}</span></div>
+          <div class="d-row"><span class="d-key">Total Price</span><span class="d-val gold">$${(b.price || 0).toLocaleString()}</span></div>
+        </div>
+
+        <div class="d-section">
+          <div class="d-section-title">Logistics</div>
+          <div class="d-row"><span class="d-key">Dispatch From</span><span class="d-val">${b.origin || '—'}</span></div>
+          <div class="d-row"><span class="d-key">Destination</span><span class="d-val">${b.address || '—'}</span></div>
+          ${b.notes ? `<div class="d-row"><span class="d-key">Notes</span><span class="d-val">${b.notes}</span></div>` : ''}
+        </div>
+
+        ${b.status !== 'cancelled' ? `<div class="d-section">
+          <div class="d-section-title">Progress Tracker</div>
+          <div style="padding:4px 0;">
+            <div class="order-progress-steps">
+              ${STEPS.map((s, i) => {
+                    const si = stepIndex(b.status);
+                    return `${i > 0 ? `<div class="step-line ${i <= si ? 'done' : ''}"></div>` : ''}<div class="step-node ${i < si ? 'done' : i === si ? 'active' : ''}">${i < si ? '✓' : i + 1}</div>`;
+                }).join('')}
+            </div>
+            <div class="step-labels" style="margin-top:6px;">
+              ${STEPS.map((s, i) => {
+                    const si2 = stepIndex(b.status);
+                    return `<span class="step-lbl ${i < si2 ? 'done' : i === si2 ? 'active' : ''}">${s}</span>`;
+                }).join('')}
+            </div>
+          </div>
+        </div>` : ''}`;
+
+                // Drawer footer actions
+                let footHtml = `<button class="drawer-action-btn act-detail" style="background:var(--steel);border:1px solid rgba(255,255,255,0.07);color:var(--ash);" id="drawerClose2">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg> Close
+      </button>`;
+
+                if (b.status === 'pending') {
+                    footHtml += `
+          <button class="drawer-action-btn act-dispatch" style="background:var(--blue-dim);border:1px solid rgba(59,130,246,0.25);color:var(--blue);" id="daDispatch">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/></svg> Dispatch
+          </button>
+          <button class="drawer-action-btn act-cancel" id="daCancel" style="flex:none;padding:10px 14px;background:var(--red-dim);border:1px solid rgba(239,68,68,0.2);color:var(--red);">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>`;
+                } else if (b.status === 'dispatch') {
+                    footHtml += `<button class="drawer-action-btn act-confirm" id="daComplete" style="background:var(--green-dim);border:1px solid rgba(34,197,94,0.25);color:var(--green);">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Mark Completed
+        </button>`;
+                }
+                foot.innerHTML = footHtml;
+
+                // Wire drawer actions
+                document.getElementById('drawerClose2')?.addEventListener('click', closeDrawer);
+                document.getElementById('daDispatch')?.addEventListener('click', () => {
+                    b.status = 'dispatch'; save(); renderOrders(); openDrawer(id); toast('Dispatched!', 'ok');
+                });
+                document.getElementById('daComplete')?.addEventListener('click', () => {
+                    b.status = 'success'; save(); renderOrders(); openDrawer(id); toast('Marked complete!', 'ok');
+                });
+                document.getElementById('daCancel')?.addEventListener('click', () => {
+                    if (!confirm('Cancel this booking?')) return;
+                    b.status = 'cancelled'; save(); renderOrders(); closeDrawer(); toast('Cancelled.', 'err');
+                });
+
+                document.getElementById('detailDrawer').classList.add('open');
+                document.getElementById('drawerOverlay').classList.add('open');
+            }
+
+            function closeDrawer() {
+                document.getElementById('detailDrawer').classList.remove('open');
+                document.getElementById('drawerOverlay').classList.remove('open');
+            }
+
+            document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+            document.getElementById('drawerOverlay').addEventListener('click', closeDrawer);
+
+            // ── Tabs ──
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentTab = tab.dataset.tab;
+                    renderOrders();
+                });
+            });
+
+            // Sidebar nav filter
+            document.querySelectorAll('[data-filter-nav]').forEach(a => {
+                a.addEventListener('click', e => {
+                    e.preventDefault();
+                    currentTab = a.dataset.filterNav;
+                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelector(`.filter-tab[data-tab="${currentTab}"]`)?.classList.add('active');
+                    document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+                    a.classList.add('active');
+                    renderOrders();
+                });
+            });
+
+            // ── Search ──
+            document.getElementById('searchInput').addEventListener('input', e => {
+                searchQ = e.target.value.trim();
+                renderOrders();
+            });
+
+            // ── Sort ──
+            document.getElementById('sortBtn').addEventListener('click', function () {
+                sortAsc = !sortAsc;
+                this.innerHTML = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="11" height="11"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/></svg> ${sortAsc ? 'Oldest First' : 'Newest First'}`;
+                renderOrders();
+            });
+
+            // ── Refresh ──
+            document.getElementById('refreshBtn').addEventListener('click', () => {
+                try { bookings = JSON.parse(localStorage.getItem('ceBookings') || '[]'); } catch (e) { }
+                renderOrders();
+                toast('Orders refreshed', 'ok');
+            });
+
+            // ── Save ──
+            function save() { localStorage.setItem('ceBookings', JSON.stringify(bookings)); }
+
+            // ── Init ──
+            renderOrders();
+
+        })();
+    </script>
+</body>
+
+</html>
