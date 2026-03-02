@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings – Aluminum Lady</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #b8935a; --gold-light: #d4aa72;
+  --gold-dim: rgba(184,147,90,0.12); --gold-border: rgba(184,147,90,0.25);
+  --gold-glow: rgba(184,147,90,0.18); --dark: #1a1a18; --mid: #2c2c28;
+  --surface: #222220; --panel: #201f1d; --text: #e8e4dc; --muted: #888880;
+  --dim: rgba(200,196,188,0.35); --green: #4ade80; --red: #f87171;
+  --amber: #fbbf24; --blue: #60a5fa; --sidebar-w: 280px; --sidebar-col: 64px;
+  --t: all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+body.light-mode {
+  --dark: #f5f2ed; --mid: #eae5dc;
+  --surface: #f0ece4; --panel: #e5e0d6; --text: #2a2520; --muted: #7a7268;
+  --dim: rgba(60,50,40,0.35); --green: #16a34a; --red: #dc2626;
+  --amber: #d97706; --blue: #2563eb;
+}
+body.light-mode .topbar { background: rgba(245,242,237,0.95); }
+body.light-mode .toast { background: var(--surface); color: var(--text); box-shadow: 0 8px 32px rgba(0,0,0,0.14); }
+body.light-mode .notif-panel { background: var(--mid); }
+body.light-mode .notif-item:hover { background: rgba(154,111,53,0.06); }
+body.light-mode .search-overlay { background: rgba(210,205,196,0.97); }
+body.light-mode .search-overlay-input { background: var(--surface); border-color: var(--gold-border); color: var(--text); }
+body.light-mode .settings-card { background: var(--surface); }
+body.light-mode .tab-btn:hover { background: rgba(154,111,53,0.06); }
+body.light-mode .form-input, body.light-mode .form-select, body.light-mode .form-textarea { background-color: var(--surface); color: var(--text); }
+body.light-mode .toggle-track { background: rgba(60,50,40,0.12); }
+body.light-mode .danger-zone { background: rgba(220,38,38,0.04); }
+body.light-mode .settings-nav { background: var(--surface); }
+body.light-mode .settings-nav-item:hover { background: rgba(154,111,53,0.06); }
+body.light-mode .color-swatch.active { box-shadow: 0 0 0 2px var(--dark), 0 0 0 4px var(--gold); }
+
+body, .sidebar, .topbar, .settings-card, .tab-btn, .topbar-btn,
+.form-input, .form-select, .form-textarea, .toast, .nav-item,
+.sidebar-user, .settings-nav, .settings-nav-item, .toggle-track {
+  transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease !important;
+}
+
+/* THEME TOGGLE */
+.theme-toggle { width: 36px; height: 36px; border: 1px solid var(--gold-border); background: rgba(184,147,90,0.04); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--muted); position: relative; overflow: hidden; flex-shrink: 0; transition: background 0.3s, border-color 0.3s, color 0.3s; }
+.theme-toggle:hover { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
+.theme-toggle svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; position: absolute; transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease; }
+.theme-toggle .icon-sun  { transform: rotate(0deg); opacity: 1; }
+.theme-toggle .icon-moon { transform: rotate(90deg); opacity: 0; }
+body.light-mode .theme-toggle .icon-sun  { transform: rotate(-90deg); opacity: 0; }
+body.light-mode .theme-toggle .icon-moon { transform: rotate(0deg); opacity: 1; }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--text); display: flex; min-height: 100vh; overflow-x: hidden; }
+body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(184,147,90,0.03) 60px), repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(184,147,90,0.03) 60px); pointer-events: none; z-index: 0; }
+
+/* ─── SIDEBAR ─── */
+.sidebar { width: var(--sidebar-w); min-height: 100vh; position: fixed; top: 0; left: 0; bottom: 0; z-index: 300; display: flex; flex-direction: column; background: var(--mid); border-right: 1px solid var(--gold-border); transition: width 0.4s cubic-bezier(0.4,0,0.2,1), transform 0.4s cubic-bezier(0.4,0,0.2,1); overflow: hidden; }
+.sidebar::after { content: ''; position: absolute; bottom: -80px; right: -80px; width: 260px; height: 260px; border: 1px solid rgba(184,147,90,0.1); border-radius: 50%; pointer-events: none; }
+.sidebar .circle-deco { position: absolute; top: -50px; left: -50px; width: 200px; height: 200px; border: 1px solid rgba(184,147,90,0.07); border-radius: 50%; pointer-events: none; z-index: 0; }
+.sidebar .gold-line { position: absolute; top: 0; right: 0; bottom: 0; width: 1px; background: linear-gradient(180deg, transparent 0%, var(--gold) 15%, var(--gold-light) 50%, var(--gold) 85%, transparent 100%); opacity: 0.6; }
+.sidebar.collapsed { width: var(--sidebar-col); }
+.sidebar-logo { padding: 28px 22px 22px; border-bottom: 1px solid var(--gold-border); display: flex; align-items: center; gap: 14px; position: relative; z-index: 1; flex-shrink: 0; overflow: hidden; }
+.logo-icon { width: 40px; height: 40px; border: 1.5px solid var(--gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.logo-icon svg { width: 20px; height: 20px; fill: var(--gold); }
+.logo-text { overflow: hidden; transition: var(--t); white-space: nowrap; }
+.logo-name { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); line-height: 1; }
+.logo-sub { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 4px; display: flex; align-items: center; gap: 6px; }
+.logo-sub::before { content: ''; display: inline-block; width: 14px; height: 1px; background: var(--gold); opacity: 0.4; }
+.sidebar.collapsed .logo-text { opacity: 0; width: 0; }
+.sidebar.collapsed .sidebar-logo { padding: 18px 12px; justify-content: center; }
+.sidebar-nav { flex: 1; padding: 10px 0; overflow-y: auto; overflow-x: hidden; position: relative; z-index: 1; }
+.nav-section-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); padding: 18px 22px 8px; white-space: nowrap; overflow: hidden; display: flex; align-items: center; gap: 10px; opacity: 0.6; transition: var(--t); }
+.nav-section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold-border), transparent); }
+.sidebar.collapsed .nav-section-label { opacity: 0; height: 0; padding: 0; }
+.nav-item { display: flex; align-items: center; gap: 14px; padding: 11px 22px; text-decoration: none; color: var(--muted); font-size: 0.78rem; font-weight: 400; letter-spacing: 0.08em; position: relative; cursor: pointer; transition: var(--t); white-space: nowrap; border-left: 2px solid transparent; overflow: hidden; }
+.nav-item::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(184,147,90,0.07), transparent 70%); opacity: 0; transition: opacity 0.3s; }
+.nav-item:hover { color: var(--text); border-left-color: rgba(184,147,90,0.4); }
+.nav-item:hover::before { opacity: 1; }
+.nav-item.active { color: var(--gold-light); border-left-color: var(--gold); }
+.nav-item.active::before { opacity: 1; }
+.nav-item svg { width: 16px; height: 16px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.5; }
+.nav-item-label { transition: var(--t); }
+.nav-badge { margin-left: auto; background: var(--gold); color: var(--dark); font-family: 'DM Mono', monospace; font-size: 0.6rem; padding: 1px 6px; border-radius: 2px; flex-shrink: 0; }
+.sidebar.collapsed .nav-item-label, .sidebar.collapsed .nav-badge { opacity: 0; width: 0; overflow: hidden; padding: 0; }
+.sidebar.collapsed .nav-item { justify-content: center; padding: 13px 0; }
+.sidebar.collapsed .nav-item:hover::after { content: attr(data-label); position: absolute; left: calc(var(--sidebar-col) + 10px); background: var(--mid); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.75rem; padding: 8px 14px; white-space: nowrap; border: 1px solid var(--gold-border); z-index: 400; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+.sidebar-bottom { padding: 16px; border-top: 1px solid var(--gold-border); flex-shrink: 0; position: relative; z-index: 1; }
+.sidebar-user { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--gold-border); background: rgba(184,147,90,0.04); cursor: pointer; transition: var(--t); overflow: hidden; position: relative; margin-bottom: 10px; }
+.sidebar-user::before { content: ''; position: absolute; top: 0; left: -100%; width: 200%; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-light), transparent); transition: left 0.6s; }
+.sidebar-user:hover::before { left: 100%; }
+.sidebar-user:hover { border-color: rgba(184,147,90,0.45); background: rgba(184,147,90,0.08); }
+.user-avatar { width: 34px; height: 34px; border: 1.5px solid var(--gold); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 600; color: var(--gold); flex-shrink: 0; }
+.user-info { overflow: hidden; transition: var(--t); }
+.user-name { font-size: 0.8rem; font-weight: 500; color: var(--text); letter-spacing: 0.05em; white-space: nowrap; }
+.user-role { font-family: 'DM Mono', monospace; font-size: 0.58rem; color: var(--gold); letter-spacing: 0.15em; white-space: nowrap; margin-top: 2px; }
+.sidebar.collapsed .user-info { opacity: 0; width: 0; }
+.sidebar.collapsed .sidebar-user { justify-content: center; }
+.collapse-btn { width: 100%; background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 8px 0; transition: var(--t); }
+.collapse-btn:hover { color: var(--gold); }
+.collapse-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; transition: transform 0.35s; }
+.sidebar.collapsed .collapse-btn svg { transform: rotate(180deg); }
+.sidebar.collapsed .collapse-btn span { display: none; }
+.sidebar-overlay { display: none; position: fixed; inset: 0; z-index: 250; background: rgba(10,10,9,0.7); backdrop-filter: blur(4px); }
+.sidebar-overlay.show { display: block; }
+.sidebar-footer { position: relative; z-index: 1; padding: 0 22px 16px; }
+.footer-line { width: 40px; height: 1px; background: var(--gold); margin-bottom: 8px; }
+.footer-text { font-size: 0.6rem; color: var(--muted); letter-spacing: 0.05em; line-height: 1.6; overflow: hidden; transition: var(--t); white-space: nowrap; }
+.sidebar.collapsed .footer-text { opacity: 0; height: 0; }
+
+/* ─── MAIN ─── */
+.main { margin-left: var(--sidebar-w); flex: 1; min-height: 100vh; display: flex; flex-direction: column; transition: margin-left 0.4s cubic-bezier(0.4,0,0.2,1); position: relative; z-index: 1; }
+.main.collapsed { margin-left: var(--sidebar-col); }
+
+/* ─── TOPBAR ─── */
+.topbar { position: sticky; top: 0; z-index: 100; height: 68px; padding: 0 36px; display: flex; align-items: center; justify-content: space-between; background: rgba(26,26,24,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--gold-border); }
+.topbar::after { content: ''; position: absolute; bottom: -1px; left: 36px; right: 36px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.25; }
+.topbar-left { display: flex; align-items: center; gap: 18px; }
+.topbar-hamburger { display: none; width: 36px; height: 36px; border: 1px solid var(--gold-border); background: none; cursor: pointer; align-items: center; justify-content: center; color: var(--muted); transition: var(--t); }
+.topbar-hamburger:hover { color: var(--gold); border-color: var(--gold); }
+.topbar-hamburger svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.topbar-divider { width: 1px; height: 28px; background: var(--gold-border); }
+.topbar-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; color: var(--text); line-height: 1; }
+.topbar-title em { font-style: italic; color: var(--gold-light); }
+.breadcrumb { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 3px; display: flex; align-items: center; gap: 6px; }
+.breadcrumb b { color: var(--gold); font-weight: 400; }
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+.topbar-btn { width: 36px; height: 36px; border: 1px solid var(--gold-border); background: rgba(184,147,90,0.04); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--t); color: var(--muted); position: relative; }
+.topbar-btn:hover { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
+.topbar-btn.active { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
+.topbar-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.notif-dot { position: absolute; top: 7px; right: 7px; width: 7px; height: 7px; border-radius: 50%; background: var(--gold-light); border: 1.5px solid var(--dark); animation: npulse 2.5s infinite; }
+.notif-dot.hidden { display: none; }
+@keyframes npulse { 0%,100%{box-shadow:0 0 0 0 rgba(212,170,114,0.5);}60%{box-shadow:0 0 0 5px transparent;} }
+.notif-count-badge { position: absolute; top: -5px; right: -5px; min-width: 16px; height: 16px; border-radius: 8px; background: var(--red); color: #fff; font-family: 'DM Mono', monospace; font-size: 0.52rem; display: flex; align-items: center; justify-content: center; padding: 0 3px; border: 1.5px solid var(--dark); opacity: 0; transform: scale(0.6); transition: opacity 0.2s, transform 0.2s; }
+.notif-count-badge.show { opacity: 1; transform: scale(1); }
+.topbar-avatar { width: 36px; height: 36px; border: 1.5px solid var(--gold); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 600; color: var(--gold); cursor: pointer; transition: var(--t); }
+.topbar-avatar:hover { background: var(--gold-dim); box-shadow: 0 0 16px var(--gold-glow); }
+
+/* ─── SEARCH OVERLAY ─── */
+.search-overlay { position: fixed; inset: 0; z-index: 600; background: rgba(10,10,9,0.93); backdrop-filter: blur(14px); display: flex; flex-direction: column; align-items: center; padding-top: 100px; opacity: 0; pointer-events: none; transition: opacity 0.22s ease; }
+.search-overlay.open { opacity: 1; pointer-events: all; }
+.search-overlay-box { width: 100%; max-width: 580px; padding: 0 20px; }
+.search-overlay-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); opacity: 0.7; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.search-overlay-label::before { content: '◆'; font-size: 5px; }
+.search-overlay-input-wrap { position: relative; }
+.search-overlay-input-wrap .so-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 1.8; opacity: 0.55; pointer-events: none; }
+.search-overlay-input { width: 100%; padding: 18px 52px; background: var(--surface); border: 1px solid var(--gold-border); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 1.05rem; font-weight: 300; outline: none; transition: border-color 0.22s, box-shadow 0.22s; }
+.search-overlay-input:focus { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold), 0 12px 48px rgba(184,147,90,0.1); }
+.search-overlay-input::placeholder { color: rgba(136,136,128,0.4); }
+.search-overlay-close { position: absolute; right: 0; top: 0; height: 100%; width: 52px; display: flex; align-items: center; justify-content: center; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 20px; }
+.search-overlay-close:hover { color: var(--text); }
+.search-hints { margin-top: 10px; display: flex; gap: 14px; justify-content: center; font-family: 'DM Mono', monospace; font-size: 0.57rem; color: var(--muted); }
+.search-hints kbd { padding: 2px 6px; border: 1px solid var(--gold-border); color: var(--gold); background: rgba(184,147,90,0.04); font-family: inherit; font-size: inherit; }
+
+/* ─── NOTIFICATION PANEL ─── */
+.notif-wrap { position: relative; }
+.notif-panel { position: absolute; top: calc(100% + 10px); right: 0; width: 330px; background: var(--mid); border: 1px solid var(--gold-border); box-shadow: 0 24px 80px rgba(0,0,0,0.65); z-index: 200; opacity: 0; pointer-events: none; transform: translateY(-6px); transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.4,0,0.2,1); }
+.notif-panel::before { content: ''; position: absolute; top: 0; left: 0; width: 11px; height: 11px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); opacity: 0.5; }
+.notif-panel::after  { content: ''; position: absolute; bottom: 0; right: 0; width: 11px; height: 11px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); opacity: 0.5; }
+.notif-panel.open { opacity: 1; pointer-events: all; transform: translateY(0); }
+.notif-caret { position: absolute; top: -6px; right: 9px; width: 10px; height: 10px; background: var(--mid); border-left: 1px solid var(--gold-border); border-top: 1px solid var(--gold-border); transform: rotate(45deg); }
+.notif-panel-hdr { padding: 13px 16px; border-bottom: 1px solid var(--gold-border); background: rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: space-between; }
+.notif-panel-title { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 400; color: var(--text); }
+.notif-panel-title em { font-style: italic; color: var(--gold-light); }
+.notif-mark-all { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); background: none; border: 1px solid var(--gold-border); padding: 3px 8px; cursor: pointer; transition: var(--t); }
+.notif-mark-all:hover { background: var(--gold-dim); }
+.notif-list { max-height: 300px; overflow-y: auto; }
+.notif-item { display: flex; align-items: flex-start; gap: 11px; padding: 12px 16px; cursor: pointer; border-bottom: 1px solid rgba(184,147,90,0.06); transition: background 0.15s; position: relative; }
+.notif-item:last-child { border-bottom: none; }
+.notif-item:hover { background: rgba(184,147,90,0.04); }
+.notif-item.unread { background: rgba(184,147,90,0.05); }
+.unread-pip { position: absolute; top: 17px; left: 5px; width: 5px; height: 5px; border-radius: 50%; background: var(--gold-light); }
+.notif-icon { width: 30px; height: 30px; flex-shrink: 0; border: 1px solid; display: flex; align-items: center; justify-content: center; }
+.notif-icon svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.ni-green { border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.06); color: var(--green); }
+.ni-amber { border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.06); color: var(--amber); }
+.ni-blue  { border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.06); color: var(--blue); }
+.ni-gold  { border-color: var(--gold-border); background: var(--gold-dim); color: var(--gold-light); }
+.notif-content { flex: 1; min-width: 0; }
+.notif-title { font-size: 0.78rem; font-weight: 500; color: var(--text); line-height: 1.3; }
+.notif-body  { font-size: 0.73rem; color: var(--muted); font-weight: 300; margin-top: 2px; line-height: 1.5; }
+.notif-time  { font-family: 'DM Mono', monospace; font-size: 0.54rem; color: var(--muted); margin-top: 4px; opacity: 0.7; }
+.notif-panel-ftr { padding: 9px 16px; border-top: 1px solid var(--gold-border); background: rgba(0,0,0,0.1); text-align: center; }
+.notif-view-all { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); background: none; border: none; cursor: pointer; transition: color 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+.notif-view-all:hover { color: var(--gold-light); }
+.notif-view-all svg { width: 9px; height: 9px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+/* ─── PAGE BODY ─── */
+.page-body { padding: 32px 36px; flex: 1; }
+.sec-head { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; opacity: 0; animation: fadeUp 0.6s 0.05s forwards; }
+.sec-head-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold-border), transparent); }
+.sec-head-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; white-space: nowrap; display: flex; align-items: center; gap: 8px; }
+.sec-head-label::before { content: '◆'; font-size: 5px; color: var(--gold-light); animation: rot 8s linear infinite; display: inline-block; }
+@keyframes rot { to { transform: rotate(360deg); } }
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none} }
+
+/* ─── SETTINGS LAYOUT ─── */
+.settings-layout { display: grid; grid-template-columns: 220px 1fr; gap: 20px; align-items: start; }
+
+/* ─── SETTINGS NAV ─── */
+.settings-nav { background: var(--surface); border: 1px solid var(--gold-border); position: sticky; top: 88px; opacity: 0; animation: fadeUp 0.6s 0.1s forwards; }
+.settings-nav::before { content: ''; position: absolute; top: 0; left: 0; width: 12px; height: 12px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); opacity: 0.5; }
+.settings-nav-header { padding: 14px 18px; border-bottom: 1px solid var(--gold-border); background: rgba(0,0,0,0.1); }
+.settings-nav-title { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); opacity: 0.8; }
+.settings-nav-item { display: flex; align-items: center; gap: 11px; padding: 11px 18px; cursor: pointer; border-left: 2px solid transparent; transition: var(--t); color: var(--muted); font-size: 0.8rem; font-weight: 400; border-bottom: 1px solid rgba(184,147,90,0.05); }
+.settings-nav-item:last-child { border-bottom: none; }
+.settings-nav-item svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.5; flex-shrink: 0; }
+.settings-nav-item:hover { color: var(--text); background: rgba(184,147,90,0.04); border-left-color: rgba(184,147,90,0.3); }
+.settings-nav-item.active { color: var(--gold-light); border-left-color: var(--gold); background: rgba(184,147,90,0.06); }
+.settings-nav-item .nav-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--red); margin-left: auto; flex-shrink: 0; animation: npulse 2s infinite; }
+
+/* ─── SETTINGS CARDS ─── */
+.settings-panels { display: flex; flex-direction: column; gap: 20px; }
+.settings-panel { display: none; }
+.settings-panel.active { display: flex; flex-direction: column; gap: 20px; }
+.settings-card { background: var(--surface); border: 1px solid var(--gold-border); position: relative; overflow: hidden; opacity: 0; animation: fadeUp 0.6s forwards; }
+.settings-card::before { content: ''; position: absolute; top: 0; left: 0; width: 16px; height: 16px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); opacity: 0.4; pointer-events: none; z-index: 1; }
+.settings-card::after  { content: ''; position: absolute; bottom: 0; right: 0; width: 16px; height: 16px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); opacity: 0.4; pointer-events: none; z-index: 1; }
+.card-header { padding: 20px 26px 16px; border-bottom: 1px solid var(--gold-border); background: rgba(0,0,0,0.12); display: flex; align-items: center; justify-content: space-between; }
+.card-header-left { display: flex; align-items: center; gap: 12px; }
+.card-icon { width: 36px; height: 36px; border: 1px solid var(--gold-border); background: var(--gold-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.card-icon svg { width: 16px; height: 16px; stroke: var(--gold-light); fill: none; stroke-width: 1.6; }
+.card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 400; color: var(--text); }
+.card-title em { font-style: italic; color: var(--gold-light); }
+.card-sub { font-family: 'DM Mono', monospace; font-size: 0.58rem; color: var(--muted); letter-spacing: 0.1em; margin-top: 2px; }
+.card-body { padding: 22px 26px; }
+
+/* ─── FORM ELEMENTS ─── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 7px; }
+.form-group.full { grid-column: 1/-1; }
+.form-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.form-label .req { color: var(--red); }
+.form-label .hint { color: var(--muted); opacity: 0.6; font-size: 0.55rem; }
+.form-input, .form-select, .form-textarea { width: 100%; background: var(--panel); border: 1px solid var(--gold-border); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 300; padding: 0.8rem 1rem; outline: none; transition: var(--t); }
+.form-select { padding-right: 32px; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%23b8935a' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; background-size: 13px; background-color: var(--panel); }
+.form-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); background: rgba(184,147,90,0.04); }
+.form-input::placeholder, .form-textarea::placeholder { color: rgba(136,136,128,0.4); }
+.input-hint { font-family: 'DM Mono', monospace; font-size: 0.56rem; color: var(--muted); opacity: 0.7; letter-spacing: 0.06em; margin-top: 3px; }
+
+/* ─── TOGGLE SWITCH ─── */
+.toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(184,147,90,0.07); }
+.toggle-row:last-child { border-bottom: none; }
+.toggle-info { flex: 1; min-width: 0; padding-right: 20px; }
+.toggle-label { font-size: 0.85rem; font-weight: 500; color: var(--text); }
+.toggle-desc { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); margin-top: 3px; letter-spacing: 0.05em; line-height: 1.5; }
+.toggle-wrap { position: relative; display: inline-block; width: 42px; height: 24px; flex-shrink: 0; }
+.toggle-input { opacity: 0; width: 0; height: 0; position: absolute; }
+.toggle-track { position: absolute; inset: 0; background: rgba(184,147,90,0.12); border: 1px solid var(--gold-border); cursor: pointer; transition: background 0.28s ease, border-color 0.28s ease; }
+.toggle-track::after { content: ''; position: absolute; left: 3px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; background: var(--muted); transition: transform 0.28s cubic-bezier(0.4,0,0.2,1), background 0.28s ease; }
+.toggle-input:checked + .toggle-track { background: rgba(184,147,90,0.25); border-color: var(--gold); }
+.toggle-input:checked + .toggle-track::after { transform: translate(18px, -50%); background: var(--gold); box-shadow: 0 0 8px rgba(184,147,90,0.5); }
+
+/* ─── AVATAR EDITOR ─── */
+.avatar-section { display: flex; align-items: center; gap: 24px; margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--gold-border); }
+.avatar-preview { width: 80px; height: 80px; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; color: var(--gold); position: relative; flex-shrink: 0; background: var(--gold-dim); }
+.avatar-upload-btn { position: absolute; bottom: -8px; right: -8px; width: 26px; height: 26px; background: var(--gold); border: 2px solid var(--dark); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.avatar-upload-btn svg { width: 12px; height: 12px; stroke: var(--dark); fill: none; stroke-width: 2; }
+.avatar-info h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 400; color: var(--text); }
+.avatar-info p { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); margin-top: 5px; letter-spacing: 0.08em; line-height: 1.6; }
+
+/* ─── COLOR SWATCHES ─── */
+.color-picker-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.color-swatch { width: 28px; height: 28px; border: 2px solid transparent; cursor: pointer; transition: var(--t); position: relative; }
+.color-swatch:hover { transform: scale(1.15); }
+.color-swatch.active { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--gold); }
+.color-swatch.active::after { content: '✓'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; text-shadow: 0 0 4px rgba(0,0,0,0.6); }
+
+/* ─── SAVE BAR ─── */
+.save-bar { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding-top: 20px; border-top: 1px solid var(--gold-border); margin-top: 20px; }
+.btn-cancel { padding: 10px 20px; border: 1px solid var(--gold-border); background: none; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; color: var(--muted); transition: var(--t); }
+.btn-cancel:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+.btn-save { padding: 10px 28px; background: var(--gold); color: var(--dark); border: none; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: var(--t); display: flex; align-items: center; gap: 8px; position: relative; overflow: hidden; }
+.btn-save::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); transition: left 0.4s; }
+.btn-save:hover::before { left: 100%; }
+.btn-save:hover { background: var(--gold-light); transform: translateY(-1px); }
+.btn-save svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+/* ─── DANGER ZONE ─── */
+.danger-zone { border: 1px solid rgba(248,113,113,0.3); background: rgba(248,113,113,0.04); padding: 20px 24px; position: relative; }
+.danger-zone::before { content: ''; position: absolute; top: 0; left: 0; width: 12px; height: 12px; border-top: 1px solid var(--red); border-left: 1px solid var(--red); opacity: 0.4; }
+.danger-title { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 400; color: var(--red); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.danger-title svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.danger-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(248,113,113,0.08); }
+.danger-row:last-child { border-bottom: none; }
+.danger-row-info h5 { font-size: 0.85rem; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.danger-row-info p { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.05em; line-height: 1.5; }
+.btn-danger { padding: 8px 18px; border: 1px solid rgba(248,113,113,0.4); background: rgba(248,113,113,0.08); color: var(--red); font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: var(--t); white-space: nowrap; }
+.btn-danger:hover { background: rgba(248,113,113,0.18); border-color: var(--red); }
+
+/* ─── INFO BADGE ─── */
+.info-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--gold-border); background: var(--gold-dim); color: var(--gold); }
+.info-badge svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.info-badge.green { background: rgba(74,222,128,0.08); border-color: rgba(74,222,128,0.25); color: var(--green); }
+.info-badge.red   { background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.25); color: var(--red); }
+
+/* ─── DIVIDER ─── */
+.field-divider { height: 1px; background: linear-gradient(90deg, var(--gold-border), transparent); margin: 18px 0; }
+
+/* ─── SESSION ROW ─── */
+.session-row { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid rgba(184,147,90,0.06); }
+.session-row:last-child { border-bottom: none; }
+.session-icon { width: 36px; height: 36px; border: 1px solid var(--gold-border); background: var(--gold-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.session-icon svg { width: 15px; height: 15px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+.session-info { flex: 1; min-width: 0; }
+.session-device { font-size: 0.82rem; font-weight: 500; color: var(--text); }
+.session-meta { font-family: 'DM Mono', monospace; font-size: 0.58rem; color: var(--muted); margin-top: 2px; letter-spacing: 0.06em; }
+.session-status { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+.current-tag { font-family: 'DM Mono', monospace; font-size: 0.55rem; padding: 2px 8px; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.3); color: var(--green); text-transform: uppercase; letter-spacing: 0.1em; }
+.revoke-btn { font-family: 'DM Mono', monospace; font-size: 0.55rem; padding: 2px 8px; background: none; border: 1px solid rgba(248,113,113,0.3); color: var(--red); text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: var(--t); }
+.revoke-btn:hover { background: rgba(248,113,113,0.1); }
+
+/* ─── API KEY ─── */
+.api-key-row { display: flex; gap: 10px; align-items: center; }
+.api-key-input { flex: 1; background: var(--panel); border: 1px solid var(--gold-border); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.78rem; padding: 10px 14px; outline: none; letter-spacing: 0.12em; }
+.api-key-btn { padding: 10px 16px; border: 1px solid var(--gold-border); background: var(--gold-dim); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: var(--t); white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+.api-key-btn svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.api-key-btn:hover { background: var(--gold); color: var(--dark); }
+
+/* ─── TOAST ─── */
+.toast-wrap { position: fixed; bottom: 28px; right: 28px; z-index: 1000; display: flex; flex-direction: column; gap: 8px; }
+.toast { background: var(--surface); color: var(--text); padding: 12px 16px; border-left: 3px solid var(--gold); display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); animation: toastIn 0.3s cubic-bezier(0.4,0,0.2,1); min-width: 240px; font-size: 0.82rem; font-weight: 300; }
+.toast.success { border-left-color: var(--green); }
+.toast.error   { border-left-color: var(--red); }
+.toast.warn    { border-left-color: var(--amber); }
+.toast svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+@keyframes toastIn  { from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none} }
+@keyframes toastOut { from{opacity:1}to{opacity:0;transform:translateX(20px)} }
+.toast-out { animation: toastOut 0.3s forwards; }
+
+/* ─── CONFIRM MODAL ─── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(10,10,9,0.85); backdrop-filter: blur(6px); z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--mid); width: 100%; max-width: 400px; border: 1px solid var(--gold-border); box-shadow: 0 40px 120px rgba(0,0,0,0.8); animation: modalIn 0.35s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden; }
+.modal::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(184,147,90,0.03) 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(184,147,90,0.03) 40px); pointer-events: none; }
+.modal::after { content: ''; position: absolute; top: 0; left: 0; width: 14px; height: 14px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); opacity: 0.5; }
+.modal-corner-br { position: absolute; bottom: 0; right: 0; width: 14px; height: 14px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); opacity: 0.5; }
+@keyframes modalIn { from{opacity:0;transform:scale(0.95) translateY(16px)}to{opacity:1;transform:none} }
+.modal-body { padding: 32px 26px 16px; position: relative; z-index: 1; }
+.modal-icon { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; border: 1px solid; }
+.icon-red { background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.25); }
+.icon-red svg { width: 24px; height: 24px; stroke: var(--red); fill: none; stroke-width: 1.8; }
+.modal-center { text-align: center; }
+.modal-center h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 400; color: var(--text); margin-bottom: 8px; }
+.modal-center p { font-size: 0.82rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+.modal-footer { padding: 14px 26px 22px; display: flex; gap: 10px; justify-content: flex-end; position: relative; z-index: 1; }
+.btn-red-modal { padding: 10px 22px; border: 1px solid rgba(248,113,113,0.4); background: rgba(248,113,113,0.15); color: var(--red); font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: var(--t); }
+.btn-red-modal:hover { background: rgba(248,113,113,0.25); }
+
+@media(max-width:1024px){ .settings-layout{grid-template-columns:1fr;} .settings-nav{position:static;} }
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);width:var(--sidebar-w)!important;}
+  .sidebar.mobile-open{transform:translateX(0);}
+  .main{margin-left:0!important;}
+  .topbar-hamburger{display:flex;}
+  .topbar{padding:0 20px;}
+  .page-body{padding:20px 16px;}
+  .form-grid{grid-template-columns:1fr;}
+  .form-grid-3{grid-template-columns:1fr 1fr;}
+  .topbar-divider{display:none;}
+  .notif-panel{right:-40px;width:290px;}
+}
+@media(max-width:480px){ .form-grid-3{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="search-overlay">
+  <div class="search-overlay-box">
+    <div class="search-overlay-label">Quick Search</div>
+    <div class="search-overlay-input-wrap">
+      <svg class="so-icon" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <input class="search-overlay-input" id="search-overlay-input" type="text" placeholder="Search settings…" autocomplete="off">
+      <button class="search-overlay-close" onclick="closeSearch()">✕</button>
+    </div>
+    <div class="search-hints"><span><kbd>Esc</kbd> close</span><span><kbd>/</kbd> open</span></div>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="circle-deco"></div>
+  <div class="gold-line"></div>
+  <div class="sidebar-logo">
+    <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18v-2H3v2zm0-4h18v-2H3v2zm0-4h18v-2H3v2zm0-4h18V7H3v2zm0-6v2h18V3H3z"/></svg></div>
+    <div class="logo-text">
+      <div class="logo-name">Aluminum Lady</div>
+      <div class="logo-sub">Admin Panel</div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a class="nav-item" href="ADMIN-dashboard.HTML" data-label="Dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="nav-item-label">Dashboard</span></a>
+    <div class="nav-section-label">Content</div>
+    <a class="nav-item" href="ADMIN-product.HTML" data-label="Product"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg><span class="nav-item-label">Product</span><span class="nav-badge">12</span></a>
+    <a class="nav-item" href="ADMIN-gallery.HTML" data-label="Gallery"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span class="nav-item-label">Gallery</span><span class="nav-badge">8</span></a>
+    <a class="nav-item" href="ADMIN-services.HTML" data-label="Services"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg><span class="nav-item-label">Services</span><span class="nav-badge">3</span></a>
+    <div class="nav-section-label">Messages</div>
+    <a class="nav-item" href="ADMIN-messages.HTML" data-label="Messages"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg><span class="nav-item-label">Messages</span><span class="nav-badge">5</span></a>
+    <a class="nav-item" href="admin-user.html" data-label="Users"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="nav-item-label">Users</span></a>
+    <div class="nav-section-label">System</div>
+    <a class="nav-item active" href="ADMIN-settings.HTML" data-label="Settings"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg><span class="nav-item-label">Settings</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="footer-line"></div>
+    <div class="footer-text">Foshan Aluminum Lady<br/>Building Materials Co., Ltd.<br/>© 2025 — All rights reserved</div>
+  </div>
+  <div class="sidebar-bottom">
+    <div class="sidebar-user">
+      <div class="user-avatar">A</div>
+      <div class="user-info"><div class="user-name">Admin</div><div class="user-role">Super Administrator</div></div>
+    </div>
+    <button class="collapse-btn" id="collapse-btn">
+      <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      <span>Collapse Panel</span>
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main" id="main">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="topbar-hamburger" id="hamburger-btn"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+      <div class="topbar-divider"></div>
+      <div>
+        <div class="topbar-title">System <em>Settings</em></div>
+        <div class="breadcrumb">Aluminum Lady <span style="color:var(--gold-border)">／</span> Admin <span style="color:var(--gold-border)">／</span> <b>Settings</b></div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="topbar-btn" id="search-btn"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></button>
+      <div class="notif-wrap">
+        <button class="topbar-btn" id="notif-btn">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          <div class="notif-dot" id="notif-dot"></div>
+          <div class="notif-count-badge" id="notif-badge">0</div>
+        </button>
+        <div class="notif-panel" id="notif-panel">
+          <div class="notif-caret"></div>
+          <div class="notif-panel-hdr">
+            <div class="notif-panel-title">Notifi<em>cations</em></div>
+            <button class="notif-mark-all" id="notif-mark-all">Mark all read</button>
+          </div>
+          <div class="notif-list" id="notif-list"></div>
+          <div class="notif-panel-ftr"><button class="notif-view-all" onclick="closeNotif()">View all <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></button></div>
+        </div>
+      </div>
+      <button class="theme-toggle" id="theme-toggle-btn">
+        <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+      <div class="topbar-avatar">A</div>
+    </div>
+  </header>
+
+  <div class="page-body">
+    <div class="sec-head">
+      <div class="sec-head-line" style="max-width:36px;background:linear-gradient(90deg,transparent,var(--gold-border));"></div>
+      <div class="sec-head-label">Configuration</div>
+      <div class="sec-head-line"></div>
+    </div>
+
+    <div class="settings-layout">
+
+      <!-- LEFT NAV -->
+      <div class="settings-nav" id="settings-nav">
+        <div class="settings-nav-header"><div class="settings-nav-title">Settings Menu</div></div>
+        <div class="settings-nav-item active" data-tab="profile" onclick="switchTab('profile')">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          Profile
+        </div>
+        <div class="settings-nav-item" data-tab="site" onclick="switchTab('site')">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+          Site Information
+        </div>
+        <div class="settings-nav-item" data-tab="appearance" onclick="switchTab('appearance')">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+          Appearance
+        </div>
+        <div class="settings-nav-item" data-tab="notifications" onclick="switchTab('notifications')">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          Notifications
+          <span class="nav-dot"></span>
+        </div>
+        <div class="settings-nav-item" data-tab="security" onclick="switchTab('security')">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          Security
+        </div>
+        <div class="settings-nav-item" data-tab="api" onclick="switchTab('api')">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          API & Integrations
+        </div>
+        <div class="settings-nav-item" data-tab="backup" onclick="switchTab('backup')">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/></svg>
+          Backup & Data
+        </div>
+      </div>
+
+      <!-- RIGHT PANELS -->
+      <div class="settings-panels">
+
+        <!-- ══ PROFILE ══ -->
+        <div class="settings-panel active" id="panel-profile">
+          <div class="settings-card" style="animation-delay:0.15s">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg></div>
+                <div>
+                  <div class="card-title">Account <em>Profile</em></div>
+                  <div class="card-sub">Manage your personal information and public details</div>
+                </div>
+              </div>
+              <span class="info-badge green"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"/></svg>Last saved: Today</span>
+            </div>
+            <div class="card-body">
+              <div class="avatar-section">
+                <div class="avatar-preview">A
+                  <div class="avatar-upload-btn" onclick="toast('Avatar upload — connect backend.','warn')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg></div>
+                </div>
+                <div class="avatar-info">
+                  <h4>Administrator</h4>
+                  <p>JPG, PNG, or WEBP — max 2MB<br>Recommended: 200×200px or larger</p>
+                </div>
+              </div>
+              <div class="form-grid">
+                <div class="form-group"><label class="form-label">First Name <span class="req">*</span></label><input class="form-input" type="text" value="Admin" placeholder="First name"></div>
+                <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" value="" placeholder="Last name"></div>
+                <div class="form-group"><label class="form-label">Email Address <span class="req">*</span></label><input class="form-input" type="email" value="admin@aluminumlady.com" placeholder="Email"></div>
+                <div class="form-group"><label class="form-label">Phone Number</label><input class="form-input" type="text" value="+86 757 8888 0000" placeholder="+country code"></div>
+                <div class="form-group"><label class="form-label">Job Title / Role</label><input class="form-input" type="text" value="Super Administrator" placeholder="e.g. Marketing Manager"></div>
+                <div class="form-group"><label class="form-label">Department</label><input class="form-input" type="text" value="Management" placeholder="e.g. Operations"></div>
+                <div class="form-group full"><label class="form-label">Bio <span class="hint">(Optional — shown on team page)</span></label><textarea class="form-textarea" placeholder="Short bio for public team page…"></textarea></div>
+              </div>
+              <div class="save-bar">
+                <button class="btn-cancel" onclick="toast('Changes discarded.','warn')">Discard</button>
+                <button class="btn-save" onclick="saveSetting('Profile updated successfully.')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Save Profile</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SITE INFORMATION ══ -->
+        <div class="settings-panel" id="panel-site">
+          <div class="settings-card" style="animation-delay:0.15s">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg></div>
+                <div>
+                  <div class="card-title">Site <em>Information</em></div>
+                  <div class="card-sub">Company details shown on the public-facing website</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-grid">
+                <div class="form-group"><label class="form-label">Company Name <span class="req">*</span></label><input class="form-input" type="text" value="Aluminum Lady Building Materials Co., Ltd."></div>
+                <div class="form-group"><label class="form-label">Tagline / Slogan</label><input class="form-input" type="text" value="Premium Aluminum Solutions for Modern Architecture" placeholder="Short tagline"></div>
+                <div class="form-group"><label class="form-label">Contact Email <span class="req">*</span></label><input class="form-input" type="email" value="info@aluminumlady.com"></div>
+                <div class="form-group"><label class="form-label">Contact Phone</label><input class="form-input" type="text" value="+86 757 8283 3000"></div>
+                <div class="form-group full"><label class="form-label">Company Address</label><input class="form-input" type="text" value="No. 8 Aluminum Boulevard, Foshan, Guangdong, China 528000"></div>
+                <div class="form-group"><label class="form-label">Website URL</label><input class="form-input" type="text" value="https://www.aluminumlady.com"></div>
+                <div class="form-group"><label class="form-label">Business Hours</label><input class="form-input" type="text" value="Mon–Sat 8:00 AM – 6:00 PM (GMT+8)"></div>
+                <div class="form-group full"><label class="form-label">Company Description</label><textarea class="form-textarea" style="min-height:100px">Aluminum Lady is a leading manufacturer of premium aluminum building systems, specializing in curtain walls, windows, doors, and architectural facades for commercial and residential projects across Asia.</textarea></div>
+              </div>
+              <div class="field-divider"></div>
+              <div class="form-grid">
+                <div class="form-group"><label class="form-label">Facebook URL</label><input class="form-input" type="text" value="https://facebook.com/aluminumlady" placeholder="https://"></div>
+                <div class="form-group"><label class="form-label">Instagram URL</label><input class="form-input" type="text" value="" placeholder="https://"></div>
+                <div class="form-group"><label class="form-label">WeChat ID</label><input class="form-input" type="text" value="AluminumLady_Official" placeholder="WeChat ID"></div>
+                <div class="form-group"><label class="form-label">WhatsApp Number</label><input class="form-input" type="text" value="+86 138 0000 0000" placeholder="+country code"></div>
+              </div>
+              <div class="save-bar">
+                <button class="btn-cancel" onclick="toast('Changes discarded.','warn')">Discard</button>
+                <button class="btn-save" onclick="saveSetting('Site information saved.')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Save Changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ APPEARANCE ══ -->
+        <div class="settings-panel" id="panel-appearance">
+          <div class="settings-card" style="animation-delay:0.15s">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg></div>
+                <div>
+                  <div class="card-title">Appearance & <em>Theme</em></div>
+                  <div class="card-sub">Customize the look and feel of the admin panel</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-group" style="margin-bottom:20px">
+                <label class="form-label">Panel Theme</label>
+                <select class="form-select" id="theme-select" onchange="applyThemeSel(this.value)" style="max-width:280px">
+                  <option value="dark" selected>Dark — Obsidian</option>
+                  <option value="light">Light — Ivory</option>
+                </select>
+                <div class="input-hint">Changes apply immediately across all pages</div>
+              </div>
+              <div class="form-group" style="margin-bottom:20px">
+                <label class="form-label">Accent Color</label>
+                <div class="color-picker-row" id="color-picker">
+                  <div class="color-swatch active" style="background:#b8935a" data-color="gold" onclick="pickColor(this,'gold')" title="Gold (Default)"></div>
+                  <div class="color-swatch" style="background:#60a5fa" data-color="blue" onclick="pickColor(this,'blue')" title="Sapphire Blue"></div>
+                  <div class="color-swatch" style="background:#4ade80" data-color="green" onclick="pickColor(this,'green')" title="Emerald Green"></div>
+                  <div class="color-swatch" style="background:#f87171" data-color="red" onclick="pickColor(this,'red')" title="Ruby Red"></div>
+                  <div class="color-swatch" style="background:#a78bfa" data-color="purple" onclick="pickColor(this,'purple')" title="Violet"></div>
+                  <div class="color-swatch" style="background:#fb923c" data-color="orange" onclick="pickColor(this,'orange')" title="Copper Orange"></div>
+                </div>
+                <div class="input-hint">Accent color is applied to highlights, borders, and active states</div>
+              </div>
+              <div class="field-divider"></div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-label">Compact Mode</div>
+                  <div class="toggle-desc">Reduce padding and spacing for a denser information layout</div>
+                </div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox"><span class="toggle-track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-label">Show Grid Overlay</div>
+                  <div class="toggle-desc">Display the decorative background grid pattern on all pages</div>
+                </div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox" checked><span class="toggle-track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-label">Sidebar Collapsed by Default</div>
+                  <div class="toggle-desc">Start with the sidebar in its collapsed icon-only state</div>
+                </div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox"><span class="toggle-track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-label">Smooth Animations</div>
+                  <div class="toggle-desc">Enable all page transitions and micro-interaction animations</div>
+                </div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox" checked><span class="toggle-track"></span></label>
+              </div>
+              <div class="save-bar">
+                <button class="btn-cancel" onclick="toast('Changes discarded.','warn')">Discard</button>
+                <button class="btn-save" onclick="saveSetting('Appearance settings saved.')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Save Appearance</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ NOTIFICATIONS ══ -->
+        <div class="settings-panel" id="panel-notifications">
+          <div class="settings-card" style="animation-delay:0.15s">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div>
+                <div>
+                  <div class="card-title">Notification <em>Preferences</em></div>
+                  <div class="card-sub">Choose what alerts and emails you receive</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-grid" style="margin-bottom:20px">
+                <div class="form-group"><label class="form-label">Notification Email</label><input class="form-input" type="email" value="admin@aluminumlady.com"></div>
+                <div class="form-group"><label class="form-label">Digest Frequency</label>
+                  <select class="form-select">
+                    <option>Real-time (immediate)</option>
+                    <option>Hourly digest</option>
+                    <option selected>Daily digest — 8:00 AM</option>
+                    <option>Weekly summary</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field-divider"></div>
+              <p style="font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;opacity:0.8">In-Panel Alerts</p>
+              <div class="toggle-row">
+                <div class="toggle-info"><div class="toggle-label">New Message Received</div><div class="toggle-desc">Alert when a customer submits a message or inquiry</div></div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox" checked><span class="toggle-track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info"><div class="toggle-label">Low Stock Warning</div><div class="toggle-desc">Alert when a product falls below its stock threshold</div></div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox" checked><span class="toggle-track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info"><div class="toggle-label">Product Updated</div><div class="toggle-desc">Alert when any product record is modified</div></div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox"><span class="toggle-track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info"><div class="toggle-label">Gallery Image Published</div><div class="toggle-desc">Alert when an image is set to published status</div></div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox" checked><span class="toggle-track"></span></label>
+              </div>
+              <div class="field-divider"></div>
+              <p style="font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;opacity:0.8">Email Notifications</p>
+              <div class="toggle-row">
+                <div class="toggle-info"><div class="toggle-label">Email: New Customer Inquiry</div><div class="toggle-desc">Receive email for every new message from the contact form</div></div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox" checked><span class="toggle-track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info"><div class="toggle-label">Email: Complaint Received</div><div class="toggle-desc">Immediate email alert when a complaint is submitted</div></div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox" checked><span class="toggle-track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info"><div class="toggle-label">Email: Weekly Summary Report</div><div class="toggle-desc">Weekly overview of products, messages, and gallery activity</div></div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox"><span class="toggle-track"></span></label>
+              </div>
+              <div class="save-bar">
+                <button class="btn-cancel" onclick="toast('Changes discarded.','warn')">Discard</button>
+                <button class="btn-save" onclick="saveSetting('Notification settings saved.')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Save Preferences</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECURITY ══ -->
+        <div class="settings-panel" id="panel-security">
+          <div class="settings-card" style="animation-delay:0.15s">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+                <div>
+                  <div class="card-title">Security & <em>Access</em></div>
+                  <div class="card-sub">Manage your password, 2FA, and active sessions</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <p style="font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;opacity:0.8">Change Password</p>
+              <div class="form-grid">
+                <div class="form-group full"><label class="form-label">Current Password <span class="req">*</span></label><input class="form-input" type="password" placeholder="Enter current password"></div>
+                <div class="form-group"><label class="form-label">New Password <span class="req">*</span></label><input class="form-input" type="password" placeholder="Min. 8 characters"><div class="input-hint">Use uppercase, numbers & special characters</div></div>
+                <div class="form-group"><label class="form-label">Confirm New Password <span class="req">*</span></label><input class="form-input" type="password" placeholder="Repeat new password"></div>
+              </div>
+              <div class="save-bar" style="margin-bottom:0;padding-bottom:0">
+                <button class="btn-save" style="background:rgba(74,222,128,0.2);color:var(--green);border:1px solid rgba(74,222,128,0.3)" onclick="saveSetting('Password updated successfully.')">Update Password</button>
+              </div>
+              <div class="field-divider"></div>
+              <p style="font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;opacity:0.8">Two-Factor Authentication</p>
+              <div class="toggle-row">
+                <div class="toggle-info"><div class="toggle-label">Enable 2FA via Authenticator App</div><div class="toggle-desc">Use Google Authenticator or similar TOTP app for login</div></div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox"><span class="toggle-track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info"><div class="toggle-label">Login Email OTP</div><div class="toggle-desc">Receive a one-time code to your email on every login</div></div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox" checked><span class="toggle-track"></span></label>
+              </div>
+              <div class="field-divider"></div>
+              <p style="font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;opacity:0.8">Active Sessions</p>
+              <div class="session-row">
+                <div class="session-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4"/></svg></div>
+                <div class="session-info"><div class="session-device">Windows 11 — Chrome 122</div><div class="session-meta">Foshan, China · 192.168.1.4 · Active now</div></div>
+                <div class="session-status"><span class="current-tag">● Current</span></div>
+              </div>
+              <div class="session-row">
+                <div class="session-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg></div>
+                <div class="session-info"><div class="session-device">iPhone 15 — Safari</div><div class="session-meta">Foshan, China · 192.168.1.12 · 2 hrs ago</div></div>
+                <div class="session-status"><button class="revoke-btn" onclick="toast('Session revoked.','success')">Revoke</button></div>
+              </div>
+              <div class="session-row">
+                <div class="session-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4"/></svg></div>
+                <div class="session-info"><div class="session-device">MacBook Pro — Firefox 123</div><div class="session-meta">Manila, Philippines · 180.191.x.x · 1 day ago</div></div>
+                <div class="session-status"><button class="revoke-btn" onclick="toast('Session revoked.','success')">Revoke</button></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Danger Zone -->
+          <div class="settings-card" style="animation-delay:0.25s">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon" style="border-color:rgba(248,113,113,0.3);background:rgba(248,113,113,0.08)"><svg viewBox="0 0 24 24" style="stroke:var(--red)"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg></div>
+                <div>
+                  <div class="card-title" style="color:var(--red)">Danger <em>Zone</em></div>
+                  <div class="card-sub">Irreversible actions — proceed with caution</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="danger-zone">
+                <div class="danger-row">
+                  <div class="danger-row-info"><h5>Revoke All Other Sessions</h5><p>Sign out all devices except the current active session</p></div>
+                  <button class="btn-danger" onclick="toast('All other sessions revoked.','success')">Revoke All</button>
+                </div>
+                <div class="danger-row">
+                  <div class="danger-row-info"><h5>Reset Admin Password</h5><p>Send a password reset link to the registered admin email</p></div>
+                  <button class="btn-danger" onclick="toast('Password reset email sent.','warn')">Send Reset</button>
+                </div>
+                <div class="danger-row">
+                  <div class="danger-row-info"><h5>Delete Admin Account</h5><p>Permanently remove this administrator account — cannot be undone</p></div>
+                  <button class="btn-danger" onclick="openDangerModal('delete-account')">Delete Account</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ API ══ -->
+        <div class="settings-panel" id="panel-api">
+          <div class="settings-card" style="animation-delay:0.15s">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg></div>
+                <div>
+                  <div class="card-title">API & <em>Integrations</em></div>
+                  <div class="card-sub">Manage API keys and third-party service connections</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <p style="font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;opacity:0.8">API Keys</p>
+              <div class="form-group" style="margin-bottom:16px">
+                <label class="form-label">Production API Key</label>
+                <div class="api-key-row">
+                  <input class="api-key-input" type="password" value="al_prod_xK9mN3pQr7vWzYbT2dFsHjLcEuAoIgMn" id="api-key-prod" readonly>
+                  <button class="api-key-btn" onclick="toggleKey('api-key-prod',this)"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>Show</button>
+                  <button class="api-key-btn" onclick="copyKey('api-key-prod')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Copy</button>
+                  <button class="api-key-btn" onclick="toast('New production key generated.','warn')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>Regen</button>
+                </div>
+                <div class="input-hint">Keep this key confidential. Rotate it immediately if compromised.</div>
+              </div>
+              <div class="form-group" style="margin-bottom:20px">
+                <label class="form-label">Test / Staging API Key</label>
+                <div class="api-key-row">
+                  <input class="api-key-input" type="password" value="al_test_pT4kM8nRs2wXyVqA6cGjHbOiLeDuNfPz" id="api-key-test" readonly>
+                  <button class="api-key-btn" onclick="toggleKey('api-key-test',this)"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>Show</button>
+                  <button class="api-key-btn" onclick="copyKey('api-key-test')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Copy</button>
+                </div>
+              </div>
+              <div class="field-divider"></div>
+              <p style="font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;opacity:0.8">Integrations</p>
+              <div class="toggle-row">
+                <div class="toggle-info"><div class="toggle-label">SMTP Email (Mailer)</div><div class="toggle-desc">smtp.aluminumlady.com · Port 587 · TLS</div></div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox" checked><span class="toggle-track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info"><div class="toggle-label">Google Analytics</div><div class="toggle-desc">Tracking ID: G-XXXXXXXXXX — Website analytics enabled</div></div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox" checked><span class="toggle-track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info"><div class="toggle-label">Facebook Pixel</div><div class="toggle-desc">Pixel ID: 1234567890 — Conversion tracking</div></div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox"><span class="toggle-track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info"><div class="toggle-label">Google reCAPTCHA v3</div><div class="toggle-desc">Protect contact forms against spam and bots</div></div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox" checked><span class="toggle-track"></span></label>
+              </div>
+              <div class="save-bar">
+                <button class="btn-cancel" onclick="toast('Changes discarded.','warn')">Discard</button>
+                <button class="btn-save" onclick="saveSetting('API settings saved.')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Save Settings</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ BACKUP ══ -->
+        <div class="settings-panel" id="panel-backup">
+          <div class="settings-card" style="animation-delay:0.15s">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/></svg></div>
+                <div>
+                  <div class="card-title">Backup & <em>Data</em></div>
+                  <div class="card-sub">Export data, schedule backups, and manage storage</div>
+                </div>
+              </div>
+              <span class="info-badge green"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>Last backup: Today 03:00 AM</span>
+            </div>
+            <div class="card-body">
+              <p style="font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;opacity:0.8">Automatic Backup Schedule</p>
+              <div class="form-grid" style="margin-bottom:20px">
+                <div class="form-group">
+                  <label class="form-label">Backup Frequency</label>
+                  <select class="form-select"><option>Daily at 3:00 AM (Recommended)</option><option>Every 6 hours</option><option>Weekly — Sunday</option><option>Manual only</option></select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Retention Period</label>
+                  <select class="form-select"><option>7 days</option><option selected>30 days</option><option>90 days</option><option>1 year</option></select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Backup Storage</label>
+                  <select class="form-select"><option selected>Local Server</option><option>Google Drive</option><option>Dropbox</option><option>AWS S3</option></select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Backup Format</label>
+                  <select class="form-select"><option selected>SQL + Media Files (.zip)</option><option>SQL only (.sql)</option><option>JSON Export</option></select>
+                </div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info"><div class="toggle-label">Email Backup Report</div><div class="toggle-desc">Send a confirmation email after each successful backup</div></div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox" checked><span class="toggle-track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info"><div class="toggle-label">Backup on Content Change</div><div class="toggle-desc">Trigger an automatic backup whenever products or gallery are updated</div></div>
+                <label class="toggle-wrap"><input class="toggle-input" type="checkbox"><span class="toggle-track"></span></label>
+              </div>
+              <div class="save-bar" style="margin-bottom:0;padding-bottom:0">
+                <button class="btn-cancel" onclick="toast('Changes discarded.','warn')">Discard</button>
+                <button class="btn-save" onclick="saveSetting('Backup settings saved.')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Save Schedule</button>
+              </div>
+              <div class="field-divider"></div>
+              <p style="font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;opacity:0.8">Manual Export</p>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+                <button class="api-key-btn" style="justify-content:center;padding:14px" onclick="toast('Products CSV exported.','success')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Export Products</button>
+                <button class="api-key-btn" style="justify-content:center;padding:14px" onclick="toast('Messages CSV exported.','success')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Export Messages</button>
+                <button class="api-key-btn" style="justify-content:center;padding:14px" onclick="toast('Full backup triggered.','success')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/></svg>Full Backup Now</button>
+              </div>
+              <div class="field-divider"></div>
+              <div class="danger-zone">
+                <div class="danger-title"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>Data Danger Zone</div>
+                <div class="danger-row">
+                  <div class="danger-row-info"><h5>Clear Archived Records</h5><p>Permanently delete all archived products and messages — cannot be undone</p></div>
+                  <button class="btn-danger" onclick="openDangerModal('clear-archive')">Clear Archive</button>
+                </div>
+                <div class="danger-row">
+                  <div class="danger-row-info"><h5>Factory Reset Panel</h5><p>Wipe all data and restore the panel to its initial empty state</p></div>
+                  <button class="btn-danger" onclick="openDangerModal('factory-reset')">Factory Reset</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end settings-panels -->
+    </div><!-- end settings-layout -->
+  </div><!-- end page-body -->
+</div><!-- end main -->
+
+<!-- DANGER CONFIRM MODAL -->
+<div class="modal-overlay" id="danger-modal">
+  <div class="modal"><div class="modal-corner-br"></div>
+    <div class="modal-body">
+      <div class="modal-icon icon-red"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg></div>
+      <div class="modal-center">
+        <h3 id="danger-modal-title">Confirm Action</h3>
+        <p id="danger-modal-body">This action is irreversible. Are you sure you want to proceed?</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeDangerModal()">Cancel</button>
+      <button class="btn-red-modal" id="danger-confirm-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<script>
+// ── THEME ──
+// Applied at bottom of script after all functions are declared
+function initTheme(){
+  const body=document.body,btn=document.getElementById('theme-toggle-btn'),K='al-theme';
+  function apply(m){m==='light'?body.classList.add('light-mode'):body.classList.remove('light-mode');try{localStorage.setItem(K,m);}catch(e){}}
+  let s;try{s=localStorage.getItem(K);}catch(e){}
+  if(!s)s=window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark';
+  apply(s);
+  const sel=document.getElementById('theme-select');
+  if(sel)sel.value=body.classList.contains('light-mode')?'light':'dark';
+  // Apply correct gold variant for initial theme
+  applyAccent(currentAccent);
+  btn.addEventListener('click',()=>{
+    const l=body.classList.contains('light-mode');
+    apply(l?'dark':'light');
+    if(sel)sel.value=l?'dark':'light';
+    applyAccent(currentAccent);
+    toast(l?'Dark mode enabled':'Light mode enabled','success');
+  });
+}
+
+function applyThemeSel(v){
+  document.body.classList.toggle('light-mode',v==='light');
+  try{localStorage.setItem('al-theme',v);}catch(e){}
+  // Re-apply accent with correct variant for new theme
+  applyAccent(currentAccent);
+  toast(v==='light'?'Light mode enabled':'Dark mode enabled','success');
+}
+
+const $=id=>document.getElementById(id);
+
+// ── TOAST ──
+function toast(msg,type='success'){
+  const t=document.createElement('div');t.className=`toast ${type}`;
+  const ic={success:'<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>',error:'<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>',warn:'<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>'};
+  t.innerHTML=(ic[type]||ic.success)+msg;$('toast-wrap').appendChild(t);
+  setTimeout(()=>{t.classList.add('toast-out');setTimeout(()=>t.remove(),300);},3500);
+}
+function saveSetting(msg){toast(msg,'success');}
+
+// ── SIDEBAR ──
+$('collapse-btn').addEventListener('click',()=>{$('sidebar').classList.toggle('collapsed');$('main').classList.toggle('collapsed');});
+function openMobileSidebar(){$('sidebar').classList.add('mobile-open');$('sidebar-overlay').classList.add('show');}
+function closeMobileSidebar(){$('sidebar').classList.remove('mobile-open');$('sidebar-overlay').classList.remove('show');}
+$('hamburger-btn').addEventListener('click',openMobileSidebar);
+
+// ── SEARCH ──
+let searchOpen=false;
+function openSearch(){searchOpen=true;$('search-overlay').classList.add('open');$('search-btn').classList.add('active');setTimeout(()=>$('search-overlay-input').focus(),40);}
+function closeSearch(){searchOpen=false;$('search-overlay').classList.remove('open');$('search-btn').classList.remove('active');}
+$('search-btn').addEventListener('click',openSearch);
+$('search-overlay').addEventListener('click',e=>{if(e.target===$('search-overlay'))closeSearch();});
+
+// ── NOTIFICATIONS ──
+let notifOpen=false;
+let notifs=[
+  {id:1,type:'gold',icon:'cog',title:'Settings updated',body:'Notification preferences were saved.',time:'Just now',unread:true},
+  {id:2,type:'blue',icon:'key',title:'API key viewed',body:'Production API key was revealed.',time:'10 min ago',unread:true},
+  {id:3,type:'green',icon:'shield',title:'Password changed',body:'Admin password was updated successfully.',time:'2 days ago',unread:false},
+];
+const NSVG={
+  cog:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>',
+  key:'<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>',
+  shield:'<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>',
+};
+function renderNotifs(){
+  const unread=notifs.filter(n=>n.unread).length;
+  const dot=$('notif-dot'),badge=$('notif-badge');
+  if(unread>0){dot.classList.remove('hidden');badge.textContent=unread;badge.classList.add('show');}
+  else{dot.classList.add('hidden');badge.classList.remove('show');}
+  $('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item${n.unread?' unread':''}" onclick="readNotif(${n.id})">${n.unread?'<div class="unread-pip"></div>':''}<div class="notif-icon ni-${n.type}">${NSVG[n.icon]||NSVG.cog}</div><div class="notif-content"><div class="notif-title">${n.title}</div><div class="notif-body">${n.body}</div><div class="notif-time">${n.time}</div></div></div>`).join('');
+}
+function readNotif(id){notifs=notifs.map(n=>n.id===id?{...n,unread:false}:n);renderNotifs();}
+function openNotif(){notifOpen=true;$('notif-panel').classList.add('open');$('notif-btn').classList.add('active');}
+function closeNotif(){notifOpen=false;$('notif-panel').classList.remove('open');$('notif-btn').classList.remove('active');}
+$('notif-btn').addEventListener('click',e=>{e.stopPropagation();notifOpen?closeNotif():openNotif();});
+$('notif-mark-all').addEventListener('click',e=>{e.stopPropagation();notifs=notifs.map(n=>({...n,unread:false}));renderNotifs();toast('All notifications marked as read.','success');});
+document.addEventListener('click',e=>{if(notifOpen&&!$('notif-panel').contains(e.target)&&!$('notif-btn').contains(e.target))closeNotif();});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){if(searchOpen)closeSearch();if(notifOpen)closeNotif();}
+  if(e.key==='/'&&!searchOpen&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)){e.preventDefault();openSearch();}
+});
+renderNotifs();
+
+// ── SETTINGS TABS ──
+function switchTab(tab){
+  document.querySelectorAll('.settings-nav-item').forEach(el=>el.classList.toggle('active',el.dataset.tab===tab));
+  document.querySelectorAll('.settings-panel').forEach(el=>el.classList.toggle('active',el.id==='panel-'+tab));
+  // Re-trigger animation on newly visible cards
+  document.querySelectorAll('#panel-'+tab+' .settings-card').forEach((el,i)=>{
+    el.style.opacity='0';el.style.transform='translateY(16px)';
+    setTimeout(()=>{el.style.opacity='1';el.style.transform='none';el.style.transition='opacity 0.5s ease, transform 0.5s ease';},i*80+40);
+  });
+}
+
+// ── COLOR PICKER ──
+// Each accent has two variant sets: dark mode values and light mode values.
+// We apply inline styles directly on document.body so they always win over
+// both :root and body.light-mode CSS blocks (inline style > class selector).
+const accentMap={
+  gold:{
+    dark: {gold:'#b8935a','gold-light':'#d4aa72','gold-dim':'rgba(184,147,90,0.12)','gold-border':'rgba(184,147,90,0.25)','gold-glow':'rgba(184,147,90,0.18)'},
+    light:{gold:'#9a6f35','gold-light':'#b8854a','gold-dim':'rgba(154,111,53,0.10)','gold-border':'rgba(154,111,53,0.32)','gold-glow':'rgba(154,111,53,0.15)'},
+  },
+  blue:{
+    dark: {gold:'#3b82f6','gold-light':'#60a5fa','gold-dim':'rgba(59,130,246,0.12)','gold-border':'rgba(59,130,246,0.3)','gold-glow':'rgba(59,130,246,0.18)'},
+    light:{gold:'#1d4ed8','gold-light':'#3b82f6','gold-dim':'rgba(29,78,216,0.10)','gold-border':'rgba(29,78,216,0.32)','gold-glow':'rgba(29,78,216,0.15)'},
+  },
+  green:{
+    dark: {gold:'#22c55e','gold-light':'#4ade80','gold-dim':'rgba(34,197,94,0.12)','gold-border':'rgba(34,197,94,0.3)','gold-glow':'rgba(34,197,94,0.18)'},
+    light:{gold:'#15803d','gold-light':'#16a34a','gold-dim':'rgba(21,128,61,0.10)','gold-border':'rgba(21,128,61,0.32)','gold-glow':'rgba(21,128,61,0.15)'},
+  },
+  red:{
+    dark: {gold:'#ef4444','gold-light':'#f87171','gold-dim':'rgba(239,68,68,0.12)','gold-border':'rgba(239,68,68,0.3)','gold-glow':'rgba(239,68,68,0.18)'},
+    light:{gold:'#b91c1c','gold-light':'#dc2626','gold-dim':'rgba(185,28,28,0.10)','gold-border':'rgba(185,28,28,0.32)','gold-glow':'rgba(185,28,28,0.15)'},
+  },
+  purple:{
+    dark: {gold:'#8b5cf6','gold-light':'#a78bfa','gold-dim':'rgba(139,92,246,0.12)','gold-border':'rgba(139,92,246,0.3)','gold-glow':'rgba(139,92,246,0.18)'},
+    light:{gold:'#6d28d9','gold-light':'#7c3aed','gold-dim':'rgba(109,40,217,0.10)','gold-border':'rgba(109,40,217,0.32)','gold-glow':'rgba(109,40,217,0.15)'},
+  },
+  orange:{
+    dark: {gold:'#f97316','gold-light':'#fb923c','gold-dim':'rgba(249,115,22,0.12)','gold-border':'rgba(249,115,22,0.3)','gold-glow':'rgba(249,115,22,0.18)'},
+    light:{gold:'#c2410c','gold-light':'#ea580c','gold-dim':'rgba(194,65,12,0.10)','gold-border':'rgba(194,65,12,0.32)','gold-glow':'rgba(194,65,12,0.15)'},
+  },
+};
+
+let currentAccent='gold';
+
+function applyAccent(color){
+  const isLight=document.body.classList.contains('light-mode');
+  const variant=isLight?'light':'dark';
+  const map=accentMap[color]?.[variant];
+  if(!map)return;
+  // Apply on body inline style — this beats :root and body.light-mode both
+  const body=document.body;
+  Object.entries(map).forEach(([k,v])=>body.style.setProperty('--'+k,v));
+}
+
+function pickColor(el,color){
+  document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+  currentAccent=color;
+  applyAccent(color);
+  const names={gold:'Gold',blue:'Sapphire Blue',green:'Emerald Green',red:'Ruby Red',purple:'Violet',orange:'Copper Orange'};
+  toast(`Accent color changed to ${names[color]||color}.`,'success');
+}
+
+// ── API KEY UTILS ──
+function toggleKey(id,btn){
+  const inp=$(id);
+  if(inp.type==='password'){inp.type='text';btn.innerHTML=`<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" stroke-width="1.5"/></svg>Hide`;}
+  else{inp.type='password';btn.innerHTML=`<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>Show`;}
+}
+function copyKey(id){
+  const val=$(id).value;
+  navigator.clipboard.writeText(val).then(()=>toast('API key copied to clipboard.','success')).catch(()=>toast('Could not copy — please copy manually.','warn'));
+}
+
+// ── DANGER MODAL ──
+const dangerConfig={
+  'delete-account':['Delete Admin Account','This will permanently delete this administrator account and all associated data. This action cannot be reversed.'],
+  'clear-archive':['Clear All Archives','This will permanently delete all archived products and messages. They cannot be recovered once purged.'],
+  'factory-reset':['Factory Reset Panel','This will wipe ALL data including products, gallery, messages, and settings, restoring the panel to its blank initial state. This is irreversible.'],
+};
+let currentDangerAction=null;
+function openDangerModal(action){
+  const cfg=dangerConfig[action];if(!cfg)return;
+  currentDangerAction=action;
+  $('danger-modal-title').textContent=cfg[0];
+  $('danger-modal-body').textContent=cfg[1];
+  $('danger-modal').classList.add('open');
+}
+function closeDangerModal(){$('danger-modal').classList.remove('open');currentDangerAction=null;}
+$('danger-confirm-btn').addEventListener('click',()=>{
+  closeDangerModal();
+  toast('Action executed.','error');
+});
+$('danger-modal').addEventListener('click',e=>{if(e.target===$('danger-modal'))closeDangerModal();});
+
+// ── INIT ──
+initTheme();
+</script>
+</body>
+</html>
