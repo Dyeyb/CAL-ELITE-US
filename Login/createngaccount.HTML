@@ -18,13 +18,13 @@
     }
 
     :root {
-            --gold: #de8908;
-            --gold-light: #c27006;
-            --dark: #1a1a18;
-            --surface: #222220;
-            --text: #e8e4dc;
-            --muted: #888880;
-            --border: rgba(248, 153, 12, 0.25);
+      --gold: #de8908;
+      --gold-light: #c27006;
+      --dark: #1a1a18;
+      --surface: #222220;
+      --text: #e8e4dc;
+      --muted: #888880;
+      --border: rgba(248, 153, 12, 0.25);
     }
 
     html,
@@ -525,44 +525,41 @@
     .right-logo {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 1.1rem;
+      align-self: flex-start;
     }
 
-    .logo-mark {
-      width: 42px;
-      height: 42px;
-      background: linear-gradient(135deg, rgba(74, 46, 24, 0.9), var(--gold));
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
-      font-weight: 700;
-      color: #fff;
-      box-shadow: 0 4px 18px rgba(201, 165, 97, 0.4);
-      border: 1px solid rgba(201, 165, 97, 0.35);
+    .right-logo-img {
+      width: 100x;
+      height: 110px;
+
+      display: block;
+      filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.55));
+      flex-shrink: 0;
+      transform: translate(0%, 10%);
+
+
     }
+
+
 
     .logo-text .logo-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: #fff;
-      line-height: 1.1;
-    }
-
-    .logo-text .logo-name span {
+      font-size: 1.65rem;
+      font-weight: 700;
       color: var(--gold);
-      font-style: italic;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
     .logo-text .logo-sub {
-      font-size: 0.6rem;
-      color: rgba(255, 255, 255, 0.35);
-      letter-spacing: 2.5px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.65);
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      margin-top: 2px;
+      margin-top: 4px;
     }
 
     .right-divider {
@@ -975,10 +972,10 @@
       <div class="right-overlay"></div>
       <div class="right-content">
         <div class="right-logo">
-          <div class="logo-mark">C</div>
+          <div class="Logo"> <img src="../LOGO/CalElite.png" alt="CAL ELITE" class="right-logo-img" /></div>
           <div class="logo-text">
-            <div class="logo-name">CAL<span>ELITE</span></div>
-            <div class="logo-sub">Builders and CAL Electrical</div>
+            <div class="logo-name">CAL ELITE</div>
+            <div class="logo-sub">Builders &amp; CAL Electrical</div>
           </div>
         </div>
         <div class="right-bottom">
