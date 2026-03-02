@@ -101,11 +101,13 @@ if (!password_verify($password, $user['password_hash'] ?? '')) {
 }
 
 // ── Determine redirect by role ────────────────────────────────────────────────
+$userType = $user['user_type'] ?? ''; // ← was missing; caused the fatal/network error
+
 $redirect = match ($userType) {
         'admin' => '../admin-folders/admin_index.html',
         'service' => '../Service Panel/service-index.html',
-        default => '../Homepage/index.html',
-    };
+        default => '../Homepage/index.html',    };
+
 // ── Return safe user data (never expose password_hash) ───────────────────────
 out(true, 'Login successful.', [
     'user_id' => $user['user_id'],
