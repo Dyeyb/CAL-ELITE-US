@@ -664,8 +664,9 @@
             background: url('./Contactimage/contact_hero_dark_gold.png') center/cover no-repeat;
             position: relative;
             display: flex;
-            align-items: flex-start;
-            padding-top: 48px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
             border-bottom: 2px solid rgba(184, 147, 42, 0.5);
         }
 
@@ -674,13 +675,10 @@
             position: absolute;
             inset: 0;
             background:
-                linear-gradient(135deg,
-                    rgba(4, 4, 10, 0.82) 0%,
-                    rgba(6, 5, 15, 0.65) 40%,
-                    rgba(10, 8, 4, 0.45) 100%),
                 linear-gradient(180deg,
-                    rgba(184, 147, 42, 0.06) 0%,
-                    transparent 50%);
+                    rgba(4, 4, 10, 0.88) 0%,
+                    rgba(6, 5, 15, 0.72) 50%,
+                    rgba(4, 4, 10, 0.88) 100%);
             z-index: 1;
         }
 
@@ -690,8 +688,8 @@
             position: absolute;
             inset: 0;
             background-image:
-                repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(184, 147, 42, 0.04) 60px),
-                repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(184, 147, 42, 0.04) 80px);
+                repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(184, 147, 42, 0.035) 60px),
+                repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(184, 147, 42, 0.035) 80px);
             z-index: 1;
             pointer-events: none;
         }
@@ -699,35 +697,146 @@
         .c-hero-content {
             position: relative;
             z-index: 3;
-            padding: 48px 8%;
+            padding: 0 8%;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .c-hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 28px;
+            animation: navFadeIn 0.7s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .c-hero-eyebrow::before,
+        .c-hero-eyebrow::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold));
+        }
+
+        .c-hero-eyebrow::after {
+            background: linear-gradient(90deg, var(--gold), transparent);
         }
 
         .c-hero-title {
             font-family: 'Raleway', sans-serif;
-            font-size: clamp(42px, 6vw, 68px);
+            font-size: clamp(52px, 9vw, 100px);
             font-weight: 900;
             color: var(--platinum);
-            margin-bottom: 14px;
-            letter-spacing: 2px;
-            line-height: 1.05;
-            text-shadow: 0 0 40px rgba(184, 147, 42, 0.35), 0 2px 8px rgba(0, 0, 0, 0.8);
+            margin-bottom: 0;
+            letter-spacing: 6px;
+            line-height: 1.0;
+            text-transform: uppercase;
+            text-shadow: 0 0 60px rgba(184, 147, 42, 0.3), 0 4px 16px rgba(0, 0, 0, 0.9);
+            animation: navFadeIn 0.9s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .c-hero-title span {
+            background: linear-gradient(90deg, var(--gold), var(--gold-bright), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .c-hero-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin: 28px auto;
+            animation: navFadeIn 0.8s 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .c-hero-divider::before,
+        .c-hero-divider::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(184, 147, 42, 0.6));
+        }
+
+        .c-hero-divider::after {
+            background: linear-gradient(90deg, rgba(184, 147, 42, 0.6), transparent);
+        }
+
+        .c-hero-divider-gem {
+            width: 6px;
+            height: 6px;
+            background: var(--gold-bright);
+            transform: rotate(45deg);
+            flex-shrink: 0;
+            box-shadow: 0 0 12px rgba(212, 168, 67, 0.6);
         }
 
         .c-hero-subtitle {
-            font-size: 16px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(18px, 2.8vw, 28px);
             font-weight: 400;
+            font-style: italic;
             color: var(--ash);
-            line-height: 1.7;
-            letter-spacing: 0.5px;
+            line-height: 1.6;
+            letter-spacing: 1px;
+            animation: navFadeIn 0.8s 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
         }
 
-        /* Animate hero text in */
-        .c-hero-title {
-            animation: navFadeIn 0.8s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        .c-hero-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 32px;
+            padding: 14px 32px;
+            background: rgba(184, 147, 42, 0.08);
+            border: 1px solid rgba(184, 147, 42, 0.55);
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: 'Raleway', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3.5px;
+            text-transform: uppercase;
+            color: var(--gold-bright);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: var(--t);
+            animation: navFadeIn 0.8s 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
         }
 
-        .c-hero-subtitle {
-            animation: navFadeIn 0.8s 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+        .c-hero-cta-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(184, 147, 42, 0.12), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.55s ease;
+        }
+
+        .c-hero-cta-btn:hover {
+            background: rgba(184, 147, 42, 0.15);
+            border-color: var(--gold-bright);
+            color: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(184, 147, 42, 0.25);
+        }
+
+        .c-hero-cta-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .c-hero-cta-btn svg {
+            flex-shrink: 0;
+            opacity: 0.85;
         }
 
         /* ── GOLD BANNER ── */
@@ -1676,6 +1785,7 @@
                     <li><a href="products.html" class="nl">Products</a></li>
                     <li><a href="about.html" class="nl">About</a></li>
                     <li><a href="services.html" class="nl">Services</a></li>
+
                     <li><a href="contact.html" class="nl active">Contact</a></li>
                 </ul>
             </nav>
@@ -1765,8 +1875,21 @@
     <!-- ── CONTACT HERO ── -->
     <section class="c-hero">
         <div class="c-hero-content">
-            <h1 class="c-hero-title">CONTACT US</h1>
-            <p class="c-hero-subtitle">Questions or ready to build?<br>Contact us today!</p>
+            <div class="c-hero-eyebrow">Get In Touch</div>
+            <h1 class="c-hero-title"><span>CONTACT</span> US</h1>
+            <div class="c-hero-divider">
+                <div class="c-hero-divider-gem"></div>
+            </div>
+            <p class="c-hero-subtitle">
+                Questions or ready to build?
+            </p>
+            <a href="#contact-form" class="c-hero-cta-btn">
+                <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                Contact Us Today
+            </a>
         </div>
     </section>
 
@@ -1796,7 +1919,7 @@
     </div>
 
     <!-- SPLIT DESC/FORM -->
-    <div class="c-split">
+    <div class="c-split" id="contact-form">
         <div class="c-info">
             <h2 class="c-title">LET'S <span>DISCUSS<br>YOUR NEXT PROJECT</span></h2>
             <p class="c-desc">Get in touch with our team to discuss your construction needs. We're here to help you
