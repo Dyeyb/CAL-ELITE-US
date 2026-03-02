@@ -7,7 +7,12 @@
             var u = null;
             try { u = JSON.parse(sessionStorage.getItem('user') || 'null'); } catch (e) { }
             if (u && u.user_id) {
-                window.location.replace(u.user_type === 'admin' ? '../admin-folders/admin_index.html' : '../Homepage/index.html');
+                const dest = u.user_type === 'admin'
+                    ? '../admin-folders/admin_index.html'
+                    : u.user_type === 'service'
+                        ? '../Service Panel/service-index.html'
+                        : '../Homepage/index.html';
+                window.location.replace(dest);
             }
         })();
     </script>
