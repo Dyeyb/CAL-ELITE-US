@@ -2033,7 +2033,7 @@
             const btn = document.getElementById('verifyOtpBtn');
             btn.disabled = true; btn.textContent = 'Verifying…';
             try {
-                const res = await fetch('./verify-reactivation-otp.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: userEmailForReactivation, otp, type: 'Account Activation' }) });
+                const res = await fetch('./verify-reactivation-otp.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: userEmailForReactivation, otp, type: 'Account Reactivation' }) });
                 const json = await res.json();
                 if (!json.success) { toast(json.message || 'OTP verification failed', true); btn.disabled = false; btn.textContent = 'Verify & Reactivate'; return; }
                 clearInterval(otpTimerInterval);
@@ -2091,6 +2091,17 @@
                 const json = await res.json();
                 if (!json.success) {
                     const msg = json.message || 'Login failed.';
+                    // Detect archived / suspended / inactive — offer reactivation
+                    const canReactivate = (json.data && json.data.can_reactivate) || /archived|suspended|inactive/i.test(msg);
+                    if (canReactivate) {
+                        btn.disabled = false; btn.textContent = 'Sign In';
+                        toast(msg + ' — Opening reactivation…', true);
+                        setTimeout(() => {
+                            document.getElementById('reactivationEmail').value = (json.data && json.data.email) || email;
+                            openReactivationModal();
+                        }, 1200);
+                        return;
+                    }
                     if (msg.toLowerCase().includes('email') || msg.toLowerCase().includes('account')) fieldErr('email', 'emailError', msg);
                     else if (msg.toLowerCase().includes('password') || msg.toLowerCase().includes('incorrect')) fieldErr('password', 'passwordError', msg);
                     else toast(msg, true);
