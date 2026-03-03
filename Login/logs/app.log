@@ -1,0 +1,33 @@
+[2026-03-02 08:26:05] [INFO] OTP request for email: mitra_johnbernard@plpasig.edu.ph
+[2026-03-02 08:26:05] [INFO] User found: 23 - Status: suspended
+[2026-03-02 08:26:05] [INFO] Generated OTP for: mitra_johnbernard@plpasig.edu.ph (expires at: 2026-03-02 08:31:05)
+[2026-03-02 08:26:06] [ERROR] Failed to create OTP record for email: mitra_johnbernard@plpasig.edu.ph
+[2026-03-02 08:32:11] [INFO] OTP request for email: mitra_johnbernard@plpasig.edu.ph
+[2026-03-02 08:32:12] [INFO] User found: 23 - Status: suspended
+[2026-03-02 08:32:12] [INFO] Generated OTP for: mitra_johnbernard@plpasig.edu.ph (expires at: 2026-03-02 08:37:12)
+[2026-03-02 08:32:12] [ERROR] Failed to create OTP record for email: mitra_johnbernard@plpasig.edu.ph
+[2026-03-02 08:32:59] [INFO] OTP request for email: mitra_johnbernard@plpasig.edu.ph
+[2026-03-02 08:32:59] [INFO] User found: 23 - Status: suspended
+[2026-03-02 08:32:59] [INFO] Generated OTP for: mitra_johnbernard@plpasig.edu.ph (expires at: 2026-03-02 08:37:59)
+[2026-03-02 08:33:00] [ERROR] Failed to create OTP record for email: mitra_johnbernard@plpasig.edu.ph
+[2026-03-02 08:35:56] [INFO] OTP request for email: mitra_johnbernard@plpasig.edu.ph
+[2026-03-02 08:35:56] [INFO] User found: 23 - Status: suspended
+[2026-03-02 08:35:56] [INFO] Generated OTP for: mitra_johnbernard@plpasig.edu.ph (expires at: 2026-03-02 08:40:56)
+[2026-03-02 08:35:57] [INFO] OTP record created successfully
+[2026-03-02 08:35:59] [WARNING] Failed to send email to: mitra_johnbernard@plpasig.edu.ph
+[2026-03-02 08:38:48] [INFO] OTP request for email: mitra_johnbernard@plpasig.edu.ph
+[2026-03-02 08:38:48] [INFO] User found: 23 - Status: suspended
+[2026-03-02 08:38:48] [INFO] Generated OTP for: mitra_johnbernard@plpasig.edu.ph (expires at: 2026-03-02 08:43:48)
+[2026-03-02 08:38:48] [INFO] OTP record created successfully
+[2026-03-02 08:38:50] [WARNING] Failed to send email to: mitra_johnbernard@plpasig.edu.ph
+[2026-03-02 08:39:54] [INFO] OTP request for email: mitra_johnbernard@plpasig.edu.ph
+[2026-03-02 08:39:55] [INFO] User found: 23 - Status: suspended
+[2026-03-02 08:39:55] [INFO] Generated OTP for: mitra_johnbernard@plpasig.edu.ph (expires at: 2026-03-02 08:44:55)
+[2026-03-02 08:39:55] [INFO] OTP record created successfully
+[2026-03-02 08:39:57] [WARNING] Failed to send email to: mitra_johnbernard@plpasig.edu.ph
+[2026-03-02 08:41:06] [INFO] OTP request for email: mitra_johnbernard@plpasig.edu.ph
+[2026-03-02 08:41:08] [INFO] User found: 23 - Status: suspended
+[2026-03-02 08:41:08] [INFO] Generated OTP for: mitra_johnbernard@plpasig.edu.ph (expires at: 2026-03-02 08:46:08)
+[2026-03-02 08:41:08] [INFO] OTP record created successfully
+[2026-03-02 08:41:08] [WARNING] Mailtrap failed, trying standard mail() function
+[2026-03-02 08:41:10] [WARNING] Failed to send email to: mitra_johnbernard@plpasig.edu.ph

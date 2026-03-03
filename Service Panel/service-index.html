@@ -1343,6 +1343,44 @@
                 width: 100%;
             }
         }
+
+        .sb-logout {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 8px;
+            padding: 9px 12px;
+            border-radius: 7px;
+            background: none;
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            cursor: pointer;
+            transition: var(--t);
+            font-family: "Rajdhani", sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(239, 68, 68, 0.55);
+        }
+
+        .sb-logout:hover {
+            background: var(--red-dim);
+            border-color: rgba(239, 68, 68, 0.35);
+            color: var(--red);
+        }
+
+        .sb-logout svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+            opacity: 0.7;
+            transition: var(--t);
+        }
+
+        .sb-logout:hover svg {
+            opacity: 1;
+        }
     </style>
 </head>
 
@@ -1435,6 +1473,14 @@
                     <div class="sb-user-role">Service Provider</div>
                 </div>
             </div>
+            <button class="sb-logout" id="sbLogoutBtn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Sign Out
+            </button>
+        </div>v>
         </div>
     </aside>
 
@@ -1995,6 +2041,13 @@
             renderOrders();
 
         })();
+        // ── Logout ──
+        document.getElementById('sbLogoutBtn').addEventListener('click', () => {
+            if (!confirm('Sign out of Service Panel?')) return;
+            sessionStorage.removeItem('user');
+            toast('Signed out. Redirecting…', 'ok');
+            setTimeout(() => window.location.replace('../Login/login.html'), 1200);
+        });
     </script>
 </body>
 

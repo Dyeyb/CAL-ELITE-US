@@ -86,13 +86,13 @@ $user = $r['body'][0];
 
 // ── Account status checks ─────────────────────────────────────────────────────
 if ((bool)($user['is_archived'] ?? false)) {
-    out(false, 'This account has been archived. Please contact support.', null, 403);
+    out(false, 'Your account has been archived. Please reactivate it to log in.', ['can_reactivate' => true, 'email' => $email], 403);
 }
 if (($user['status'] ?? '') === 'inactive') {
-    out(false, 'Your account is inactive. Please contact support.', null, 403);
+    out(false, 'Your account is inactive. Please reactivate it to log in.', ['can_reactivate' => true, 'email' => $email], 403);
 }
 if (($user['status'] ?? '') === 'suspended') {
-    out(false, 'Your account has been suspended. Please contact support.', null, 403);
+    out(false, 'Your account has been suspended. Please reactivate it or contact support.', ['can_reactivate' => true, 'email' => $email], 403);
 }
 
 // ── Verify password ───────────────────────────────────────────────────────────
