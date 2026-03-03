@@ -3489,6 +3489,44 @@
     </div>
   </div>
 
+  <!-- PRODUCT DETAILS MODAL -->
+  <div class="modal-bg" id="productDetailsModal">
+    <div class="modal-box" style="max-width:640px;">
+      <div class="modal-head">
+        <div class="modal-title">Product <em>Details</em></div><button class="modal-x"
+          id="closeProductDetails">×</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex; gap: 24px; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 200px;">
+            <img id="pdImg" src="" alt=""
+              style="width:100%; border-radius:4px; border:1px solid rgba(255,255,255,0.05); aspect-ratio:4/3; object-fit:cover;">
+          </div>
+          <div style="flex: 1.5; min-width: 250px; display: flex; flex-direction: column;">
+            <div id="pdCat" class="card-cat-badge" style="margin-bottom:12px; align-self: flex-start;"></div>
+            <h2 id="pdName"
+              style="font-family:'Cormorant Garamond',serif; color:var(--platinum); margin-bottom:8px; font-size: 26px; line-height: 1.1;">
+            </h2>
+            <div style="display:flex; gap: 16px; margin-bottom: 12px; align-items: center;">
+              <span style="font-family:'DM Mono',monospace; color:var(--gold); font-size:11px;" id="pdStocks"></span>
+              <span
+                style="font-family:'DM Mono',monospace; color:var(--smoke); font-size:10px; background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 2px;"
+                id="pdSku"></span>
+            </div>
+            <p id="pdDesc"
+              style="color:var(--ash); font-size: 13px; line-height: 1.6; margin-bottom: 24px; flex-grow: 1;"></p>
+
+            <div style="display:flex; gap: 12px; margin-top: auto;">
+              <button class="btn-cancel" id="pdAddToCart" style="flex:1; padding: 12px 0;">Add to Cart</button>
+              <button class="btn-p" id="pdBuyNow" style="flex:1; padding:12px 0; justify-content:center;">Buy
+                Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- PROFILE MODAL -->
   <div class="modal-bg" id="profileModal">
     <div class="modal-box" style="max-width:520px;">
@@ -3648,6 +3686,52 @@
     qm.addEventListener('click', e => { if (e.target === qm) closeQ(); });
     document.getElementById('submitQuote').addEventListener('click', () => { const msg = document.getElementById('qMsg').value.trim(); if (!msg) { document.getElementById('qMsg').style.borderColor = 'rgba(220,60,60,0.5)'; return; } toast('Quote request sent! We will contact you shortly.', 'ok'); closeQ();['qMsg', 'qName', 'qPhone', 'qProduct'].forEach(id => document.getElementById(id).value = ''); });
 
+    // Product Details modal
+    const pdModal = document.getElementById('productDetailsModal');
+    let currentPdCard = null;
+    function openProductDetails(data, cardEl) {
+      currentPdCard = cardEl;
+      document.getElementById('pdImg').src = data.imgSrc;
+      document.getElementById('pdCat').textContent = (data.cat || 'MISC').toUpperCase();
+      document.getElementById('pdName').textContent = data.name;
+      document.getElementById('pdStocks').textContent = 'In Stock: ' + data.stocks;
+      document.getElementById('pdSku').textContent = 'SKU: ' + data.sku;
+      document.getElementById('pdDesc').textContent = data.desc;
+      pdModal.classList.add('open');
+    }
+    function closeProductDetails() { pdModal.classList.remove('open'); currentPdCard = null; }
+    document.getElementById('closeProductDetails').addEventListener('click', closeProductDetails);
+    pdModal.addEventListener('click', e => { if (e.target === pdModal) closeProductDetails(); });
+
+    document.getElementById('pdAddToCart').addEventListener('click', () => {
+      if (currentPdCard) {
+        // Trigger the visual add logic associated with the button
+        const btn = currentPdCard.querySelector('.btn-add-dynamic') || document.createElement('button');
+        addDynamicToCart(currentPdCard, btn);
+
+        // Give visual feedback to the modal button itself
+        const msBtn = document.getElementById('pdAddToCart');
+        const origHtml = msBtn.innerHTML;
+        msBtn.innerHTML = 'Added ✓';
+        msBtn.style.color = '#a8f0c6';
+        msBtn.style.borderColor = '#166534';
+        setTimeout(() => {
+          msBtn.innerHTML = origHtml;
+          msBtn.style.color = '';
+          msBtn.style.borderColor = '';
+        }, 1500);
+      }
+    });
+
+    document.getElementById('pdBuyNow').addEventListener('click', () => {
+      if (currentPdCard) {
+        const btn = currentPdCard.querySelector('.btn-add-dynamic') || document.createElement('button');
+        addDynamicToCart(currentPdCard, btn);
+      }
+      closeProductDetails();
+      openCart();
+    });
+
     // Profile modal
     const pm = document.getElementById('profileModal');
     function openProfile() { const p = (ceUser.name || '').split(' '); document.getElementById('pFirstName').value = p[0] || ''; document.getElementById('pLastName').value = p.slice(1).join(' ') || ''; document.getElementById('pEmail').value = ceUser.email || ''; document.getElementById('pPhone').value = ceUser.phone || ''; document.getElementById('pCompany').value = ceUser.company || ''; document.getElementById('profileAvatarBig').textContent = (ceUser.name || 'U').charAt(0).toUpperCase(); document.getElementById('profileDisplayName').textContent = ceUser.name || 'User'; document.getElementById('profileDisplayEmail').textContent = ceUser.email || ''; pm.classList.add('open'); uw.classList.remove('open'); }
@@ -3738,9 +3822,11 @@
           const catStr = (p.category || 'misc').toUpperCase();
           const pName = p.name || 'Unknown Product';
           const pStocks = p.stocks !== undefined ? p.stocks : 0;
+          const pDesc = p.description || 'No description available.';
+          const pSku = p.sku || 'N/A';
 
           pageWrapper.innerHTML += `
-            <a href="product-details.html?id=${encodeURIComponent(p.id)}" class="card-link" data-db-id="${p.id}" data-name="${document.createTextNode(pName).textContent}" data-stocks="${pStocks}" data-cat="${encodeURIComponent(p.category || '')}">
+            <a href="product-details.html?id=${encodeURIComponent(p.id)}" class="card-link" data-db-id="${p.id}" data-name="${document.createTextNode(pName).textContent}" data-stocks="${pStocks}" data-cat="${encodeURIComponent(p.category || '')}" data-desc="${encodeURIComponent(pDesc)}" data-sku="${encodeURIComponent(pSku)}">
               <div class="card" data-cat="${(p.category || '').toLowerCase()}">
                 <div class="card-img-wrap">
                   <img class="product-photo" src="${img}" alt="${pName}" loading="lazy">
@@ -3783,7 +3869,9 @@
       pageWrapper.querySelectorAll('.btn-view-dynamic').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.preventDefault(); e.stopPropagation();
-          openQ();
+          const card = btn.closest('.card-link');
+          const data = getProductData(card);
+          openProductDetails(data, card);
         });
       });
 
@@ -3857,7 +3945,10 @@
       const cat = decodeURIComponent(cardLinkEl.getAttribute('data-cat') || '');
       const dbId = cardLinkEl.getAttribute('data-db-id');
       const imgSrc = cardLinkEl.querySelector('img.product-photo')?.src || '';
-      return { id: dbId || name.replace(/\s+/g, '-').toLowerCase(), name, price: 'Request Quote', cat, imgSrc, basePrice: 0 };
+      const stocks = cardLinkEl.getAttribute('data-stocks') || '0';
+      const desc = decodeURIComponent(cardLinkEl.getAttribute('data-desc') || '');
+      const sku = decodeURIComponent(cardLinkEl.getAttribute('data-sku') || '');
+      return { id: dbId || name.replace(/\s+/g, '-').toLowerCase(), name, price: 'Request Quote', cat, imgSrc, basePrice: 0, stocks, desc, sku };
     }
 
     let cart = JSON.parse(localStorage.getItem('ceCart') || '[]');
