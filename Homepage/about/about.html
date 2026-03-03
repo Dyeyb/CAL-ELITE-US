@@ -3977,7 +3977,7 @@
         document.getElementById('ddThemeToggle').addEventListener('click', e => { e.stopPropagation(); applyTheme(!isDark); });
 
         // ── Logout ──
-        document.getElementById('ddLogout').addEventListener('click', e => { e.preventDefault(); uw.classList.remove('open'); sessionStorage.removeItem('user'); toast('Logged out successfully. Redirecting…', 'ok'); setTimeout(() => window.location.replace('/Login/login.php'), 1200); });
+        document.getElementById('ddLogout').addEventListener('click', e => { e.preventDefault(); uw.classList.remove('open'); sessionStorage.removeItem('user'); toast('Logged out successfully. Redirecting…', 'ok'); setTimeout(() => window.location.replace('../../Login/login.html'), 1200); });
 
         // ── Quote modal ──
         const qm = document.getElementById('quoteModal');
