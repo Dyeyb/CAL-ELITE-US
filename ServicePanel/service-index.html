@@ -1,2304 +1,914 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CAL ELITE · Service Panel</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Rajdhani:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap"
-        rel="stylesheet" />
-    <style>
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --gold: #c9a020;
-            --gold-bright: #f0c040;
-            --gold-dim: rgba(201, 160, 32, 0.10);
-            --gold-border: rgba(201, 160, 32, 0.22);
-            --gold-glow: rgba(201, 160, 32, 0.18);
-            --obsidian: #060606;
-            --onyx: #0d0d0d;
-            --graphite: #111111;
-            --charcoal: #191919;
-            --steel: #222222;
-            --iron: #2c2c2c;
-            --platinum: #f0f0f0;
-            --silver: #c8c8c8;
-            --ash: rgba(200, 200, 200, 0.55);
-            --dim: rgba(200, 200, 200, 0.28);
-            --green: #22c55e;
-            --green-dim: rgba(34, 197, 94, 0.12);
-            --amber: #f59e0b;
-            --amber-dim: rgba(245, 158, 11, 0.12);
-            --red: #ef4444;
-            --red-dim: rgba(239, 68, 68, 0.12);
-            --blue: #3b82f6;
-            --blue-dim: rgba(59, 130, 246, 0.12);
-            --t: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-            --sidebar-w: 240px;
-        }
-
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--onyx);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, var(--gold), var(--gold-bright));
-            border-radius: 2px;
-        }
-
-        body {
-            font-family: "Rajdhani", sans-serif;
-            background: var(--obsidian);
-            color: var(--silver);
-            min-height: 100vh;
-            display: flex;
-            overflow-x: hidden;
-        }
-
-        body::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.018;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)'/%3E%3C/svg%3E");
-            background-size: 256px;
-        }
-
-        /* ══════════════════════════════
-       SIDEBAR
-    ══════════════════════════════ */
-        .sidebar {
-            width: var(--sidebar-w);
-            min-height: 100vh;
-            background: var(--graphite);
-            border-right: 1px solid rgba(255, 255, 255, 0.04);
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            z-index: 100;
-        }
-
-        .sidebar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 1px;
-            background: linear-gradient(180deg, transparent, var(--gold-border) 30%, var(--gold-border) 70%, transparent);
-        }
-
-        .sb-brand {
-            padding: 28px 24px 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .sb-logo-mark {
-            width: 38px;
-            height: 38px;
-            border-radius: 6px;
-            background: linear-gradient(135deg, var(--gold), var(--gold-bright));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: "Cormorant Garamond", serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--obsidian);
-            flex-shrink: 0;
-            box-shadow: 0 4px 20px rgba(201, 160, 32, 0.3);
-        }
-
-        .sb-brand-text {
-            line-height: 1.1;
-        }
-
-        .sb-brand-name {
-            font-family: "Cormorant Garamond", serif;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--platinum);
-        }
-
-        .sb-brand-name em {
-            color: var(--gold-bright);
-            font-style: italic;
-        }
-
-        .sb-brand-sub {
-            font-family: "DM Mono", monospace;
-            font-size: 7.5px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--dim);
-            margin-top: 2px;
-        }
-
-        .sb-nav {
-            flex: 1;
-            padding: 16px 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .sb-section-label {
-            font-family: "DM Mono", monospace;
-            font-size: 7px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--gold);
-            opacity: 0.4;
-            padding: 10px 12px 6px;
-        }
-
-        .sb-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 11px 14px;
-            border-radius: 7px;
-            cursor: pointer;
-            transition: var(--t);
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: var(--ash);
-            border: 1px solid transparent;
-            text-decoration: none;
-        }
-
-        .sb-item:hover {
-            color: var(--gold-bright);
-            background: rgba(201, 160, 32, 0.06);
-        }
-
-        .sb-item.active {
-            color: var(--gold-bright);
-            background: rgba(201, 160, 32, 0.1);
-            border-color: var(--gold-border);
-        }
-
-        .sb-item-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: var(--t);
-        }
-
-        .sb-item-icon svg {
-            width: 14px;
-            height: 14px;
-            opacity: 0.4;
-            transition: var(--t);
-            stroke: currentColor;
-        }
-
-        .sb-item:hover .sb-item-icon,
-        .sb-item.active .sb-item-icon {
-            background: var(--gold-dim);
-            border-color: var(--gold-border);
-        }
-
-        .sb-item:hover .sb-item-icon svg,
-        .sb-item.active .sb-item-icon svg {
-            opacity: 1;
-            stroke: var(--gold-bright);
-        }
-
-        .sb-badge {
-            margin-left: auto;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-family: "DM Mono", monospace;
-            font-size: 9px;
-            font-weight: 700;
-            background: rgba(201, 160, 32, 0.2);
-            color: var(--gold-bright);
-            flex-shrink: 0;
-        }
-
-        .sb-divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.04);
-            margin: 8px 12px;
-        }
-
-        .sb-footer {
-            padding: 16px 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .sb-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: 7px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .sb-avatar {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--gold), var(--gold-bright));
-            color: var(--obsidian);
-            font-family: "Cormorant Garamond", serif;
-            font-size: 16px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .sb-user-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--platinum);
-        }
-
-        .sb-user-role {
-            font-family: "DM Mono", monospace;
-            font-size: 8px;
-            letter-spacing: 1.5px;
-            color: var(--gold);
-            opacity: 0.6;
-            text-transform: uppercase;
-        }
-
-        /* ══════════════════════════════
-       MAIN CONTENT
-    ══════════════════════════════ */
-        .main {
-            margin-left: var(--sidebar-w);
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* Top header bar */
-        .topbar {
-            height: 64px;
-            padding: 0 32px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            background: var(--graphite);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            backdrop-filter: blur(12px);
-        }
-
-        .topbar-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .topbar-title {
-            font-family: "Cormorant Garamond", serif;
-            font-size: 22px;
-            font-weight: 600;
-            color: var(--platinum);
-        }
-
-        .topbar-title em {
-            color: var(--gold-bright);
-            font-style: italic;
-        }
-
-        .topbar-crumb {
-            font-family: "DM Mono", monospace;
-            font-size: 8px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--dim);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .topbar-crumb span {
-            color: var(--gold);
-        }
-
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .topbar-search {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
-            border-radius: 6px;
-            background: var(--steel);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            transition: var(--t);
-        }
-
-        .topbar-search:focus-within {
-            border-color: var(--gold-border);
-            background: var(--charcoal);
-        }
-
-        .topbar-search svg {
-            width: 13px;
-            height: 13px;
-            opacity: 0.3;
-            flex-shrink: 0;
-            stroke: var(--silver);
-        }
-
-        .topbar-search input {
-            background: none;
-            border: none;
-            outline: none;
-            font-family: "Rajdhani", sans-serif;
-            font-size: 13px;
-            color: var(--platinum);
-            width: 180px;
-        }
-
-        .topbar-search input::placeholder {
-            color: var(--dim);
-        }
-
-        .topbar-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 6px;
-            background: var(--steel);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            cursor: pointer;
-            transition: var(--t);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--ash);
-            position: relative;
-        }
-
-        .topbar-btn:hover {
-            border-color: var(--gold-border);
-            color: var(--gold-bright);
-            background: var(--gold-dim);
-        }
-
-        .topbar-btn svg {
-            width: 15px;
-            height: 15px;
-        }
-
-        .topbar-notif {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--gold-bright);
-            border: 1.5px solid var(--graphite);
-            display: none;
-        }
-
-        .topbar-notif.on {
-            display: block;
-        }
-
-        /* ── Page Body ── */
-        .page-body {
-            padding: 28px 32px 60px;
-            flex: 1;
-        }
-
-        /* ── Stat Cards ── */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-bottom: 28px;
-        }
-
-        .stat-card {
-            background: var(--charcoal);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 20px 22px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            transition: var(--t);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--gold-border), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .stat-card:hover::before {
-            opacity: 1;
-        }
-
-        .stat-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 8px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .stat-icon svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        .stat-num {
-            font-family: "Cormorant Garamond", serif;
-            font-size: 32px;
-            font-weight: 600;
-            color: var(--platinum);
-            line-height: 1;
-        }
-
-        .stat-label {
-            font-family: "DM Mono", monospace;
-            font-size: 8px;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            color: var(--dim);
-            margin-top: 4px;
-        }
-
-        .stat-delta {
-            font-family: "DM Mono", monospace;
-            font-size: 9px;
-            margin-top: 6px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .delta-up {
-            color: var(--green);
-        }
-
-        .delta-down {
-            color: var(--red);
-        }
-
-        /* ── Filter Tab Bar ── */
-        .filter-bar {
-            display: flex;
-            align-items: center;
-            gap: 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            margin-bottom: 0;
-        }
-
-        .filter-tab {
-            padding: 12px 20px;
-            font-family: "Rajdhani", sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: var(--ash);
-            cursor: pointer;
-            transition: var(--t);
-            border-bottom: 2px solid transparent;
-            margin-bottom: -1px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: none;
-            border-left: none;
-            border-right: none;
-            border-top: none;
-            white-space: nowrap;
-        }
-
-        .filter-tab:hover {
-            color: var(--platinum);
-        }
-
-        .filter-tab.active {
-            color: var(--gold-bright);
-            border-bottom-color: var(--gold-bright);
-        }
-
-        .filter-tab .tab-count {
-            font-family: "DM Mono", monospace;
-            font-size: 9px;
-            background: rgba(201, 160, 32, 0.15);
-            color: var(--gold);
-            padding: 1px 6px;
-            border-radius: 10px;
-        }
-
-        .filter-tab.active .tab-count {
-            background: rgba(201, 160, 32, 0.25);
-            color: var(--gold-bright);
-        }
-
-        /* ── Orders Table ── */
-        .orders-panel {
-            background: var(--charcoal);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .orders-toolbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 16px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .orders-toolbar-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .toolbar-label {
-            font-family: "DM Mono", monospace;
-            font-size: 9px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--dim);
-        }
-
-        .toolbar-sort {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border-radius: 5px;
-            background: var(--steel);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            font-family: "Rajdhani", sans-serif;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--ash);
-            cursor: pointer;
-            transition: var(--t);
-        }
-
-        .toolbar-sort:hover {
-            border-color: var(--gold-border);
-            color: var(--gold-bright);
-        }
-
-        .toolbar-sort svg {
-            width: 11px;
-            height: 11px;
-            opacity: 0.5;
-        }
-
-        .toolbar-export {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 14px;
-            border-radius: 5px;
-            background: var(--gold-dim);
-            border: 1px solid var(--gold-border);
-            font-family: "Rajdhani", sans-serif;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            color: var(--gold-bright);
-            cursor: pointer;
-            transition: var(--t);
-        }
-
-        .toolbar-export:hover {
-            background: rgba(201, 160, 32, 0.18);
-        }
-
-        .toolbar-export svg {
-            width: 12px;
-            height: 12px;
-        }
-
-        /* Table head */
-        .orders-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .orders-table thead tr {
-            background: rgba(255, 255, 255, 0.02);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .orders-table th {
-            font-family: "DM Mono", monospace;
-            font-size: 8px;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            color: var(--dim);
-            font-weight: 400;
-            padding: 12px 16px;
-            text-align: left;
-            white-space: nowrap;
-        }
-
-        .orders-table th:last-child {
-            text-align: right;
-        }
-
-        /* Order Row — Shopee style */
-        .order-row {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-            transition: background 0.2s;
-            cursor: pointer;
-        }
-
-        .order-row:last-child {
-            border-bottom: none;
-        }
-
-        .order-row:hover {
-            background: rgba(255, 255, 255, 0.018);
-        }
-
-        .order-row td {
-            padding: 0;
-            vertical-align: top;
-        }
-
-        .order-row-inner {
-            padding: 16px 16px 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
-
-        /* Row top: order id + date + status */
-        .order-meta-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 16px 9px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.025);
-            background: rgba(255, 255, 255, 0.015);
-        }
-
-        .order-id-tag {
-            font-family: "DM Mono", monospace;
-            font-size: 10px;
-            font-weight: 600;
-            color: var(--gold);
-            letter-spacing: 0.5px;
-        }
-
-        .order-sep {
-            color: rgba(255, 255, 255, 0.08);
-            font-size: 12px;
-        }
-
-        .order-date-tag {
-            font-family: "DM Mono", monospace;
-            font-size: 9px;
-            color: var(--dim);
-        }
-
-        .order-store-tag {
-            font-family: "DM Mono", monospace;
-            font-size: 9px;
-            color: var(--ash);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .order-store-tag svg {
-            width: 10px;
-            height: 10px;
-            opacity: 0.5;
-            stroke: var(--gold);
-        }
-
-        .order-status-tag {
-            margin-left: auto;
-            font-family: "DM Mono", monospace;
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            padding: 3px 10px;
-            border-radius: 3px;
-        }
-
-        .status-pending {
-            background: var(--amber-dim);
-            color: var(--amber);
-            border: 1px solid rgba(245, 158, 11, 0.25);
-        }
-
-        .status-success {
-            background: var(--green-dim);
-            color: var(--green);
-            border: 1px solid rgba(34, 197, 94, 0.25);
-        }
-
-        .status-cancelled {
-            background: var(--red-dim);
-            color: var(--red);
-            border: 1px solid rgba(239, 68, 68, 0.25);
-        }
-
-        .status-dispatch {
-            background: var(--blue-dim);
-            color: var(--blue);
-            border: 1px solid rgba(59, 130, 246, 0.25);
-        }
-
-        /* Row body: service info */
-        .order-body {
-            padding: 14px 16px 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-        }
-
-        .order-svc-icon {
-            width: 46px;
-            height: 46px;
-            border-radius: 7px;
-            flex-shrink: 0;
-            background: var(--gold-dim);
-            border: 1px solid var(--gold-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .order-svc-icon svg {
-            width: 20px;
-            height: 20px;
-            stroke: var(--gold);
-        }
-
-        .order-svc-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .order-svc-name {
-            font-family: "Cormorant Garamond", serif;
-            font-size: 17px;
-            font-weight: 600;
-            color: var(--platinum);
-            line-height: 1.2;
-            margin-bottom: 5px;
-        }
-
-        .order-svc-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            font-family: "DM Mono", monospace;
-            font-size: 9px;
-            color: var(--dim);
-        }
-
-        .order-svc-meta span {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .order-svc-meta svg {
-            width: 10px;
-            height: 10px;
-            opacity: 0.5;
-            stroke: currentColor;
-        }
-
-        .order-svc-meta .highlight {
-            color: var(--ash);
-        }
-
-        /* Row footer: price + actions */
-        .order-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 16px 14px;
-            margin-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.025);
-        }
-
-        .order-price-block {
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
-        }
-
-        .order-price-label {
-            font-family: "DM Mono", monospace;
-            font-size: 8px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--dim);
-        }
-
-        .order-price-val {
-            font-family: "Cormorant Garamond", serif;
-            font-size: 22px;
-            font-weight: 600;
-            color: var(--gold-bright);
-        }
-
-        .order-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .act-btn {
-            padding: 7px 14px;
-            border-radius: 4px;
-            font-family: "Rajdhani", sans-serif;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: var(--t);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .act-btn svg {
-            width: 11px;
-            height: 11px;
-        }
-
-        .act-detail {
-            background: var(--steel);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            color: var(--ash);
-        }
-
-        .act-detail:hover {
-            border-color: var(--gold-border);
-            color: var(--gold-bright);
-            background: var(--gold-dim);
-        }
-
-        .act-confirm {
-            background: var(--green-dim);
-            border: 1px solid rgba(34, 197, 94, 0.25);
-            color: var(--green);
-        }
-
-        .act-confirm:hover {
-            background: rgba(34, 197, 94, 0.2);
-        }
-
-        .act-dispatch {
-            background: var(--blue-dim);
-            border: 1px solid rgba(59, 130, 246, 0.25);
-            color: var(--blue);
-        }
-
-        .act-dispatch:hover {
-            background: rgba(59, 130, 246, 0.2);
-        }
-
-        .act-cancel {
-            background: var(--red-dim);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: var(--red);
-        }
-
-        .act-cancel:hover {
-            background: rgba(239, 68, 68, 0.2);
-        }
-
-        /* Progress bar inside row */
-        .order-progress-wrap {
-            padding: 0 16px 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .order-progress-steps {
-            display: flex;
-            align-items: center;
-            gap: 0;
-            position: relative;
-        }
-
-        .step-node {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            flex-shrink: 0;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: "DM Mono", monospace;
-            font-size: 9px;
-            font-weight: 700;
-            border: 1.5px solid rgba(255, 255, 255, 0.08);
-            background: var(--steel);
-            color: var(--dim);
-            transition: var(--t);
-        }
-
-        .step-node.done {
-            background: var(--green-dim);
-            border-color: var(--green);
-            color: var(--green);
-        }
-
-        .step-node.active {
-            background: var(--gold-dim);
-            border-color: var(--gold);
-            color: var(--gold-bright);
-            box-shadow: 0 0 10px var(--gold-glow);
-        }
-
-        .step-line {
-            flex: 1;
-            height: 1.5px;
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        .step-line.done {
-            background: linear-gradient(90deg, var(--green), rgba(34, 197, 94, 0.3));
-        }
-
-        .step-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 4px;
-        }
-
-        .step-lbl {
-            font-family: "DM Mono", monospace;
-            font-size: 7.5px;
-            color: var(--dim);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            flex: 1;
-            text-align: center;
-        }
-
-        .step-lbl:first-child {
-            text-align: left;
-        }
-
-        .step-lbl:last-child {
-            text-align: right;
-        }
-
-        .step-lbl.active {
-            color: var(--gold);
-        }
-
-        .step-lbl.done {
-            color: var(--green);
-        }
-
-        /* Empty state */
-        .empty-state {
-            padding: 80px 20px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .empty-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 12px;
-            background: var(--gold-dim);
-            border: 1px solid var(--gold-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .empty-icon svg {
-            width: 28px;
-            height: 28px;
-            stroke: var(--gold);
-        }
-
-        .empty-title {
-            font-family: "Cormorant Garamond", serif;
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--platinum);
-        }
-
-        .empty-sub {
-            font-family: "DM Mono", monospace;
-            font-size: 9px;
-            letter-spacing: 2px;
-            color: var(--dim);
-        }
-
-        /* ── Detail Drawer ── */
-        .drawer-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(6px);
-            z-index: 200;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        .drawer-overlay.open {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .drawer {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 460px;
-            background: var(--graphite);
-            border-left: 1px solid var(--gold-border);
-            z-index: 201;
-            transform: translateX(100%);
-            transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .drawer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--gold), var(--gold-bright), var(--gold));
-        }
-
-        .drawer.open {
-            transform: translateX(0);
-        }
-
-        .drawer-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 24px 24px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .drawer-title {
-            font-family: "Cormorant Garamond", serif;
-            font-size: 22px;
-            font-weight: 600;
-            color: var(--platinum);
-        }
-
-        .drawer-title em {
-            color: var(--gold-bright);
-            font-style: italic;
-        }
-
-        .drawer-close {
-            width: 32px;
-            height: 32px;
-            border-radius: 5px;
-            background: none;
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            cursor: pointer;
-            color: var(--dim);
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--t);
-        }
-
-        .drawer-close:hover {
-            color: var(--gold-bright);
-            border-color: var(--gold-border);
-            background: var(--gold-dim);
-        }
-
-        .drawer-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px;
-        }
-
-        .d-section {
-            margin-bottom: 24px;
-        }
-
-        .d-section-title {
-            font-family: "DM Mono", monospace;
-            font-size: 8px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--gold);
-            opacity: 0.6;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .d-section-title::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, var(--gold-border), transparent);
-        }
-
-        .d-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .d-row:last-child {
-            border-bottom: none;
-        }
-
-        .d-key {
-            font-family: "DM Mono", monospace;
-            font-size: 9px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--dim);
-        }
-
-        .d-val {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--platinum);
-            text-align: right;
-            max-width: 60%;
-            word-break: break-word;
-        }
-
-        .d-val.gold {
-            color: var(--gold-bright);
-            font-family: "Cormorant Garamond", serif;
-            font-size: 18px;
-        }
-
-        .drawer-foot {
-            padding: 16px 24px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            gap: 10px;
-        }
-
-        .drawer-action-btn {
-            flex: 1;
-            padding: 10px;
-            border-radius: 5px;
-            font-family: "Rajdhani", sans-serif;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: var(--t);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .drawer-action-btn svg {
-            width: 13px;
-            height: 13px;
-        }
-
-        /* Toast */
-        .toast-bar {
-            position: fixed;
-            bottom: 28px;
-            left: 50%;
-            transform: translateX(-50%) translateY(16px);
-            padding: 11px 20px;
-            border-radius: 5px;
-            font-family: "DM Mono", monospace;
-            font-size: 10px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 9999;
-            opacity: 0;
-            transition: opacity 0.3s, transform 0.3s;
-            pointer-events: none;
-        }
-
-        .toast-bar.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .toast-ok {
-            background: #0f1e13;
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            color: var(--green);
-        }
-
-        .toast-err {
-            background: #1e0f0f;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: var(--red);
-        }
-
-        .toast-bar svg {
-            width: 13px;
-            height: 13px;
-            flex-shrink: 0;
-        }
-
-        @media (max-width:900px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .main {
-                margin-left: 0;
-            }
-
-            .stats-row {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .drawer {
-                width: 100%;
-            }
-        }
-
-        .sb-logout {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-            margin-top: 8px;
-            padding: 9px 12px;
-            border-radius: 7px;
-            background: none;
-            border: 1px solid rgba(239, 68, 68, 0.15);
-            cursor: pointer;
-            transition: var(--t);
-            font-family: "Rajdhani", sans-serif;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: rgba(239, 68, 68, 0.55);
-        }
-
-        .sb-logout:hover {
-            background: var(--red-dim);
-            border-color: rgba(239, 68, 68, 0.35);
-            color: var(--red);
-        }
-
-        .sb-logout svg {
-            width: 14px;
-            height: 14px;
-            flex-shrink: 0;
-            opacity: 0.7;
-            transition: var(--t);
-        }
-
-        .sb-logout:hover svg {
-            opacity: 1;
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CAL ELITE · Service Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --gold:#c9a020;
+  --gold-hi:#f0c040;
+  --gold-lo:rgba(201,160,32,0.09);
+  --gold-lo2:rgba(201,160,32,0.16);
+  --gold-bd:rgba(201,160,32,0.22);
+  --bg:#080809;
+  --surface:#111114;
+  --surface2:#17171c;
+  --surface3:#1e1e25;
+  --border:rgba(255,255,255,0.055);
+  --border2:rgba(255,255,255,0.03);
+  --text:#e8e8ee;
+  --text2:#9494a4;
+  --text3:#545464;
+  --green:#34d464;
+  --green-lo:rgba(52,212,100,0.1);
+  --green-bd:rgba(52,212,100,0.25);
+  --amber:#f5a623;
+  --amber-lo:rgba(245,166,35,0.1);
+  --amber-bd:rgba(245,166,35,0.25);
+  --red:#f05252;
+  --red-lo:rgba(240,82,82,0.1);
+  --red-bd:rgba(240,82,82,0.22);
+  --blue:#6ea8fe;
+  --blue-lo:rgba(110,168,254,0.1);
+  --blue-bd:rgba(110,168,254,0.22);
+  --t:all 0.2s cubic-bezier(0.4,0,0.2,1);
+  --sw:256px;
+  --r:10px;
+  --r2:7px;
+}
+
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text2);display:flex;}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:4px;}
+
+/* ─── SIDEBAR ─── */
+.sidebar{
+  width:var(--sw);min-width:var(--sw);height:100vh;
+  background:var(--surface);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;
+  position:relative;z-index:10;flex-shrink:0;
+}
+.sidebar::after{
+  content:'';position:absolute;top:0;right:-1px;width:1px;height:100%;
+  background:linear-gradient(to bottom,transparent 0%,var(--gold-bd) 30%,var(--gold-bd) 70%,transparent 100%);
+}
+
+.sb-brand{
+  padding:24px 20px 22px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:11px;
+}
+.sb-mark{
+  width:38px;height:38px;border-radius:9px;
+  background:linear-gradient(145deg,#a87a10,var(--gold-hi));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant',serif;font-size:22px;font-weight:600;color:#07060a;
+  flex-shrink:0;box-shadow:0 4px 18px rgba(201,160,32,0.22);
+}
+.sb-wm{line-height:1.15;}
+.sb-title{font-family:'Cormorant',serif;font-size:17px;font-weight:600;color:var(--text);}
+.sb-title em{color:var(--gold-hi);font-style:italic;}
+.sb-sub{font-family:'Fira Code',monospace;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text3);margin-top:2px;}
+
+.sb-nav{flex:1;padding:18px 12px;display:flex;flex-direction:column;gap:1px;overflow-y:auto;}
+.sb-glabel{
+  font-family:'Fira Code',monospace;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);opacity:0.38;padding:14px 10px 7px;
+}
+.sb-link{
+  display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:var(--r2);
+  font-size:13.5px;font-weight:500;color:var(--text3);text-decoration:none;
+  border:1px solid transparent;transition:var(--t);cursor:pointer;
+}
+.sb-link:hover{color:var(--text);background:rgba(255,255,255,0.035);}
+.sb-link.active{color:var(--gold-hi);background:var(--gold-lo2);border-color:var(--gold-bd);font-weight:600;}
+.sb-ico{
+  width:30px;height:30px;border-radius:6px;
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.055);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--t);
+}
+.sb-ico svg{width:14px;height:14px;stroke:var(--text3);transition:var(--t);fill:none;}
+.sb-link:hover .sb-ico{background:rgba(255,255,255,0.05);}
+.sb-link:hover .sb-ico svg{stroke:var(--text);}
+.sb-link.active .sb-ico{background:var(--gold-lo2);border-color:var(--gold-bd);}
+.sb-link.active .sb-ico svg{stroke:var(--gold-hi);}
+.sb-pill{
+  margin-left:auto;font-family:'Fira Code',monospace;font-size:9.5px;
+  min-width:22px;height:19px;padding:0 6px;border-radius:6px;
+  background:rgba(255,255,255,0.05);color:var(--text3);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--t);
+}
+.sb-link.active .sb-pill{background:rgba(201,160,32,0.18);color:var(--gold-hi);}
+.sb-hr{height:1px;background:var(--border);margin:10px 8px;}
+
+.sb-foot{padding:14px 12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;}
+.sb-user{
+  display:flex;align-items:center;gap:10px;padding:10px 11px;border-radius:var(--r2);
+  background:rgba(255,255,255,0.025);border:1px solid var(--border);
+}
+.sb-av{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,#a07010,var(--gold-hi));
+  color:#07060a;font-family:'Cormorant',serif;font-size:17px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.sb-uname{font-size:13px;font-weight:600;color:var(--text);}
+.sb-urole{font-size:11px;color:var(--text3);margin-top:1px;}
+.sb-logout{
+  display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:var(--r2);
+  background:none;border:1px solid rgba(240,82,82,0.14);cursor:pointer;transition:var(--t);
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+  color:rgba(240,82,82,0.45);width:100%;
+}
+.sb-logout:hover{background:var(--red-lo);border-color:var(--red-bd);color:var(--red);}
+.sb-logout svg{width:13px;height:13px;stroke:currentColor;fill:none;flex-shrink:0;}
+
+/* ─── MAIN ─── */
+.main{flex:1;min-width:0;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+
+.topbar{
+  height:60px;flex-shrink:0;padding:0 28px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.topbar-title{font-family:'Cormorant',serif;font-size:22px;font-weight:600;color:var(--text);white-space:nowrap;}
+.topbar-title em{color:var(--gold-hi);font-style:italic;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.search{
+  display:flex;align-items:center;gap:8px;height:36px;padding:0 13px;
+  border-radius:var(--r2);background:var(--surface2);border:1px solid var(--border);transition:var(--t);
+}
+.search:focus-within{border-color:var(--gold-bd);background:var(--surface3);}
+.search svg{width:13px;height:13px;stroke:var(--text3);flex-shrink:0;fill:none;}
+.search input{
+  background:none;border:none;outline:none;
+  font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);width:210px;
+}
+.search input::placeholder{color:var(--text3);}
+.tb-btn{
+  width:36px;height:36px;border-radius:var(--r2);background:var(--surface2);
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:var(--t);color:var(--text3);position:relative;flex-shrink:0;
+}
+.tb-btn:hover{border-color:var(--gold-bd);color:var(--gold-hi);background:var(--gold-lo);}
+.tb-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;}
+.notif-dot{
+  position:absolute;top:7px;right:7px;width:6px;height:6px;border-radius:50%;
+  background:var(--gold-hi);border:2px solid var(--surface);
+}
+
+/* ─── SCROLL BODY ─── */
+.body-scroll{flex:1;overflow-y:auto;padding:24px 28px 48px;}
+
+/* ─── STAT CARDS ─── */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.stat-card{
+  background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);
+  padding:20px;display:flex;flex-direction:column;gap:14px;
+  transition:border-color 0.2s;position:relative;overflow:hidden;
+}
+.stat-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold-bd),transparent);
+  opacity:0;transition:opacity 0.25s;
+}
+.stat-card:hover{border-color:rgba(255,255,255,0.09);}
+.stat-card:hover::after{opacity:1;}
+.stat-top{display:flex;align-items:flex-start;justify-content:space-between;}
+.stat-ico{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.stat-ico svg{width:18px;height:18px;fill:none;}
+.stat-tag{
+  font-family:'Fira Code',monospace;font-size:9px;letter-spacing:0.5px;
+  padding:3px 8px;border-radius:5px;
+}
+.stat-tag.up{background:var(--green-lo);color:var(--green);}
+.stat-tag.neu{background:rgba(255,255,255,0.05);color:var(--text3);}
+.stat-num{font-family:'Cormorant',serif;font-size:36px;font-weight:500;color:var(--text);line-height:1;}
+.stat-lbl{font-size:12px;font-weight:500;color:var(--text3);margin-top:4px;}
+
+/* ─── PANEL ─── */
+.panel{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.panel-inner{background:transparent;}
+
+/* tabs */
+.tabs{
+  display:flex;align-items:stretch;border-bottom:1px solid var(--border);
+  background:var(--surface);padding:0 6px;overflow-x:auto;
+}
+.tab{
+  display:flex;align-items:center;gap:7px;padding:0 16px;height:44px;
+  font-size:13px;font-weight:500;color:var(--text3);border:none;
+  border-bottom:2px solid transparent;background:none;cursor:pointer;
+  transition:var(--t);white-space:nowrap;flex-shrink:0;margin-bottom:-1px;
+}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--gold-hi);border-bottom-color:var(--gold-hi);font-weight:600;}
+.tab-n{
+  font-family:'Fira Code',monospace;font-size:9px;padding:2px 6px;border-radius:5px;
+  background:rgba(255,255,255,0.055);color:var(--text3);transition:var(--t);
+}
+.tab.active .tab-n{background:rgba(201,160,32,0.18);color:var(--gold-hi);}
+
+/* toolbar */
+.toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 20px;border-bottom:1px solid var(--border2);gap:12px;
+}
+.toolbar-info{font-size:13px;color:var(--text3);}
+.toolbar-info b{color:var(--text);font-weight:600;}
+.toolbar-right{display:flex;align-items:center;gap:8px;}
+.tbar-btn{
+  display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--r2);
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:var(--t);
+  border:1px solid var(--border);background:var(--surface3);color:var(--text3);
+}
+.tbar-btn:hover{border-color:var(--gold-bd);color:var(--gold-hi);}
+.tbar-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;}
+.tbar-exp{
+  display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--r2);
+  font-size:12px;font-weight:600;cursor:pointer;transition:var(--t);
+  border:1px solid var(--gold-bd);background:var(--gold-lo);color:var(--gold-hi);
+}
+.tbar-exp:hover{background:var(--gold-lo2);}
+.tbar-exp svg{width:12px;height:12px;stroke:currentColor;fill:none;}
+
+/* ─── ORDER CARDS ─── */
+.orders-list{
+  display:flex;flex-direction:column;gap:14px;
+  padding:16px 16px 20px;
+}
+
+.oc{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  overflow:hidden;
+  transition:border-color 0.2s, box-shadow 0.2s;
+  cursor:pointer;
+}
+.oc:hover{
+  border-color:rgba(255,255,255,0.1);
+  box-shadow:0 4px 24px rgba(0,0,0,0.3);
+}
+
+/* Header: ID chip + meta + badge */
+.oc-head{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 20px 12px;
+  border-bottom:1px solid var(--border);
+  background:rgba(255,255,255,0.015);
+}
+.oc-id-chip{
+  font-family:'Fira Code',monospace;font-size:11px;font-weight:500;
+  color:var(--gold);background:var(--gold-lo);
+  border:1px solid var(--gold-bd);border-radius:5px;
+  padding:3px 9px;flex-shrink:0;letter-spacing:0.3px;
+}
+.oc-meta-info{
+  display:flex;align-items:center;gap:6px;
+  font-size:11.5px;color:var(--text3);flex:1;min-width:0;
+}
+.oc-meta-info svg{width:11px;height:11px;stroke:var(--text3);opacity:0.5;fill:none;flex-shrink:0;}
+.oc-dot{color:var(--surface3);font-size:14px;}
+
+/* status badge */
+.badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:'Fira Code',monospace;font-size:9px;font-weight:500;letter-spacing:0.8px;text-transform:uppercase;
+  padding:4px 10px;border-radius:5px;flex-shrink:0;
+}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.badge-pending{background:var(--amber-lo);color:var(--amber);border:1px solid var(--amber-bd);}
+.badge-pending::before{background:var(--amber);}
+.badge-success{background:var(--green-lo);color:var(--green);border:1px solid var(--green-bd);}
+.badge-success::before{background:var(--green);}
+.badge-cancelled{background:var(--red-lo);color:var(--red);border:1px solid var(--red-bd);}
+.badge-cancelled::before{background:var(--red);}
+.badge-dispatch{background:var(--blue-lo);color:var(--blue);border:1px solid var(--blue-bd);}
+.badge-dispatch::before{background:var(--blue);}
+
+/* Body: 3-column grid */
+.oc-body{
+  display:grid;grid-template-columns:56px 1fr auto;
+  gap:16px;align-items:start;
+  padding:18px 20px 14px;
+}
+.oc-svc-icon{
+  width:56px;height:56px;border-radius:11px;
+  background:var(--gold-lo);border:1px solid var(--gold-bd);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.oc-svc-icon svg{width:24px;height:24px;stroke:var(--gold);fill:none;}
+.oc-svc-info{min-width:0;}
+.oc-svc-name{
+  font-family:'Cormorant',serif;font-size:22px;font-weight:600;color:var(--text);
+  line-height:1.15;margin-bottom:10px;
+}
+.oc-fields{display:flex;flex-direction:column;gap:6px;}
+.oc-field{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text3);}
+.oc-field svg{width:13px;height:13px;stroke:var(--gold);opacity:0.5;fill:none;flex-shrink:0;}
+.oc-field-label{font-size:11px;color:var(--text3);margin-right:2px;}
+.oc-field-val{color:var(--text);font-weight:500;}
+
+.oc-price-col{
+  display:flex;flex-direction:column;align-items:flex-end;gap:3px;
+  padding-top:4px;flex-shrink:0;
+}
+.oc-price-label{font-family:'Fira Code',monospace;font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);}
+.oc-price{font-family:'Cormorant',serif;font-size:30px;font-weight:600;color:var(--gold-hi);line-height:1;}
+
+/* Progress */
+.oc-prog{padding:2px 20px 16px;}
+.prog-track{display:flex;align-items:center;}
+.prog-node{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fira Code',monospace;font-size:9px;font-weight:500;
+  border:1.5px solid var(--surface3);background:var(--surface3);color:var(--text3);transition:var(--t);z-index:1;
+}
+.prog-node.done{background:var(--green-lo);border-color:var(--green);color:var(--green);}
+.prog-node.active{background:var(--gold-lo2);border-color:var(--gold);color:var(--gold-hi);box-shadow:0 0 10px rgba(201,160,32,0.18);}
+.prog-line{flex:1;height:1.5px;background:var(--surface3);}
+.prog-line.done{background:linear-gradient(90deg,var(--green),rgba(52,212,100,0.2));opacity:0.5;}
+.prog-labels{display:flex;justify-content:space-between;margin-top:5px;}
+.prog-lbl{font-family:'Fira Code',monospace;font-size:8px;text-transform:uppercase;letter-spacing:0.4px;color:var(--text3);flex:1;text-align:center;}
+.prog-lbl:first-child{text-align:left;}
+.prog-lbl:last-child{text-align:right;}
+.prog-lbl.done{color:var(--green);opacity:0.6;}
+.prog-lbl.active{color:var(--gold);}
+
+/* ─── ACTION FOOTER: clearly separated left and right ─── */
+.oc-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;
+  padding:14px 20px 18px;
+  border-top:1px solid var(--border);
+}
+.oc-foot-left{
+  display:flex;align-items:center;gap:10px;
+}
+.oc-foot-right{
+  display:flex;align-items:center;gap:10px;
+}
+
+/* BUTTONS — ample padding, clearly legible */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 20px;border-radius:var(--r2);
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+  cursor:pointer;transition:var(--t);border:1px solid transparent;
+  white-space:nowrap;flex-shrink:0;letter-spacing:0.1px;
+}
+.btn svg{width:13px;height:13px;stroke:currentColor;fill:none;flex-shrink:0;}
+
+.btn-ghost{background:var(--surface3);border-color:var(--border);color:var(--text3);}
+.btn-ghost:hover{border-color:var(--gold-bd);color:var(--gold-hi);}
+
+.btn-blue{background:var(--blue-lo);border-color:var(--blue-bd);color:var(--blue);}
+.btn-blue:hover{background:rgba(110,168,254,0.18);}
+
+.btn-green{background:var(--green-lo);border-color:var(--green-bd);color:var(--green);}
+.btn-green:hover{background:rgba(52,212,100,0.18);}
+
+.btn-red{background:var(--red-lo);border-color:var(--red-bd);color:var(--red);}
+.btn-red:hover{background:rgba(240,82,82,0.18);}
+
+/* empty */
+.empty{padding:70px 20px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;}
+.empty-ico{
+  width:58px;height:58px;border-radius:12px;
+  background:var(--gold-lo);border:1px solid var(--gold-bd);
+  display:flex;align-items:center;justify-content:center;
+}
+.empty-ico svg{width:26px;height:26px;stroke:var(--gold);fill:none;}
+.empty-title{font-family:'Cormorant',serif;font-size:22px;font-weight:600;color:var(--text);}
+.empty-sub{font-size:13px;color:var(--text3);}
+
+/* ─── DRAWER ─── */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);
+  z-index:200;opacity:0;pointer-events:none;transition:opacity 0.28s;
+}
+.overlay.open{opacity:1;pointer-events:all;}
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;width:500px;
+  background:var(--surface);border-left:1px solid var(--gold-bd);
+  z-index:201;transform:translateX(100%);
+  transition:transform 0.34s cubic-bezier(0.4,0,0.2,1);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.drawer::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),var(--gold-hi),var(--gold),transparent);
+}
+.drawer.open{transform:translateX(0);}
+.dw-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 26px;border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.dw-title{font-family:'Cormorant',serif;font-size:24px;font-weight:600;color:var(--text);}
+.dw-title em{color:var(--gold-hi);font-style:italic;}
+.dw-close{
+  width:32px;height:32px;border-radius:6px;background:none;border:1px solid var(--border);
+  cursor:pointer;color:var(--text3);font-size:19px;
+  display:flex;align-items:center;justify-content:center;transition:var(--t);
+}
+.dw-close:hover{color:var(--gold-hi);border-color:var(--gold-bd);background:var(--gold-lo);}
+.dw-body{flex:1;overflow-y:auto;padding:22px 26px;}
+.dw-sec{margin-bottom:24px;}
+.dw-sec-title{
+  font-family:'Fira Code',monospace;font-size:8.5px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);opacity:0.5;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.dw-sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--gold-bd),transparent);}
+.dw-row{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:11px 0;border-bottom:1px solid var(--border2);gap:16px;
+}
+.dw-row:last-child{border-bottom:none;}
+.dw-key{font-size:12px;font-weight:500;color:var(--text3);flex-shrink:0;padding-top:1px;}
+.dw-val{font-size:13px;font-weight:600;color:var(--text);text-align:right;max-width:62%;word-break:break-word;}
+.dw-val.gold{font-family:'Cormorant',serif;font-size:22px;color:var(--gold-hi);line-height:1;}
+.dw-foot{
+  padding:16px 26px;border-top:1px solid var(--border);
+  display:flex;gap:10px;flex-shrink:0;flex-wrap:wrap;
+}
+.dw-foot .btn{flex:1;justify-content:center;min-width:120px;}
+
+/* toast */
+.toast{
+  position:fixed;bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(10px);
+  padding:10px 18px;border-radius:8px;font-size:12.5px;font-weight:600;
+  display:flex;align-items:center;gap:9px;
+  z-index:9999;opacity:0;transition:opacity 0.25s,transform 0.25s;pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast svg{width:13px;height:13px;fill:none;flex-shrink:0;}
+.toast-ok{background:#0b1d10;border:1px solid var(--green-bd);color:var(--green);}
+.toast-err{background:#1d0b0b;border:1px solid var(--red-bd);color:var(--red);}
+
+@media(max-width:900px){
+  .sidebar{display:none;} .stat-row{grid-template-columns:repeat(2,1fr);}
+  .drawer{width:100%;} .oc-body{grid-template-columns:56px 1fr;}
+  .oc-price-col{display:none;}
+}
+</style>
 </head>
-
 <body>
 
-    <!-- ══ SIDEBAR ══ -->
-    <aside class="sidebar">
-        <div class="sb-brand">
-            <div class="sb-logo-mark">C</div>
-            <div class="sb-brand-text">
-                <div class="sb-brand-name"><em>Cal Elite</em></div>
-                <div class="sb-brand-sub">Service Panel</div>
-            </div>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-mark">C</div>
+    <div class="sb-wm">
+      <div class="sb-title"><em>Cal Elite</em></div>
+      <div class="sb-sub">Service Panel</div>
+    </div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-glabel">Management</div>
+    <a class="sb-link active" href="#">
+      <div class="sb-ico"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+      All Orders <span class="sb-pill" id="sbAll">0</span>
+    </a>
+    <a class="sb-link" href="#" data-fnav="pending">
+      <div class="sb-ico"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+      Pending <span class="sb-pill" id="sbPend">0</span>
+    </a>
+    <a class="sb-link" href="#" data-fnav="dispatch">
+      <div class="sb-ico"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg></div>
+      In Dispatch <span class="sb-pill" id="sbDisp">0</span>
+    </a>
+    <a class="sb-link" href="#" data-fnav="success">
+      <div class="sb-ico"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+      Completed <span class="sb-pill" id="sbSucc">0</span>
+    </a>
+    <a class="sb-link" href="#" data-fnav="cancelled">
+      <div class="sb-ico"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+      Cancelled <span class="sb-pill" id="sbCanc">0</span>
+    </a>
+    <div class="sb-hr"></div>
+    <div class="sb-glabel">Navigation</div>
+    <a class="sb-link" href="services.html">
+      <div class="sb-ico"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg></div>
+      Services Page
+    </a>
+    <a class="sb-link" href="index.html">
+      <div class="sb-ico"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg></div>
+      Home
+    </a>
+  </nav>
+  <div class="sb-foot">
+    <div class="sb-user">
+      <div class="sb-av" id="sbAv">U</div>
+      <div>
+        <div class="sb-uname" id="sbName">Loading…</div>
+        <div class="sb-urole">Service Provider</div>
+      </div>
+    </div>
+    <button class="sb-logout" id="logoutBtn">
+      <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+      Sign Out
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-title">Service <em>Orders</em></div>
+    <div class="topbar-right">
+      <div class="search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Search ID, service, address…"/>
+      </div>
+      <button class="tb-btn" id="refreshBtn" title="Refresh">
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+      </button>
+      <button class="tb-btn" title="Notifications">
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        <div class="notif-dot"></div>
+      </button>
+    </div>
+  </header>
+
+  <div class="body-scroll">
+    <!-- Stats -->
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-ico" style="background:var(--gold-lo);border:1px solid var(--gold-bd);"><svg stroke="var(--gold-hi)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/></svg></div>
+          <span class="stat-tag neu">All Time</span>
         </div>
-
-        <nav class="sb-nav">
-            <div class="sb-section-label">Management</div>
-
-            <a class="sb-item active" href="#">
-                <div class="sb-item-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg></div>
-                All Orders
-                <span class="sb-badge" id="sbBadgeAll">0</span>
-            </a>
-
-            <a class="sb-item" href="#" data-filter-nav="pending">
-                <div class="sb-item-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg></div>
-                Pending
-                <span class="sb-badge" id="sbBadgePending">0</span>
-            </a>
-
-            <a class="sb-item" href="#" data-filter-nav="dispatch">
-                <div class="sb-item-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                            d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
-                    </svg></div>
-                In Dispatch
-                <span class="sb-badge" id="sbBadgeDispatch">0</span>
-            </a>
-
-            <a class="sb-item" href="#" data-filter-nav="success">
-                <div class="sb-item-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg></div>
-                Completed
-                <span class="sb-badge" id="sbBadgeSuccess">0</span>
-            </a>
-
-            <a class="sb-item" href="#" data-filter-nav="cancelled">
-                <div class="sb-item-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg></div>
-                Cancelled
-                <span class="sb-badge" id="sbBadgeCancelled">0</span>
-            </a>
-
-            <div class="sb-divider"></div>
-            <div class="sb-section-label">Navigation</div>
-
-            <a class="sb-item" href="services.html">
-                <div class="sb-item-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <circle cx="12" cy="12" r="3" />
-                    </svg></div>
-                Services Page
-            </a>
-
-            <a class="sb-item" href="index.html">
-                <div class="sb-item-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg></div>
-                Home
-            </a>
-        </nav>
-
-        <div class="sb-footer">
-            <div class="sb-user">
-                <div class="sb-avatar" id="sbAvatar">U</div>
-                <div>
-                    <div class="sb-user-name" id="sbName">Loading…</div>
-                    <div class="sb-user-role">Service Provider</div>
-                </div>
-            </div>
-            <button class="sb-logout" id="sbLogoutBtn">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-                Sign Out
-            </button>
-        </div>v>
+        <div><div class="stat-num" id="stTotal">0</div><div class="stat-lbl">Total Orders</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-ico" style="background:var(--amber-lo);border:1px solid var(--amber-bd);"><svg stroke="var(--amber)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+          <span class="stat-tag neu">Active</span>
         </div>
-    </aside>
-
-    <!-- ══ MAIN ══ -->
-    <div class="main">
-
-        <!-- Topbar -->
-        <header class="topbar">
-            <div class="topbar-left">
-                <div class="topbar-title">Service <em>Orders</em></div>
-                <div class="topbar-crumb">
-                    <span>Cal Elite</span> / Orders
-                </div>
-            </div>
-            <div class="topbar-right">
-                <div class="topbar-search">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <circle cx="11" cy="11" r="8" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35" />
-                    </svg>
-                    <input type="text" placeholder="Search order ID, service…" id="searchInput" />
-                </div>
-                <button class="topbar-btn" id="refreshBtn" title="Refresh">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                </button>
-                <button class="topbar-btn" title="Notifications">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg>
-                    <div class="topbar-notif on" id="topbarNotif"></div>
-                </button>
-            </div>
-        </header>
-
-        <div class="page-body">
-
-            <!-- Stat Cards -->
-            <div class="stats-row" id="statsRow">
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:var(--gold-dim);border:1px solid var(--gold-border);">
-                        <svg fill="none" stroke="var(--gold-bright)" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2" />
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="stat-num" id="statTotal">0</div>
-                        <div class="stat-label">Total Orders</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:var(--amber-dim);border:1px solid rgba(245,158,11,0.2);">
-                        <svg fill="none" stroke="var(--amber)" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="stat-num" id="statPending">0</div>
-                        <div class="stat-label">Pending</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:var(--green-dim);border:1px solid rgba(34,197,94,0.2);">
-                        <svg fill="none" stroke="var(--green)" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="stat-num" id="statDone">0</div>
-                        <div class="stat-label">Completed</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:var(--gold-dim);border:1px solid var(--gold-border);">
-                        <svg fill="none" stroke="var(--gold-bright)" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="stat-num" id="statRevenue">$0</div>
-                        <div class="stat-label">Total Revenue</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Filter Tabs + Orders Panel -->
-            <div class="orders-panel">
-
-                <!-- Tab bar -->
-                <div class="filter-bar" id="filterBar">
-                    <button class="filter-tab active" data-tab="all">All Orders <span class="tab-count"
-                            id="tcAll">0</span></button>
-                    <button class="filter-tab" data-tab="pending">Pending <span class="tab-count"
-                            id="tcPending">0</span></button>
-                    <button class="filter-tab" data-tab="dispatch">In Dispatch <span class="tab-count"
-                            id="tcDispatch">0</span></button>
-                    <button class="filter-tab" data-tab="success">Completed <span class="tab-count"
-                            id="tcSuccess">0</span></button>
-                    <button class="filter-tab" data-tab="cancelled">Cancelled <span class="tab-count"
-                            id="tcCancelled">0</span></button>
-                </div>
-
-                <!-- Toolbar -->
-                <div class="orders-toolbar">
-                    <div class="orders-toolbar-left">
-                        <span class="toolbar-label" id="toolbarLabel">Showing all orders</span>
-                    </div>
-                    <div style="display:flex;gap:8px;">
-                        <button class="toolbar-sort" id="sortBtn">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
-                            </svg>
-                            Newest First
-                        </button>
-                        <button class="toolbar-export">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
-                            Export
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Orders list -->
-                <div id="ordersList"></div>
-
-            </div>
+        <div><div class="stat-num" id="stPend">0</div><div class="stat-lbl">Awaiting Dispatch</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-ico" style="background:var(--green-lo);border:1px solid var(--green-bd);"><svg stroke="var(--green)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+          <span class="stat-tag up">Done</span>
         </div>
+        <div><div class="stat-num" id="stDone">0</div><div class="stat-lbl">Completed</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-ico" style="background:var(--gold-lo);border:1px solid var(--gold-bd);"><svg stroke="var(--gold-hi)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+          <span class="stat-tag up">Revenue</span>
+        </div>
+        <div><div class="stat-num" id="stRev">$0</div><div class="stat-lbl">Total Earned</div></div>
+      </div>
     </div>
 
-    <!-- Detail Drawer -->
-    <div class="drawer-overlay" id="drawerOverlay"></div>
-    <div class="drawer" id="detailDrawer">
-        <div class="drawer-head">
-            <div class="drawer-title">Order <em>Details</em></div>
-            <button class="drawer-close" id="drawerClose">×</button>
+    <!-- Panel -->
+    <div class="panel">
+      <div class="tabs" id="tabBar">
+        <button class="tab active" data-tab="all">All Orders <span class="tab-n" id="tcAll">0</span></button>
+        <button class="tab" data-tab="pending">Pending <span class="tab-n" id="tcPend">0</span></button>
+        <button class="tab" data-tab="dispatch">In Dispatch <span class="tab-n" id="tcDisp">0</span></button>
+        <button class="tab" data-tab="success">Completed <span class="tab-n" id="tcSucc">0</span></button>
+        <button class="tab" data-tab="cancelled">Cancelled <span class="tab-n" id="tcCanc">0</span></button>
+      </div>
+      <div class="toolbar">
+        <div class="toolbar-info" id="toolbarInfo">Showing all orders</div>
+        <div class="toolbar-right">
+          <button class="tbar-btn" id="sortBtn">
+            <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/></svg>
+            Newest First
+          </button>
+          <button class="tbar-exp">
+            <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Export CSV
+          </button>
         </div>
-        <div class="drawer-body" id="drawerBody"></div>
-        <div class="drawer-foot" id="drawerFoot"></div>
+      </div>
+      <div class="orders-list" id="ordersList"></div>
     </div>
+  </div>
+</div>
+
+<!-- Drawer -->
+<div class="overlay" id="overlay"></div>
+<div class="drawer" id="drawer">
+  <div class="dw-head">
+    <div class="dw-title">Order <em>Details</em></div>
+    <button class="dw-close" id="dwClose">×</button>
+  </div>
+  <div class="dw-body" id="dwBody"></div>
+  <div class="dw-foot" id="dwFoot"></div>
+</div>
 
     <!-- Toast -->
     <div class="toast-bar" id="toastBar"></div>
-    <style>
-        .topbar-btn.chat-active {
-            background: linear-gradient(135deg, rgba(34, 112, 58, 0.3), rgba(34, 112, 58, 0.15));
-            border-color: rgba(74, 222, 128, 0.3);
-            color: #4ade80;
-        }
 
-        /* Courier Chat Modal */
-        .cc-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 5000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
+<script>
+(function(){
+const SEED=[
+  {id:'BK-SEED01',service:'House Detailing',date:'2025-06-10',address:'123 Rizal St, Makati City',origin:'Foshan Central Hub',time:'morning',price:320,status:'success',timestamp:'2025-06-09T08:00:00Z',notes:'Please bring extra polish.'},
+  {id:'BK-SEED02',service:'Panel Installation',date:'2025-06-14',address:'Block 7 Lot 3, BF Homes, Parañaque',origin:'Nanhai Branch',time:'afternoon',price:550,status:'dispatch',timestamp:'2025-06-13T11:30:00Z',notes:''},
+  {id:'BK-SEED03',service:'Electrical Setup',date:'2025-06-20',address:'Unit 4B Torre de Manila, Ermita',origin:'Lishui Station',time:'morning',price:235,status:'pending',timestamp:'2025-06-18T09:15:00Z',notes:'Second floor unit.'},
+  {id:'BK-SEED04',service:'Custom Fabrication',date:'2025-06-22',address:'Greenhills Shopping Center, San Juan',origin:'Shunde Logistics',time:'evening',price:720,status:'pending',timestamp:'2025-06-19T16:00:00Z',notes:'Need custom sizes.'},
+  {id:'BK-SEED05',service:'Final Inspection',date:'2025-06-08',address:'Eastwood City, Libis, QC',origin:'Foshan Central Hub',time:'morning',price:195,status:'cancelled',timestamp:'2025-06-07T10:00:00Z',notes:''},
+  {id:'BK-SEED06',service:'On-Site Install',date:'2025-06-25',address:'Ayala Triangle, Makati',origin:'Nanhai Branch',time:'afternoon',price:490,status:'success',timestamp:'2025-06-24T14:00:00Z',notes:'Corporate lobby.'},
+  {id:'BK-SEED07',service:'Material Removal',date:'2025-06-28',address:'Bonifacio Global City, Taguig',origin:'Lishui Station',time:'morning',price:310,status:'pending',timestamp:'2025-06-26T08:45:00Z',notes:'Heavy lift required.'},
+  {id:'BK-SEED08',service:'Wall Cladding',date:'2025-07-02',address:'Ortigas Center, Pasig',origin:'Foshan Central Hub',time:'afternoon',price:560,status:'dispatch',timestamp:'2025-07-01T12:00:00Z',notes:'8th floor.'},
+  {id:'BK-SEED09',service:'Surface Prep',date:'2025-07-05',address:'Alabang Town Center, Muntinlupa',origin:'Shunde Logistics',time:'morning',price:280,status:'success',timestamp:'2025-07-04T09:00:00Z',notes:''},
+  {id:'BK-SEED10',service:'LED Lighting Setup',date:'2025-07-08',address:'SM Mall of Asia, Pasay',origin:'Nanhai Branch',time:'evening',price:395,status:'pending',timestamp:'2025-07-07T17:00:00Z',notes:'Outdoor area.'},
+];
 
-        .cc-overlay.open {
-            display: flex;
-        }
+let stored=[];
+try{stored=JSON.parse(localStorage.getItem('ceBookings')||'[]');}catch(e){}
+const ids=new Set(stored.map(b=>b.id));
+const merged=[...stored,...SEED.filter(s=>!ids.has(s.id))];
+localStorage.setItem('ceBookings',JSON.stringify(merged));
 
-        .cc-box {
-            background: #0e0e12;
-            border: 1px solid rgba(74, 222, 128, 0.2);
-            border-radius: 10px;
-            width: 100%;
-            max-width: 480px;
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
-            animation: ccIn .3s cubic-bezier(0.22, 1, 0.36, 1);
-        }
+let bookings=merged,curTab='all',searchQ='',sortAsc=false;
 
-        @keyframes ccIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95) translateY(10px)
-            }
+const su=JSON.parse(sessionStorage.getItem('user')||'null');
+if(su){const n=((su.first_name||'')+' '+(su.last_name||'')).trim()||'User';document.getElementById('sbName').textContent=n;document.getElementById('sbAv').textContent=n[0].toUpperCase();}
+else{document.getElementById('sbName').textContent='Guest';document.getElementById('sbAv').textContent='G';}
 
-            to {
-                opacity: 1;
-                transform: none
-            }
-        }
+function toast(msg,type='ok'){
+  const el=document.getElementById('toast');
+  const ico=type==='ok'?'<svg stroke="currentColor" viewBox="0 0 24 24" fill="none"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>':'<svg stroke="currentColor" viewBox="0 0 24 24" fill="none"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>';
+  el.className=`toast toast-${type}`;el.innerHTML=ico+' '+msg;
+  requestAnimationFrame(()=>el.classList.add('show'));
+  setTimeout(()=>el.classList.remove('show'),3200);
+}
 
-        .cc-head {
-            padding: 16px 20px;
-            background: rgba(0, 0, 0, 0.4);
-            border-bottom: 1px solid rgba(74, 222, 128, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-radius: 10px 10px 0 0;
-        }
+const fmtDate=d=>{if(!d)return'—';try{return new Date(d).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});}catch(e){return d;}};
+const fmtTime=t=>({morning:'Morning · 8AM – 12PM',afternoon:'Afternoon · 1PM – 5PM',evening:'Evening · 6PM – 9PM'}[t]||t||'—');
 
-        .cc-courier {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+const ICONS={
+  default:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>',
+  'House Detailing':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>',
+  'Electrical Setup':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>',
+  'LED Lighting Setup':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>',
+  'Final Inspection':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+};
+const getIcon=s=>ICONS[s]||ICONS.default;
 
-        .cc-av {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #134d27, #22703a);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 18px;
-            font-weight: 700;
-            color: #a8f0c6;
-            flex-shrink: 0;
-        }
+const STEPS=['Booked','Confirmed','In Dispatch','Completed'];
+const stepIdx=s=>({pending:0,dispatch:2,success:3}[s]??0);
 
-        .cc-name {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            color: #f0f0f0;
-            letter-spacing: .5px;
-        }
+function badgeHtml(s){
+  const cls={pending:'badge-pending',success:'badge-success',cancelled:'badge-cancelled',dispatch:'badge-dispatch'};
+  const lbl={pending:'Pending',success:'Completed',cancelled:'Cancelled',dispatch:'In Dispatch'};
+  return`<span class="badge ${cls[s]||'badge-pending'}">${lbl[s]||s}</span>`;
+}
 
-        .cc-sub {
-            font-family: 'DM Mono', monospace;
-            font-size: 8px;
-            letter-spacing: 1.5px;
-            color: rgba(74, 222, 128, 0.7);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-top: 2px;
-        }
-
-        .cc-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #4ade80;
-            animation: ccPulse 1.5s infinite;
-        }
-
-        @keyframes ccPulse {
-
-            0%,
-            100% {
-                opacity: 1
-            }
-
-            50% {
-                opacity: 0.3
-            }
-        }
-
-        .cc-close {
-            background: none;
-            border: none;
-            color: rgba(240, 240, 240, 0.4);
-            font-size: 22px;
-            cursor: pointer;
-            line-height: 1;
-            padding: 4px;
-        }
-
-        .cc-close:hover {
-            color: #f0f0f0;
-        }
-
-        .cc-ref-bar {
-            padding: 8px 20px;
-            background: rgba(184, 147, 42, 0.05);
-            border-bottom: 1px solid rgba(184, 147, 42, 0.1);
-            font-family: 'DM Mono', monospace;
-            font-size: 8px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: rgba(212, 168, 67, 0.6);
-        }
-
-        .cc-msgs {
-            flex: 1;
-            overflow-y: auto;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            min-height: 240px;
-            max-height: 340px;
-        }
-
-        .cc-msg {
-            max-width: 78%;
-            padding: 9px 13px;
-            border-radius: 8px;
-            font-family: 'DM Mono', monospace;
-            font-size: 10.5px;
-            line-height: 1.5;
-            letter-spacing: .3px;
-        }
-
-        .cc-msg.them {
-            background: rgba(74, 222, 128, 0.08);
-            border: 1px solid rgba(74, 222, 128, 0.15);
-            color: rgba(220, 220, 210, 0.88);
-            align-self: flex-start;
-            border-radius: 8px 8px 8px 2px;
-        }
-
-        .cc-msg.me {
-            background: rgba(184, 147, 42, 0.1);
-            border: 1px solid rgba(184, 147, 42, 0.2);
-            color: rgba(232, 201, 122, 0.9);
-            align-self: flex-end;
-            border-radius: 8px 8px 2px 8px;
-        }
-
-        .cc-msg-time {
-            font-size: 7.5px;
-            opacity: .3;
-            margin-top: 3px;
-        }
-
-        .cc-input-row {
-            display: flex;
-            gap: 8px;
-            padding: 12px 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .cc-input {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 6px;
-            padding: 10px 12px;
-            font-family: 'DM Mono', monospace;
-            font-size: 10.5px;
-            color: #f0f0f0;
-            outline: none;
-            transition: border-color .2s;
-        }
-
-        .cc-input:focus {
-            border-color: rgba(74, 222, 128, 0.4);
-        }
-
-        .cc-input::placeholder {
-            color: rgba(255, 255, 255, 0.2);
-        }
-
-        .cc-send {
-            width: 38px;
-            height: 38px;
-            border-radius: 6px;
-            border: none;
-            background: linear-gradient(135deg, #134d27, #22703a);
-            color: #a8f0c6;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all .2s;
-            flex-shrink: 0;
-        }
-
-        .cc-send:hover {
-            transform: scale(1.06);
-            box-shadow: 0 4px 14px rgba(34, 112, 58, 0.4);
-        }
-    </style>
-
-    <!-- ══ COURIER CHAT MODAL ══ -->
-    <div class="cc-overlay" id="ccOverlay">
-        <div class="cc-box">
-            <div class="cc-head">
-                <div style="display:flex;align-items:center;gap:8px">
-                    <button id="ccBackBtn"
-                        style="display:none;background:none;border:none;color:rgba(255,255,255,0.5);font-size:18px;cursor:pointer;padding:2px 6px;line-height:1;transition:.15s"
-                        title="Back to inbox">←</button>
-                    <div class="cc-courier">
-                        <div class="cc-av" id="ccAvatar">✉</div>
-                        <div>
-                            <div class="cc-name" id="ccCourierName">Customer Inbox</div>
-                            <div class="cc-sub"><span class="cc-dot"></span>Live · Cal Elite Service</div>
-                        </div>
-                    </div>
-                </div>
-                <button class="cc-close" id="ccClose">×</button>
-            </div>
-            <div class="cc-ref-bar" id="ccRefBar">All Conversations</div>
-            <div class="cc-msgs" id="ccMsgs"></div>
-            <div class="cc-input-row" id="ccSendRow" style="display:none">
-                <input class="cc-input" id="ccInput" placeholder="Type a reply to the customer…">
-                <button class="cc-send" id="ccSend">
-                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                    </svg>
-                </button>
-            </div>
-        </div>
+function progressHtml(b){
+  if(b.status==='cancelled')return'';
+  const si=stepIdx(b.status);
+  return`<div class="oc-prog">
+    <div class="prog-track">
+      ${STEPS.map((s,i)=>`${i>0?`<div class="prog-line${i<=si?' done':''}"></div>`:''}
+        <div class="prog-node${i<si?' done':i===si?' active':''}">${i<si?'✓':i+1}</div>`).join('')}
     </div>
+    <div class="prog-labels">
+      ${STEPS.map((s,i)=>`<span class="prog-lbl${i<si?' done':i===si?' active':''}">${s}</span>`).join('')}
+    </div>
+  </div>`;
+}
 
-    <script>
-        (function () {
+const filtered=()=>bookings
+  .filter(b=>{
+    if(curTab!=='all'&&b.status!==curTab)return false;
+    if(searchQ){const q=searchQ.toLowerCase();return(b.id||'').toLowerCase().includes(q)||(b.service||'').toLowerCase().includes(q)||(b.address||'').toLowerCase().includes(q);}
+    return true;
+  })
+  .sort((a,b)=>{const ta=new Date(a.timestamp||0).getTime(),tb=new Date(b.timestamp||0).getTime();return sortAsc?ta-tb:tb-ta;});
 
-            // ── Sample seed data so panel isn't empty on first load ──
-            const SEED = [
-                { id: 'BK-SEED01', service: 'House Detailing', date: '2025-06-10', address: '123 Rizal St, Makati City', origin: 'Foshan Central Hub', time: 'morning', price: 320, status: 'success', timestamp: '2025-06-09T08:00:00Z', notes: 'Please bring extra polish.' },
-                { id: 'BK-SEED02', service: 'Panel Installation', date: '2025-06-14', address: 'Block 7 Lot 3, BF Homes, Parañaque', origin: 'Nanhai Branch', time: 'afternoon', price: 550, status: 'dispatch', timestamp: '2025-06-13T11:30:00Z', notes: '' },
-                { id: 'BK-SEED03', service: 'Electrical Setup', date: '2025-06-20', address: 'Unit 4B Torre de Manila, Ermita', origin: 'Lishui Station', time: 'morning', price: 235, status: 'pending', timestamp: '2025-06-18T09:15:00Z', notes: 'Second floor unit.' },
-                { id: 'BK-SEED04', service: 'Custom Fabrication', date: '2025-06-22', address: 'Greenhills Shopping Center, San Juan', origin: 'Shunde Logistics', time: 'evening', price: 720, status: 'pending', timestamp: '2025-06-19T16:00:00Z', notes: 'Need custom sizes.' },
-                { id: 'BK-SEED05', service: 'Final Inspection', date: '2025-06-08', address: 'Eastwood City, Libis, QC', origin: 'Foshan Central Hub', time: 'morning', price: 195, status: 'cancelled', timestamp: '2025-06-07T10:00:00Z', notes: '' },
-                { id: 'BK-SEED06', service: 'On-Site Install', date: '2025-06-25', address: 'Ayala Triangle, Makati', origin: 'Nanhai Branch', time: 'afternoon', price: 490, status: 'success', timestamp: '2025-06-24T14:00:00Z', notes: 'Corporate lobby.' },
-                { id: 'BK-SEED07', service: 'Material Removal', date: '2025-06-28', address: 'Bonifacio Global City, Taguig', origin: 'Lishui Station', time: 'morning', price: 310, status: 'pending', timestamp: '2025-06-26T08:45:00Z', notes: 'Heavy lift required.' },
-                { id: 'BK-SEED08', service: 'Wall Cladding', date: '2025-07-02', address: 'Ortigas Center, Pasig', origin: 'Foshan Central Hub', time: 'afternoon', price: 560, status: 'dispatch', timestamp: '2025-07-01T12:00:00Z', notes: '8th floor.' },
-                { id: 'BK-SEED09', service: 'Surface Prep', date: '2025-07-05', address: 'Alabang Town Center, Muntinlupa', origin: 'Shunde Logistics', time: 'morning', price: 280, status: 'success', timestamp: '2025-07-04T09:00:00Z', notes: '' },
-                { id: 'BK-SEED10', service: 'LED Lighting Setup', date: '2025-07-08', address: 'SM Mall of Asia, Pasay', origin: 'Nanhai Branch', time: 'evening', price: 395, status: 'pending', timestamp: '2025-07-07T17:00:00Z', notes: 'Outdoor area.' },
-            ];
+const countOf=s=>bookings.filter(b=>s==='all'||b.status===s).length;
+const revenue=()=>bookings.filter(b=>b.status==='success').reduce((s,b)=>s+(b.price||0),0);
+const save=()=>localStorage.setItem('ceBookings',JSON.stringify(bookings));
 
-            // ── Load bookings (merge localStorage + seed) ──
-            let stored = [];
-            try { stored = JSON.parse(localStorage.getItem('ceBookings') || '[]'); } catch (e) { }
-            // Check if seed already present
-            const storedIds = new Set(stored.map(b => b.id));
-            const merged = [...stored, ...SEED.filter(s => !storedIds.has(s.id))];
-            // Save merged back so panel stays populated
-            localStorage.setItem('ceBookings', JSON.stringify(merged));
+function updateCounts(){
+  const all=bookings.length,pend=countOf('pending'),done=countOf('success'),canc=countOf('cancelled'),disp=countOf('dispatch');
+  document.getElementById('stTotal').textContent=all;
+  document.getElementById('stPend').textContent=pend;
+  document.getElementById('stDone').textContent=done;
+  document.getElementById('stRev').textContent='$'+revenue().toLocaleString();
+  document.getElementById('sbAll').textContent=all;
+  document.getElementById('sbPend').textContent=pend;
+  document.getElementById('sbDisp').textContent=disp;
+  document.getElementById('sbSucc').textContent=done;
+  document.getElementById('sbCanc').textContent=canc;
+  document.getElementById('tcAll').textContent=all;
+  document.getElementById('tcPend').textContent=pend;
+  document.getElementById('tcDisp').textContent=disp;
+  document.getElementById('tcSucc').textContent=done;
+  document.getElementById('tcCanc').textContent=canc;
+}
 
-            let bookings = merged;
-            let currentTab = 'all';
-            let searchQ = '';
-            let sortAsc = false;
+function render(){
+  updateCounts();
+  const list=filtered();
+  const el=document.getElementById('ordersList');
+  document.getElementById('toolbarInfo').innerHTML=
+    list.length===0?'No orders found':list.length===1?'Showing <b>1</b> order':`Showing <b>${list.length}</b> orders`;
 
-            // ── User ──
-            const sessionUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-            const sbName = document.getElementById('sbName');
-            const sbAvatar = document.getElementById('sbAvatar');
-            if (sessionUser) {
-                const name = ((sessionUser.first_name || '') + ' ' + (sessionUser.last_name || '')).trim() || 'User';
-                sbName.textContent = name;
-                sbAvatar.textContent = name.charAt(0).toUpperCase();
-            } else {
-                sbName.textContent = 'Guest';
-                sbAvatar.textContent = 'G';
-            }
+  if(!list.length){
+    el.innerHTML=`<div class="empty">
+      <div class="empty-ico"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/></svg></div>
+      <div class="empty-title">No Orders Found</div>
+      <div class="empty-sub">Orders will appear here once customers book a service.</div>
+    </div>`;
+    return;
+  }
 
-            // ── Toast ──
-            function toast(msg, type = 'ok') {
-                const t = document.getElementById('toastBar');
-                const icon = type === 'ok'
-                    ? '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>'
-                    : '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>';
-                t.className = `toast-bar toast-${type}`;
-                t.innerHTML = icon + ' ' + msg;
-                requestAnimationFrame(() => t.classList.add('show'));
-                setTimeout(() => t.classList.remove('show'), 3200);
-            }
+  el.innerHTML=list.map(b=>`
+    <div class="oc" data-id="${b.id}">
 
-            // ── Helpers ──
-            function fmtDate(d) {
-                if (!d) return '—';
-                try { return new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch (e) { return d; }
-            }
-            function fmtTime(t) {
-                const map = { morning: 'Morning (8AM–12PM)', afternoon: 'Afternoon (1PM–5PM)', evening: 'Evening (6PM–9PM)' };
-                return map[t] || t || '—';
-            }
+      <!-- Header row -->
+      <div class="oc-head">
+        <span class="oc-id-chip">${b.id}</span>
+        <div class="oc-meta-info">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="2" x2="16" y2="6" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke-width="2" stroke-linecap="round"/></svg>
+          Booked ${fmtDate(b.timestamp)}
+          <span class="oc-dot">·</span>
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          ${b.origin||'Foshan Central Hub'}
+        </div>
+        ${badgeHtml(b.status)}
+      </div>
 
-            const svcIcons = {
-                default: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>',
-                'House Detailing': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>',
-                'Electrical Setup': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>',
-                'LED Lighting Setup': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>',
-                'Final Inspection': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
-            };
+      <!-- Body: icon | info | price -->
+      <div class="oc-body">
+        <div class="oc-svc-icon">${getIcon(b.service)}</div>
 
-            function getIcon(svc) { return svcIcons[svc] || svcIcons.default; }
-
-            // Status steps
-            const STEPS = ['Booked', 'Confirmed', 'In Dispatch', 'Completed'];
-            function stepIndex(status) {
-                if (status === 'pending') return 0;
-                if (status === 'dispatch') return 2;
-                if (status === 'success') return 3;
-                return 0;
-            }
-
-            function statusTag(s) {
-                const map = { pending: 'status-pending', success: 'status-success', cancelled: 'status-cancelled', dispatch: 'status-dispatch' };
-                const lbl = { pending: 'Pending', success: 'Completed', cancelled: 'Cancelled', dispatch: 'In Dispatch' };
-                return `<span class="order-status-tag ${map[s] || 'status-pending'}">${lbl[s] || s}</span>`;
-            }
-
-            // ── Filter + Render ──
-            function filtered() {
-                return bookings
-                    .filter(b => {
-                        if (currentTab !== 'all' && b.status !== currentTab) return false;
-                        if (searchQ) {
-                            const q = searchQ.toLowerCase();
-                            return (b.id || '').toLowerCase().includes(q)
-                                || (b.service || '').toLowerCase().includes(q)
-                                || (b.address || '').toLowerCase().includes(q);
-                        }
-                        return true;
-                    })
-                    .sort((a, b) => {
-                        const ta = new Date(a.timestamp || 0).getTime();
-                        const tb = new Date(b.timestamp || 0).getTime();
-                        return sortAsc ? ta - tb : tb - ta;
-                    });
-            }
-
-            function countOf(status) { return bookings.filter(b => status === 'all' || b.status === status).length; }
-            function revenue() { return bookings.filter(b => b.status === 'success').reduce((s, b) => s + (b.price || 0), 0); }
-
-            function updateStats() {
-                const all = bookings.length;
-                const pend = countOf('pending');
-                const done = countOf('success');
-                const canc = countOf('cancelled');
-                const disp = countOf('dispatch');
-                const rev = revenue();
-
-                document.getElementById('statTotal').textContent = all;
-                document.getElementById('statPending').textContent = pend;
-                document.getElementById('statDone').textContent = done;
-                document.getElementById('statRevenue').textContent = '$' + rev.toLocaleString();
-
-                document.getElementById('sbBadgeAll').textContent = all;
-                document.getElementById('sbBadgePending').textContent = pend;
-                document.getElementById('sbBadgeDispatch').textContent = disp;
-                document.getElementById('sbBadgeSuccess').textContent = done;
-                document.getElementById('sbBadgeCancelled').textContent = canc;
-
-                document.getElementById('tcAll').textContent = all;
-                document.getElementById('tcPending').textContent = pend;
-                document.getElementById('tcDispatch').textContent = disp;
-                document.getElementById('tcSuccess').textContent = done;
-                document.getElementById('tcCancelled').textContent = canc;
-            }
-
-            function renderOrders() {
-                updateStats();
-                const list = filtered();
-                const container = document.getElementById('ordersList');
-
-                document.getElementById('toolbarLabel').textContent =
-                    list.length === 0 ? 'No orders found' :
-                        list.length === 1 ? 'Showing 1 order' :
-                            `Showing ${list.length} orders`;
-
-                if (!list.length) {
-                    container.innerHTML = `<div class="empty-state">
-          <div class="empty-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/></svg></div>
-          <div class="empty-title">No Orders Yet</div>
-          <div class="empty-sub">Bookings will appear here once customers place orders</div>
-        </div>`;
-                    return;
-                }
-
-                container.innerHTML = list.map(b => {
-                    const si = stepIndex(b.status);
-                    const stepHtml = b.status !== 'cancelled' ? `
-          <div class="order-progress-wrap">
-            <div class="order-progress-steps">
-              ${STEPS.map((s, i) => `
-                ${i > 0 ? `<div class="step-line ${i <= si ? 'done' : ''}"></div>` : ''}
-                <div class="step-node ${i < si ? 'done' : i === si ? 'active' : ''}">${i < si ? '✓' : i + 1}</div>
-              `).join('')}
-            </div>
-            <div class="step-labels">
-              ${STEPS.map((s, i) => `<span class="step-lbl ${i < si ? 'done' : i === si ? 'active' : ''}">${s}</span>`).join('')}
-            </div>
-          </div>` : '';
-
-                    const actionsHtml = b.status === 'pending' ? `
-          <button class="act-btn act-confirm" data-id="${b.id}" data-action="dispatch">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/></svg>
-            Dispatch
-          </button>
-          <button class="act-btn act-cancel" data-id="${b.id}" data-action="cancel">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            Cancel
-          </button>` :
-                        b.status === 'dispatch' ? `
-          <button class="act-btn act-confirm" data-id="${b.id}" data-action="complete">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            Mark Done
-          </button>` : '';
-
-                    return `<div class="order-row" data-id="${b.id}">
-          <!-- Meta row -->
-          <div class="order-meta-row">
-            <span class="order-id-tag">${b.id}</span>
-            <span class="order-sep">·</span>
-            <span class="order-date-tag">${fmtDate(b.timestamp)}</span>
-            <span class="order-sep">·</span>
-            <span class="order-store-tag">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-              ${b.origin || 'Foshan Central Hub'}
+        <div class="oc-svc-info">
+          <div class="oc-svc-name">${b.service}</div>
+          <div class="oc-fields">
+            <span class="oc-field">
+              <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              <span class="oc-field-label">Date:</span>
+              <span class="oc-field-val">${fmtDate(b.date)}</span>
             </span>
-            ${statusTag(b.status)}
+            <span class="oc-field">
+              <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span class="oc-field-label">Time:</span>
+              <span class="oc-field-val">${fmtTime(b.time)}</span>
+            </span>
+            <span class="oc-field">
+              <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+              <span class="oc-field-val" style="color:var(--text2);">${b.address||'—'}</span>
+            </span>
           </div>
-          <!-- Service info -->
-          <div class="order-body">
-            <div class="order-svc-icon">${getIcon(b.service)}</div>
-            <div class="order-svc-info">
-              <div class="order-svc-name">${b.service}</div>
-              <div class="order-svc-meta">
-                <span>
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                  <span class="highlight">${fmtDate(b.date)}</span>
-                </span>
-                <span>
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                  <span class="highlight">${fmtTime(b.time)}</span>
-                </span>
-                <span>
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-                  <span class="highlight">${b.address || '—'}</span>
-                </span>
-              </div>
-            </div>
-          </div>
-          <!-- Progress tracker -->
-          ${stepHtml}
-          <!-- Footer: price + actions -->
-          <div class="order-footer">
-            <div class="order-price-block">
-              <span class="order-price-label">Total</span>
-              <span class="order-price-val">$${(b.price || 0).toLocaleString()}</span>
-            </div>
-            <div class="order-actions">
-              <button class="act-btn act-detail" data-id="${b.id}" data-action="detail">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                View Details
-              </button>
-              ${actionsHtml}
-            </div>
-          </div>
-        </div>`;
-                }).join('');
-
-                // Wire action buttons
-                container.querySelectorAll('[data-action]').forEach(btn => {
-                    btn.addEventListener('click', e => {
-                        e.stopPropagation();
-                        const id = btn.dataset.id;
-                        const action = btn.dataset.action;
-                        if (action === 'detail') { openDrawer(id); return; }
-                        const b = bookings.find(x => x.id === id);
-                        if (!b) return;
-                        if (action === 'dispatch') { b.status = 'dispatch'; toast('Order dispatched!', 'ok'); }
-                        else if (action === 'complete') { b.status = 'success'; toast('Order marked as completed!', 'ok'); }
-                        else if (action === 'cancel') { if (!confirm('Cancel this order?')) return; b.status = 'cancelled'; toast('Order cancelled.', 'err'); }
-                        save(); renderOrders();
-                    });
-                });
-
-                // Row click → drawer
-                container.querySelectorAll('.order-row').forEach(row => {
-                    row.addEventListener('click', () => openDrawer(row.dataset.id));
-                });
-            }
-
-            // ── Detail Drawer ──
-            function openDrawer(id) {
-                const b = bookings.find(x => x.id === id);
-                if (!b) return;
-                const body = document.getElementById('drawerBody');
-                const foot = document.getElementById('drawerFoot');
-
-                body.innerHTML = `
-        <div class="d-section">
-          <div class="d-section-title">Order Info</div>
-          <div class="d-row"><span class="d-key">Order ID</span><span class="d-val" style="color:var(--gold);font-family:'DM Mono',monospace;font-size:11px;">${b.id}</span></div>
-          <div class="d-row"><span class="d-key">Placed On</span><span class="d-val">${fmtDate(b.timestamp)}</span></div>
-          <div class="d-row"><span class="d-key">Status</span><span class="d-val">${statusTag(b.status)}</span></div>
         </div>
 
-        <div class="d-section">
-          <div class="d-section-title">Service Details</div>
-          <div class="d-row"><span class="d-key">Service</span><span class="d-val" style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--platinum);">${b.service}</span></div>
-          <div class="d-row"><span class="d-key">Date</span><span class="d-val">${fmtDate(b.date)}</span></div>
-          <div class="d-row"><span class="d-key">Time Slot</span><span class="d-val">${fmtTime(b.time)}</span></div>
-          <div class="d-row"><span class="d-key">Total Price</span><span class="d-val gold">$${(b.price || 0).toLocaleString()}</span></div>
+        <div class="oc-price-col">
+          <span class="oc-price-label">Total</span>
+          <span class="oc-price">$${(b.price||0).toLocaleString()}</span>
         </div>
+      </div>
 
-        <div class="d-section">
-          <div class="d-section-title">Logistics</div>
-          <div class="d-row"><span class="d-key">Dispatch From</span><span class="d-val">${b.origin || '—'}</span></div>
-          <div class="d-row"><span class="d-key">Destination</span><span class="d-val">${b.address || '—'}</span></div>
-          ${b.notes ? `<div class="d-row"><span class="d-key">Notes</span><span class="d-val">${b.notes}</span></div>` : ''}
-        </div>
+      <!-- Progress tracker -->
+      ${progressHtml(b)}
 
-        ${b.status !== 'cancelled' ? `<div class="d-section">
-          <div class="d-section-title">Progress Tracker</div>
-          <div style="padding:4px 0;">
-            <div class="order-progress-steps">
-              ${STEPS.map((s, i) => {
-                    const si = stepIndex(b.status);
-                    return `${i > 0 ? `<div class="step-line ${i <= si ? 'done' : ''}"></div>` : ''}<div class="step-node ${i < si ? 'done' : i === si ? 'active' : ''}">${i < si ? '✓' : i + 1}</div>`;
-                }).join('')}
-            </div>
-            <div class="step-labels" style="margin-top:6px;">
-              ${STEPS.map((s, i) => {
-                    const si2 = stepIndex(b.status);
-                    return `<span class="step-lbl ${i < si2 ? 'done' : i === si2 ? 'active' : ''}">${s}</span>`;
-                }).join('')}
-            </div>
-          </div>
-        </div>` : ''}`;
-
-                // Drawer footer actions
-                let footHtml = `<button class="drawer-action-btn act-detail" style="background:var(--steel);border:1px solid rgba(255,255,255,0.07);color:var(--ash);" id="drawerClose2">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg> Close
-      </button>`;
-
-                if (b.status === 'pending') {
-                    footHtml += `
-          <button class="drawer-action-btn act-dispatch" style="background:var(--blue-dim);border:1px solid rgba(59,130,246,0.25);color:var(--blue);" id="daDispatch">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/></svg> Dispatch
+      <!-- Actions: View Details on left | Status actions on right -->
+      <div class="oc-foot">
+        <div class="oc-foot-left">
+          <button class="btn btn-ghost" data-id="${b.id}" data-act="detail">
+            <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            View Details
           </button>
-          <button class="drawer-action-btn act-cancel" id="daCancel" style="flex:none;padding:10px 14px;background:var(--red-dim);border:1px solid rgba(239,68,68,0.2);color:var(--red);">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-          </button>`;
-                } else if (b.status === 'dispatch') {
-                    footHtml += `<button class="drawer-action-btn act-confirm" id="daComplete" style="background:var(--green-dim);border:1px solid rgba(34,197,94,0.25);color:var(--green);">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Mark Completed
-        </button>`;
-                }
-                foot.innerHTML = footHtml;
+        </div>
+        <div class="oc-foot-right">
+          ${b.status==='pending'?`
+            <button class="btn btn-blue" data-id="${b.id}" data-act="dispatch">
+              <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/></svg>
+              Dispatch Order
+            </button>
+            <button class="btn btn-red" data-id="${b.id}" data-act="cancel">
+              <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              Cancel Order
+            </button>
+          `:b.status==='dispatch'?`
+            <button class="btn btn-green" data-id="${b.id}" data-act="complete">
+              <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Mark as Completed
+            </button>
+          `:''}
+        </div>
+      </div>
 
-                // Wire drawer actions
-                document.getElementById('drawerClose2')?.addEventListener('click', closeDrawer);
-                document.getElementById('daDispatch')?.addEventListener('click', () => {
-                    b.status = 'dispatch'; save(); renderOrders(); openDrawer(id); toast('Dispatched!', 'ok');
-                });
-                document.getElementById('daComplete')?.addEventListener('click', () => {
-                    b.status = 'success'; save(); renderOrders(); openDrawer(id); toast('Marked complete!', 'ok');
-                });
-                document.getElementById('daCancel')?.addEventListener('click', () => {
-                    if (!confirm('Cancel this booking?')) return;
-                    b.status = 'cancelled'; save(); renderOrders(); closeDrawer(); toast('Cancelled.', 'err');
-                });
+    </div>
+  `).join('');
 
-                document.getElementById('detailDrawer').classList.add('open');
-                document.getElementById('drawerOverlay').classList.add('open');
-            }
+  el.querySelectorAll('[data-act]').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      const id=btn.dataset.id,act=btn.dataset.act;
+      if(act==='detail'){openDrawer(id);return;}
+      const b=bookings.find(x=>x.id===id);if(!b)return;
+      if(act==='dispatch'){b.status='dispatch';toast('Order dispatched!','ok');}
+      else if(act==='complete'){b.status='success';toast('Marked as completed!','ok');}
+      else if(act==='cancel'){if(!confirm('Cancel this order?'))return;b.status='cancelled';toast('Order cancelled.','err');}
+      save();render();
+    });
+  });
 
-            function closeDrawer() {
-                document.getElementById('detailDrawer').classList.remove('open');
-                document.getElementById('drawerOverlay').classList.remove('open');
-            }
+  el.querySelectorAll('.oc').forEach(card=>{
+    card.addEventListener('click',()=>openDrawer(card.dataset.id));
+  });
+}
 
-            document.getElementById('drawerClose').addEventListener('click', closeDrawer);
-            document.getElementById('drawerOverlay').addEventListener('click', closeDrawer);
+function openDrawer(id){
+  const b=bookings.find(x=>x.id===id);if(!b)return;
+  document.getElementById('dwBody').innerHTML=`
+    <div class="dw-sec">
+      <div class="dw-sec-title">Order Info</div>
+      <div class="dw-row"><span class="dw-key">Order ID</span><span class="dw-val" style="font-family:'Fira Code',monospace;color:var(--gold);font-size:11.5px;">${b.id}</span></div>
+      <div class="dw-row"><span class="dw-key">Placed On</span><span class="dw-val">${fmtDate(b.timestamp)}</span></div>
+      <div class="dw-row"><span class="dw-key">Status</span><span class="dw-val">${badgeHtml(b.status)}</span></div>
+    </div>
+    <div class="dw-sec">
+      <div class="dw-sec-title">Service Details</div>
+      <div class="dw-row"><span class="dw-key">Service</span><span class="dw-val" style="font-family:'Cormorant',serif;font-size:18px;font-weight:600;">${b.service}</span></div>
+      <div class="dw-row"><span class="dw-key">Service Date</span><span class="dw-val">${fmtDate(b.date)}</span></div>
+      <div class="dw-row"><span class="dw-key">Time Slot</span><span class="dw-val">${fmtTime(b.time)}</span></div>
+      <div class="dw-row"><span class="dw-key">Total Price</span><span class="dw-val gold">$${(b.price||0).toLocaleString()}</span></div>
+    </div>
+    <div class="dw-sec">
+      <div class="dw-sec-title">Logistics</div>
+      <div class="dw-row"><span class="dw-key">Dispatched From</span><span class="dw-val">${b.origin||'—'}</span></div>
+      <div class="dw-row"><span class="dw-key">Destination</span><span class="dw-val">${b.address||'—'}</span></div>
+      ${b.notes?`<div class="dw-row"><span class="dw-key">Notes</span><span class="dw-val">${b.notes}</span></div>`:''}
+    </div>
+    ${b.status!=='cancelled'?`<div class="dw-sec"><div class="dw-sec-title">Progress</div>${progressHtml(b)}</div>`:''}
+  `;
 
-            // ── Tabs ──
-            document.querySelectorAll('.filter-tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    currentTab = tab.dataset.tab;
-                    renderOrders();
-                });
-            });
+  let foot=`<button class="btn btn-ghost" id="dwClose2">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>Close
+  </button>`;
+  if(b.status==='pending'){
+    foot+=`<button class="btn btn-blue" id="dwDisp"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/></svg>Dispatch</button>
+    <button class="btn btn-red" id="dwCanc"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>Cancel</button>`;
+  }else if(b.status==='dispatch'){
+    foot+=`<button class="btn btn-green" id="dwComp"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Mark Completed</button>`;
+  }
+  document.getElementById('dwFoot').innerHTML=foot;
 
-            // Sidebar nav filter
-            document.querySelectorAll('[data-filter-nav]').forEach(a => {
-                a.addEventListener('click', e => {
-                    e.preventDefault();
-                    currentTab = a.dataset.filterNav;
-                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-                    document.querySelector(`.filter-tab[data-tab="${currentTab}"]`)?.classList.add('active');
-                    document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
-                    a.classList.add('active');
-                    renderOrders();
-                });
-            });
+  document.getElementById('dwClose2')?.addEventListener('click',closeDrawer);
+  document.getElementById('dwDisp')?.addEventListener('click',()=>{b.status='dispatch';save();render();openDrawer(id);toast('Dispatched!','ok');});
+  document.getElementById('dwComp')?.addEventListener('click',()=>{b.status='success';save();render();openDrawer(id);toast('Marked complete!','ok');});
+  document.getElementById('dwCanc')?.addEventListener('click',()=>{if(!confirm('Cancel this booking?'))return;b.status='cancelled';save();render();closeDrawer();toast('Cancelled.','err');});
 
-            // ── Search ──
-            document.getElementById('searchInput').addEventListener('input', e => {
-                searchQ = e.target.value.trim();
-                renderOrders();
-            });
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
 
-            // ── Sort ──
-            document.getElementById('sortBtn').addEventListener('click', function () {
-                sortAsc = !sortAsc;
-                this.innerHTML = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="11" height="11"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/></svg> ${sortAsc ? 'Oldest First' : 'Newest First'}`;
-                renderOrders();
-            });
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+document.getElementById('dwClose').addEventListener('click',closeDrawer);
+document.getElementById('overlay').addEventListener('click',closeDrawer);
 
-            // ── Refresh ──
-            document.getElementById('refreshBtn').addEventListener('click', () => {
-                try { bookings = JSON.parse(localStorage.getItem('ceBookings') || '[]'); } catch (e) { }
-                renderOrders();
-                toast('Orders refreshed', 'ok');
-            });
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');curTab=tab.dataset.tab;render();
+  });
+});
+
+document.querySelectorAll('[data-fnav]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    curTab=a.dataset.fnav;
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelector(`.tab[data-tab="${curTab}"]`)?.classList.add('active');
+    document.querySelectorAll('.sb-link').forEach(l=>l.classList.remove('active'));
+    a.classList.add('active');render();
+  });
+});
+
+document.getElementById('searchInput').addEventListener('input',e=>{searchQ=e.target.value.trim();render();});
+
+document.getElementById('sortBtn').addEventListener('click',function(){
+  sortAsc=!sortAsc;
+  this.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/></svg>${sortAsc?'Oldest First':'Newest First'}`;
+  render();
+});
+
+document.getElementById('refreshBtn').addEventListener('click',()=>{
+  try{bookings=JSON.parse(localStorage.getItem('ceBookings')||'[]');}catch(e){}
+  render();toast('Orders refreshed','ok');
+});
 
             // ── Save ──
             function save() { localStorage.setItem('ceBookings', JSON.stringify(bookings)); }
@@ -2314,306 +924,6 @@
             toast('Signed out. Redirecting…', 'ok');
             setTimeout(() => window.location.replace('../Login/login.html'), 1200);
         });
-
-        /* ══════════════════════════════════════
-           COURIER CHAT INBOX  —  Service / Admin side
-           Backend: Supabase REST + Realtime
-           Table: chat_messages (order_ref, sender, message, sent_at)
-        ══════════════════════════════════════ */
-        (function () {
-            const SB_URL = 'https://pdqhbxtxvxrwtkvymjlm.supabase.co';
-            const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkcWhieHR4dnhyd3RrdnltamxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NTEyMzIsImV4cCI6MjA4NzEyNzIzMn0.jKq6Zw1XWDYXkxdrkW6HscOpsOuUm0gcyBCwFsAwN9U';
-
-            let activeKey = null;
-            let inboxData = {};   // { orderRef: [messages] }
-            let seenCounts = {};   // { orderRef: count of customer msgs seen }
-            let realtimeWs = null;
-            let unread = 0;
-
-            function fmtTime(ts) {
-                try { return new Date(ts).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }); }
-                catch (e) { return ''; }
-            }
-
-            /* ── REST helpers ── */
-            async function sbFetch(path, opts = {}) {
-                const res = await fetch(SB_URL + path, {
-                    ...opts,
-                    headers: {
-                        apikey: SB_KEY,
-                        Authorization: `Bearer ${SB_KEY}`,
-                        'Content-Type': 'application/json',
-                        ...(opts.headers || {})
-                    }
-                });
-                if (!res.ok) return null;
-                const ct = res.headers.get('content-type') || '';
-                return ct.includes('json') ? res.json() : null;
-            }
-
-            /* Fetch all messages for one order_ref */
-            async function fetchThread(orderRef) {
-                const data = await sbFetch(
-                    `/rest/v1/chat_messages?order_ref=eq.${encodeURIComponent(orderRef)}&order=sent_at.asc`
-                );
-                return data || [];
-            }
-
-            /* Fetch all unique order refs that have at least one message */
-            async function fetchAllRefs() {
-                const data = await sbFetch('/rest/v1/chat_messages?select=order_ref&order=sent_at.desc');
-                if (!data) return [];
-                // Unique order refs preserving order
-                const seen = new Set();
-                return data.reduce((acc, r) => {
-                    if (!seen.has(r.order_ref)) { seen.add(r.order_ref); acc.push(r.order_ref); }
-                    return acc;
-                }, []);
-            }
-
-            /* Insert a courier reply */
-            async function insertReply(orderRef, message) {
-                await sbFetch('/rest/v1/chat_messages', {
-                    method: 'POST',
-                    headers: { Prefer: 'return=minimal' },
-                    body: JSON.stringify({ order_ref: orderRef, sender: 'courier', message })
-                });
-            }
-
-            /* ── INBOX VIEW ── */
-            async function renderInbox() {
-                const container = document.getElementById('ccMsgs');
-                const sendRow = document.getElementById('ccSendRow');
-                if (sendRow) sendRow.style.display = 'none';
-                document.getElementById('ccRefBar').textContent = 'All Conversations';
-
-                const refs = await fetchAllRefs();
-                if (refs.length === 0) {
-                    container.innerHTML = `<div style="text-align:center;font-family:'DM Mono',monospace;font-size:8.5px;color:#888;opacity:.45;padding:50px 0 20px;line-height:2">No customer messages yet.<br>Waiting for orders.</div>`;
-                    return;
-                }
-
-                // Fetch latest message for each ref for preview
-                const previews = await Promise.all(refs.map(async ref => {
-                    const msgs = await fetchThread(ref);
-                    inboxData[ref] = msgs;
-                    const cxTotal = msgs.filter(m => m.sender === 'customer').length;
-                    const cxSeen = seenCounts[ref] || 0;
-                    return { ref, msgs, unreadN: Math.max(0, cxTotal - cxSeen) };
-                }));
-
-                container.innerHTML = previews.map(({ ref, msgs, unreadN }) => {
-                    const last = msgs[msgs.length - 1];
-                    const lastTxt = last ? last.message : 'No messages yet';
-                    const lastWho = last ? (last.sender === 'customer' ? 'Customer' : 'You') : '';
-                    return `<div class="cc-inbox-item" data-ref="${ref}"
-                        style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:.22s;border-left:2px solid ${unreadN > 0 ? 'rgba(74,222,128,0.7)' : 'transparent'}">
-                        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#c6a75e,#d4af37);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:#080808;flex-shrink:0">${ref.charAt(0).toUpperCase()}</div>
-                        <div style="flex:1;min-width:0">
-                            <div style="font-size:11px;font-weight:600;color:#e8e4db;font-family:'Raleway',sans-serif;margin-bottom:2px;display:flex;justify-content:space-between">
-                                <span>Order · ${ref}</span>
-                                ${unreadN > 0 ? `<span style="background:#fb923c;color:#000;font-size:8px;font-weight:700;padding:1px 6px;border-radius:8px;font-family:'DM Mono',monospace">${unreadN} new</span>` : ''}
-                            </div>
-                            <div style="font-size:10.5px;color:rgba(214,209,200,0.38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
-                                <span style="font-size:8px;color:rgba(214,209,200,0.25);font-family:'DM Mono',monospace">${lastWho ? lastWho + ': ' : ''}</span>${lastTxt}
-                            </div>
-                        </div>
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12" style="opacity:.2;flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                    </div>`;
-                }).join('');
-
-                container.querySelectorAll('.cc-inbox-item').forEach(el => {
-                    el.addEventListener('mouseenter', () => el.style.background = 'rgba(198,167,94,0.06)');
-                    el.addEventListener('mouseleave', () => el.style.background = '');
-                    el.addEventListener('click', () => openThread(el.dataset.ref));
-                });
-            }
-
-            /* ── THREAD VIEW ── */
-            function renderThread(msgs) {
-                const container = document.getElementById('ccMsgs');
-                const sendRow = document.getElementById('ccSendRow');
-                if (sendRow) sendRow.style.display = '';
-
-                container.innerHTML = msgs.length === 0
-                    ? `<div style="text-align:center;font-family:'DM Mono',monospace;font-size:8.5px;color:#888;opacity:.45;padding:40px 0;line-height:2">No messages yet.<br>Waiting for the customer to write.</div>`
-                    : msgs.map(m => {
-                        const isMine = m.sender === 'courier';
-                        const cls = isMine ? 'me' : 'them';
-                        const label = !isMine
-                            ? `<div style="font-size:7px;letter-spacing:1px;opacity:.4;margin-bottom:3px;font-family:'DM Mono',monospace">CUSTOMER</div>`
-                            : `<div style="font-size:7px;letter-spacing:1px;opacity:.4;margin-bottom:3px;font-family:'DM Mono',monospace;text-align:right">YOU</div>`;
-                        return `<div class="cc-msg ${cls}">${label}<div>${m.message}</div><div class="cc-msg-time">${fmtTime(m.sent_at)}</div></div>`;
-                    }).join('');
-
-                container.scrollTop = container.scrollHeight;
-            }
-
-            async function openThread(ref) {
-                activeKey = ref;
-                document.getElementById('ccAvatar').textContent = ref.charAt(0).toUpperCase();
-                document.getElementById('ccCourierName').textContent = 'Customer — ' + ref;
-                document.getElementById('ccRefBar').textContent = 'Order · ' + ref;
-                const backBtn = document.getElementById('ccBackBtn');
-                if (backBtn) backBtn.style.display = '';
-                const msgs = await fetchThread(ref);
-                inboxData[ref] = msgs;
-                seenCounts[ref] = msgs.filter(m => m.sender === 'customer').length;
-                renderThread(msgs);
-                setTimeout(() => document.getElementById('ccInput').focus(), 60);
-            }
-
-            function openInbox() {
-                activeKey = null;
-                document.getElementById('ccAvatar').textContent = '✉';
-                document.getElementById('ccCourierName').textContent = 'Customer Inbox';
-                const backBtn = document.getElementById('ccBackBtn');
-                if (backBtn) backBtn.style.display = 'none';
-                renderInbox();
-            }
-
-            function openCourierChat(specificKey) {
-                document.getElementById('ccOverlay').classList.add('open');
-                clearBadge();
-                specificKey ? openThread(specificKey) : openInbox();
-            }
-
-            /* ── Send reply ── */
-            async function sendReply() {
-                if (!activeKey) return;
-                const input = document.getElementById('ccInput');
-                const text = input.value.trim();
-                if (!text) return;
-                input.value = '';
-                input.disabled = true;
-                await insertReply(activeKey, text);
-                input.disabled = false;
-                const msgs = await fetchThread(activeKey);
-                inboxData[activeKey] = msgs;
-                renderThread(msgs);
-                setTimeout(() => input.focus(), 50);
-            }
-
-            /* ── Badge helpers ── */
-            function showBadge(n) {
-                const btn = document.getElementById('topbarChatBtn');
-                if (!btn) return;
-                let badge = btn.querySelector('.cc-topbar-badge');
-                if (!badge) {
-                    badge = document.createElement('span');
-                    badge.className = 'cc-topbar-badge';
-                    badge.style.cssText = 'position:absolute;top:-5px;right:-5px;background:#fb923c;color:#000;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:DM Mono,monospace';
-                    btn.style.position = 'relative';
-                    btn.appendChild(badge);
-                }
-                badge.textContent = n;
-                badge.style.display = 'flex';
-            }
-            function clearBadge() {
-                unread = 0;
-                const badge = document.getElementById('topbarChatBtn')?.querySelector('.cc-topbar-badge');
-                if (badge) badge.style.display = 'none';
-            }
-
-            /* ── Supabase Realtime subscription (all chat_messages) ── */
-            function connectRealtime() {
-                const ws = new WebSocket(
-                    `wss://pdqhbxtxvxrwtkvymjlm.supabase.co/realtime/v1/websocket?apikey=${SB_KEY}&vsn=1.0.0`
-                );
-                ws.onopen = () => {
-                    ws.send(JSON.stringify({
-                        topic: 'realtime:public:chat_messages',
-                        event: 'phx_join',
-                        payload: { config: { broadcast: { self: false }, presence: { key: '' } } },
-                        ref: null
-                    }));
-                };
-                ws.onmessage = async (evt) => {
-                    try {
-                        const data = JSON.parse(evt.data);
-                        if (data.event !== 'INSERT') return;
-                        const record = data.payload?.record;
-                        if (!record || record.sender !== 'customer') return;
-
-                        const ref = record.order_ref;
-                        const isOpen = document.getElementById('ccOverlay').classList.contains('open');
-
-                        if (isOpen && activeKey === ref) {
-                            // In this thread → refresh it
-                            const msgs = await fetchThread(ref);
-                            inboxData[ref] = msgs;
-                            seenCounts[ref] = msgs.filter(m => m.sender === 'customer').length;
-                            renderThread(msgs);
-                        } else if (isOpen && !activeKey) {
-                            // In inbox view → re-render list
-                            renderInbox();
-                        } else {
-                            // Panel closed → show badge
-                            const seen = seenCounts[ref] || 0;
-                            const msgs = await fetchThread(ref);
-                            inboxData[ref] = msgs;
-                            const cxTotal = msgs.filter(m => m.sender === 'customer').length;
-                            const diff = cxTotal - seen;
-                            if (diff > 0) { unread += diff; showBadge(unread); }
-                        }
-                    } catch (e) { }
-                };
-                ws.onclose = () => setTimeout(connectRealtime, 5000);  // auto-reconnect
-                ws.onerror = () => { };
-                realtimeWs = ws;
-            }
-
-            connectRealtime();
-
-            /* ── Event wiring ── */
-            document.getElementById('ccSend').addEventListener('click', sendReply);
-            document.getElementById('ccInput').addEventListener('keydown', e => { if (e.key === 'Enter') sendReply(); });
-            document.getElementById('ccClose').addEventListener('click', () => {
-                document.getElementById('ccOverlay').classList.remove('open');
-                activeKey = null;
-                const url = new URL(window.location.href);
-                url.searchParams.delete('tab');
-                url.searchParams.delete('ref');
-                window.history.replaceState({}, '', url.toString());
-            });
-            document.getElementById('ccOverlay').addEventListener('click', e => {
-                if (e.target === document.getElementById('ccOverlay'))
-                    document.getElementById('ccClose').click();
-            });
-
-            const backBtn = document.getElementById('ccBackBtn');
-            if (backBtn) {
-                backBtn.style.display = 'none';
-                backBtn.addEventListener('click', openInbox);
-            }
-
-            /* Topbar chat button */
-            const topbarRight = document.querySelector('.topbar-right');
-            if (topbarRight) {
-                const chatBtn = document.createElement('button');
-                chatBtn.className = 'topbar-btn';
-                chatBtn.title = 'Customer Chat Inbox';
-                chatBtn.id = 'topbarChatBtn';
-                chatBtn.style.position = 'relative';
-                chatBtn.innerHTML = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                </svg>`;
-                chatBtn.addEventListener('click', () => openCourierChat(null));
-                topbarRight.prepend(chatBtn);
-            }
-
-            /* Auto-open if URL has ?tab=chat&ref=... */
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('tab') === 'chat') {
-                const ref = urlParams.get('ref') || null;
-                setTimeout(() => openCourierChat(ref), 400);
-            }
-        })();
-
-
-
     </script>
 </body>
-
 </html>

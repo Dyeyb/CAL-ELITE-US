@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Management – Aluminum Lady</title>
+  <title>ADMIN - PRODUCT</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap"
     rel="stylesheet">
@@ -331,21 +331,26 @@
       overflow: hidden;
     }
 
+    /* ── LOGO ICON ── */
     .logo-icon {
       width: 40px;
       height: 40px;
-      border: 1.5px solid var(--gold);
+      border: none;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      transition: var(--t);
+      overflow: hidden;
+      background: transparent;
+      padding: 0;
     }
 
-    .logo-icon svg {
-      width: 20px;
-      height: 20px;
-      fill: var(--gold);
+    .left-logo-img {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+      display: block;
+      margin-top: 5px;
     }
 
     .logo-text {
@@ -3070,12 +3075,12 @@
     <div class="circle-deco"></div>
     <div class="gold-line"></div>
     <div class="sidebar-logo">
-      <div class="logo-icon"><svg viewBox="0 0 24 24">
-          <path d="M3 21h18v-2H3v2zm0-4h18v-2H3v2zm0-4h18v-2H3v2zm0-4h18V7H3v2zm0-6v2h18V3H3z" />
-        </svg></div>
+      <div class="logo-icon">
+        <img src="../../LOGO/CalElite.png" alt="CAL ELITE" class="left-logo-img" />
+      </div>
       <div class="logo-text">
-        <div class="logo-name">Aluminum Lady</div>
-        <div class="logo-sub">Admin Panel</div>
+        <div class="logo-name">CAL ELITE</div>
+        <div class="logo-sub">BUILDERS AND ELECTRICAL</div>
       </div>
     </div>
     <nav class="sidebar-nav">
@@ -3117,7 +3122,7 @@
     </nav>
     <div class="sidebar-footer">
       <div class="footer-line"></div>
-      <div class="footer-text">Foshan Aluminum Lady<br />Building Materials Co., Ltd.<br />© 2025 — All rights reserved
+      <div class="footer-text">CAL ELITE<br />BUILDERS AND CAL ELECTRICAL<br />© 2025 — All rights reserved
       </div>
     </div>
     <div class="sidebar-bottom">
@@ -3149,8 +3154,8 @@
         <div class="topbar-divider"></div>
         <div class="topbar-info">
           <div class="topbar-title">Product <em>Management</em></div>
-          <div class="breadcrumb">Aluminum Lady <span style="color:var(--gold-border)">／</span> Admin <span
-              style="color:var(--gold-border)">／</span> <b>Product</b></div>
+          <div class="breadcrumb">CAL ELITE BUILDERS AND CAL ELECTRICAL<span style="color:var(--gold-border)">-</span>
+            Admin <span style="color:var(--gold-border)"></span> <b>Product</b></div>
         </div>
       </div>
       <div class="topbar-right">
