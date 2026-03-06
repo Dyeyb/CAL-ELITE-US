@@ -476,6 +476,113 @@
         color: var(--gold-bright);
       }
 
+      .nav-orders-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 3px;
+        border: 1px solid rgba(168, 131, 44, 0.52);
+        background: #05070d;
+        color: #626b84;
+        box-shadow: inset 0 0 0 1px rgba(255, 214, 112, 0.04);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        transition: var(--t);
+        flex-shrink: 0;
+        text-decoration: none;
+      }
+
+      .nav-orders-btn:hover {
+        border-color: rgba(191, 152, 57, 0.72);
+        background: #080b12;
+        color: #747f9a;
+      }
+
+      .orders-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: linear-gradient(135deg, #b8932a, #d4a843);
+        color: #05050a;
+        font-family: "DM Mono", monospace;
+        font-size: 9px;
+        font-weight: 700;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: scale(0);
+        transition: var(--t);
+      }
+
+      .orders-badge.visible {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .nav-cart-btn {
+        position: relative;
+        width: 34px;
+        height: 34px;
+        border-radius: 3px;
+        border: 1px solid #2b3150;
+        background: #111429;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: var(--t);
+        color: #8e96af;
+        text-decoration: none;
+      }
+
+      .nav-cart-btn:hover {
+        border-color: rgba(212, 168, 67, 0.6);
+        background: #161b35;
+        color: #d4a843;
+      }
+
+      .cart-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        min-width: 17px;
+        height: 17px;
+        padding: 0 4px;
+        background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+        border-radius: 9px;
+        border: 1.5px solid var(--obsidian);
+        font-family: "DM Mono", monospace;
+        font-size: 9px;
+        font-weight: 700;
+        color: var(--ink);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        animation: badgePop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .cart-badge.visible {
+        display: flex;
+      }
+
+      @keyframes badgePop {
+        from {
+          transform: scale(0);
+        }
+
+        to {
+          transform: scale(1);
+        }
+      }
+
       .nav-theme-btn {
         width: 38px;
         height: 38px;
@@ -1759,35 +1866,49 @@
       }
 
       .scn-icon {
-        width: 50px;
-        height: 50px;
+        width: 100px;
+        height: 100px;
         flex-shrink: 0;
-        background: var(--gold-dim);
-        border: 1px solid var(--gold-border);
-        border-radius: 8px;
+        background: transparent;
+        border: none;
+        border-radius: 0;
         display: flex;
         align-items: center;
         justify-content: center;
+        position: relative;
+        overflow: hidden;
         transition: var(--t);
       }
 
+      .scn-icon::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: center / contain no-repeat url("../../LOGO/CalElite.png");
+        opacity: 1;
+      }
+
       .scn-icon svg {
-        width: 22px;
-        height: 22px;
-        stroke: var(--gold);
+        width: 28px;
+        height: 28px;
+        stroke: var(--gold-bright);
         transition: var(--t);
+        position: relative;
+        z-index: 2;
+        opacity: 0;
       }
 
       .scn-icon-img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        border-radius: 7px;
+        object-fit: contain;
+        border-radius: 0;
+        position: relative;
+        z-index: 1;
       }
 
       .svc-card-new:hover .scn-icon {
-        background: rgba(184, 147, 42, 0.2);
-        box-shadow: 0 0 20px var(--gold-glow);
+        transform: scale(1.05);
       }
 
     .svc-card-new:hover .scn-icon svg {
@@ -1971,24 +2092,24 @@
         display: flex;
         align-items: center;
         gap: 14px;
-        margin-bottom: 20px;
+        margin-bottom: 18px;
       }
 
-    .foot-logo {
-      width: 42px;
-      height: 42px;
-      background: linear-gradient(135deg, var(--slate), var(--panel));
-      border: 1px solid var(--gold-rim);
-      border-radius: 3px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
-      font-weight: 700;
-      font-style: italic;
-      color: var(--gold-bright)
-    }
+      .foot-logo {
+        width: 72px;
+        height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .foot-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
 
       .foot-bname {
         font-family: "Cormorant Garamond", serif;
@@ -2466,6 +2587,38 @@
         min-width: 160px
       }
     }
+
+    /* Navbar control size alignment across pages */
+    .nav-orders-btn,
+    .nav-cart-btn,
+    .nav-theme-btn {
+      width: 34px;
+      height: 34px;
+    }
+
+    .nav-user-btn {
+      height: 34px;
+      padding: 3px 9px 3px 3px;
+    }
+
+    .nav-avatar {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Static navbar behavior (match products page) */
+    .nl,
+    .nl::after {
+      transition: none !important;
+    }
+
+    .navbar,
+    .logo,
+    .nav-right,
+    .main-nav ul li,
+    nav ul li {
+      animation: none !important;
+    }
   </style>
 </head>
 
@@ -2477,8 +2630,10 @@
   <nav class="navbar" id="navbar">
     <div class="nav-progress" id="navProgress"></div>
     <div class="nav-inner">
-      <a href="index.html" class="logo">
-        <div class="logo-mark"><img src="/LOGO/CalElite.png" alt="Cal Elite Logo"></div>
+      <a href="../home/index.html" class="logo">
+        <div class="logo-mark"><img src="../../LOGO/CalElite.png" alt="Cal Elite Logo"
+            onerror="this.parentNode.innerHTML='<span style=\'font-family:Cormorant Garamond,serif;font-size:28px;font-weight:700;font-style:italic;color:var(--gold-bright)\'>C</span>'">
+        </div>
         <div class="logo-words">
           <span class="logo-est">Est. 2004</span>
           <span class="logo-name"><em>Cal Elite</em></span>
@@ -2504,25 +2659,19 @@
             </svg>
           </button>
         </div>
-        <button class="nav-notif-btn" id="notifBtn" title="Notifications">
-          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button class="nav-orders-btn" id="navOrdersBtn" title="My Orders" aria-label="My Orders" type="button">
+          <svg width="17" height="17" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 12h6M9 16h4" />
           </svg>
-          <div class="notif-badge" id="notifBadge"></div>
+          <span class="orders-badge" id="ordersBadge">0</span>
         </button>
-        <button class="nav-theme-btn" id="navThemeBtn" title="Toggle theme">
-          <span class="theme-icon icon-moon"><svg width="16" height="16" fill="none" stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-            </svg></span>
-          <span class="theme-icon icon-sun"><svg width="16" height="16" fill="none" stroke="currentColor"
-              viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="5" stroke-width="1.8" />
-              <path stroke-linecap="round" stroke-width="1.8"
-                d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-            </svg></span>
+        <button class="nav-cart-btn" id="navCartBtn" title="View Cart" aria-label="Shopping Cart" type="button">
+          <svg width="17" height="17" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          <span class="cart-badge" id="cartBadge">0</span>
         </button>
         <div class="nav-user-wrap" id="userWrap">
           <button class="nav-user-btn" id="userBtn">
@@ -2802,7 +2951,7 @@
       <div class="foot-top">
         <div>
           <div class="foot-brand">
-            <div class="foot-logo">C</div>
+            <div class="foot-logo"><img src="../../LOGO/CalElite.png" alt="Cal Elite Logo"></div>
             <div>
               <div class="foot-bname"><em>Cal Elite</em></div>
               <div class="foot-bsub">Builders · Cal Electrical</div>
@@ -3256,7 +3405,7 @@
       applyTheme(isDark);
       document
         .getElementById("navThemeBtn")
-        .addEventListener("click", () => applyTheme(!isDark));
+        ?.addEventListener("click", () => applyTheme(!isDark));
       document
         .getElementById("ddThemeToggle")
         .addEventListener("click", (e) => {
@@ -3485,9 +3634,38 @@
     const bm = document.getElementById('bookingModal');
     const mbm = document.getElementById('myBookingsModal');
     const bookingsList = document.getElementById('bookingsList');
-    const notifBadge = document.getElementById('notifBadge');
+    const ordersBadge = document.getElementById('ordersBadge');
+    const cartBadge = document.getElementById('cartBadge');
     let bookings = JSON.parse(localStorage.getItem('ceBookings') || '[]');
     let currentService = '';
+
+      function updateOrdersBadge() {
+        if (!ordersBadge) return;
+        const count = Array.isArray(bookings) ? bookings.length : 0;
+        ordersBadge.textContent = String(count);
+        ordersBadge.classList.toggle("visible", count > 0);
+      }
+
+      function updateCartBadge() {
+        if (!cartBadge) return;
+        let cart = [];
+        try {
+          cart = JSON.parse(localStorage.getItem("ceCart") || "[]");
+        } catch (e) {
+          cart = [];
+        }
+        const count = Array.isArray(cart)
+          ? cart.reduce((sum, item) => sum + (parseInt(item.qty, 10) || 0), 0)
+          : 0;
+        cartBadge.textContent = count > 99 ? "99+" : String(count);
+        cartBadge.classList.toggle("visible", count > 0);
+      }
+
+      function updateNavBadges() {
+        updateOrdersBadge();
+        updateCartBadge();
+      }
+      updateNavBadges();
 
       window.updateBookingPrice = function (val) {
         document.getElementById("scaleLabel").textContent =
@@ -3508,7 +3686,7 @@
         updateBookingPrice(document.getElementById("bScale")?.value || 1);
       };
 
-    window.openMyBookings = function () { renderBookings(); mbm.classList.add('open'); uw.classList.remove('open'); if (notifBadge) notifBadge.style.display = 'none'; };
+    window.openMyBookings = function () { renderBookings(); mbm.classList.add('open'); uw.classList.remove('open'); };
 
       ["closeBooking", "cancelBooking"].forEach((id) => {
         const b = document.getElementById(id);
@@ -3566,6 +3744,7 @@
           b.status = "success";
           localStorage.setItem("ceBookings", JSON.stringify(bookings));
           renderBookings();
+          updateOrdersBadge();
           toast("Marked as completed!", "ok");
         }
       };
@@ -3576,6 +3755,7 @@
           b.status = "cancelled";
           localStorage.setItem("ceBookings", JSON.stringify(bookings));
           renderBookings();
+          updateOrdersBadge();
           toast("Booking cancelled.", "ok");
         }
       };
@@ -3589,7 +3769,7 @@
       const newB = { id: 'BK-' + Date.now().toString(36).toUpperCase(), service: currentService, date, address: addr, time: document.getElementById('bTime')?.value || 'morning', origin: document.getElementById('bOrigin')?.value || 'Foshan Central Hub', price: 150 + (scale * 85), status: 'pending', timestamp: new Date().toISOString() };
       bookings.unshift(newB);
       localStorage.setItem('ceBookings', JSON.stringify(bookings));
-      if (notifBadge) notifBadge.style.display = 'block';
+      updateNavBadges();
       document.getElementById('bAddress').value = '';
       document.getElementById('bNotes').value = '';
       toast('Booking confirmed for ' + currentService + '!', 'ok');
@@ -3597,7 +3777,9 @@
     };
 
     document.getElementById('ddBookings').onclick = e => { e.preventDefault(); openMyBookings(); };
-    document.getElementById('notifBtn').onclick = () => openMyBookings();
+    document.getElementById('navOrdersBtn')?.addEventListener('click', () => openMyBookings());
+    document.getElementById('navCartBtn')?.addEventListener('click', () => window.location.href = '../product/products.html');
+    window.addEventListener('storage', updateNavBadges);
   </script>
 </body>
 
