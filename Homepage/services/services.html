@@ -2919,6 +2919,84 @@
     </div>
   </footer>
 
+  <!-- SERVICE FAQ MODAL -->
+  <div class="modal-bg" id="serviceFAQModal" style="z-index: 10005;">
+    <div class="modal-box" style="max-width:560px;">
+      <div class="modal-head">
+        <div class="modal-title">Service <em>Assessment</em></div><button class="modal-x"
+          id="closeServiceFAQ">×</button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom: 24px;">
+          <h4 style="color:var(--gold); margin-bottom: 8px; font-family:'Cormorant Garamond',serif; font-size:18px;">
+            Booking Questionnaire</h4>
+          <div style="display:flex; flex-direction:column; gap:16px; margin-top:16px;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
+                name="svcSituation" value="Urgent"> <span style="font-size:14px; color:var(--platinum);">Is this
+                urgent</span></label>
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
+                name="svcSituation" value="Planning"> <span style="font-size:14px; color:var(--platinum);">For
+                planning</span></label>
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
+                name="svcSituation" value="Emergency"> <span
+                style="font-size:14px; color:var(--platinum);">Emergency</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-cancel" id="cancelServiceFAQ">Cancel</button>
+        <button class="btn-p" id="proceedServiceFAQ" style="padding:9px 22px;">Next Step</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICE INQUIRY MODAL -->
+  <div class="modal-bg" id="serviceInquiryModal" style="z-index: 10005;">
+    <div class="modal-box" style="max-width:560px;">
+      <div class="modal-head">
+        <div class="modal-title">Person Details <em>For Inquiry</em></div><button class="modal-x"
+          id="closeServiceInquiry">×</button>
+      </div>
+      <div class="modal-body">
+        <div
+          style="padding: 12px 16px; background: rgba(220, 60, 60, 0.1); border: 1px solid rgba(220, 60, 60, 0.3); border-radius: 4px; margin-bottom: 20px;">
+          <p
+            style="color: #ff6d7a; font-size: 12px; font-weight: 600; text-align: center; letter-spacing: 1px; text-transform: uppercase;">
+            Notice: Buy and do at your own risk</p>
+        </div>
+        <div class="form-row">
+          <div><label class="form-lbl">Full Name</label><input type="text" class="form-input" id="svcInqName"
+              placeholder="Your name"></div>
+          <div><label class="form-lbl">Contact Number</label><input type="text" class="form-input" id="svcInqPhone"
+              placeholder="+63 xxx xxx xxxx"></div>
+        </div>
+        <label class="form-lbl">Email Address</label><input type="email" class="form-input" id="svcInqEmail"
+          placeholder="your@email.com">
+        <label class="form-lbl">Service Address</label><input type="text" class="form-input" id="svcInqAddress"
+          placeholder="Full service address">
+        <div class="form-row" style="margin-top: 16px;">
+          <div><label class="form-lbl">Preferred Date</label><input type="date" class="form-input" id="svcInqDate">
+          </div>
+          <div><label class="form-lbl">Preferred Time</label><select class="form-input" id="svcInqTime">
+              <option value="Morning">Morning (8AM-12PM)</option>
+              <option value="Afternoon">Afternoon (1PM-5PM)</option>
+              <option value="Evening">Evening (6PM-9PM)</option>
+            </select></div>
+        </div>
+        <div style="margin-bottom: 4px;">
+          <label class="form-lbl">Estimated Duration (Hours)</label>
+          <input type="number" class="form-input" id="svcInqDuration" placeholder="e.g. 2" min="1">
+        </div>
+        <label class="form-lbl" style="margin-top: 12px;">Additional Notes</label><textarea class="form-textarea"
+          id="svcInqNotes" placeholder="Any special instructions..."></textarea>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-cancel" id="cancelServiceInquiry">Cancel</button>
+        <button class="btn-p" id="submitServiceInquiry" style="padding:9px 22px;">Proceed to Booking</button>
+      </div>
+    </div>
+  </div>
+
   <!-- BOOKING MODAL -->
   <div class="modal-bg" id="bookingModal">
     <div class="modal-box" style="max-width: 500px">
@@ -3647,13 +3725,55 @@
         "$" + (150 + val * 85);
     };
 
+    // PRE-BOOKING MODALS logic
+    const fqm = document.getElementById("serviceFAQModal");
+    const iqm = document.getElementById("serviceInquiryModal");
+
     window.openBooking = function (name) {
       currentService = name;
-      document.getElementById("bookServiceName").textContent = name;
+      if (typeof user !== "undefined" && user.name) {
+        document.getElementById("svcInqName").value = user.name || "";
+        document.getElementById("svcInqEmail").value = user.email || "";
+        document.getElementById("svcInqPhone").value = user.phone || "";
+      }
+      fqm.classList.add("open");
+    };
+
+    function closeServiceFAQ() { fqm.classList.remove("open"); }
+    function closeServiceInquiry() { iqm.classList.remove("open"); }
+
+    document.getElementById("closeServiceFAQ").addEventListener("click", closeServiceFAQ);
+    document.getElementById("cancelServiceFAQ").addEventListener("click", closeServiceFAQ);
+    fqm.addEventListener("click", e => { if (e.target === fqm) closeServiceFAQ(); });
+
+    document.getElementById("proceedServiceFAQ").addEventListener("click", () => {
+      closeServiceFAQ();
+      iqm.classList.add("open");
+    });
+
+    document.getElementById("closeServiceInquiry").addEventListener("click", closeServiceInquiry);
+    document.getElementById("cancelServiceInquiry").addEventListener("click", closeServiceInquiry);
+    iqm.addEventListener("click", e => { if (e.target === iqm) closeServiceInquiry(); });
+
+    document.getElementById("submitServiceInquiry").addEventListener("click", () => {
+      const nm = document.getElementById("svcInqName").value.trim();
+      const ph = document.getElementById("svcInqPhone").value.trim();
+      const em = document.getElementById("svcInqEmail").value.trim();
+      const ad = document.getElementById("svcInqAddress").value.trim();
+
+      if (!nm || !ph || !em || !ad) {
+        if (typeof toast !== "undefined") toast("Please complete all required fields.", "err");
+        return;
+      }
+
+      closeServiceInquiry();
+
+      // Proceed to the actual booking modal
+      document.getElementById("bookServiceName").textContent = currentService;
       document.getElementById("bDate").valueAsDate = new Date();
       bm.classList.add("open");
       updateBookingPrice(document.getElementById("bScale")?.value || 1);
-    };
+    });
 
     window.openMyBookings = function () {
       renderBookings();

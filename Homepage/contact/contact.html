@@ -2425,6 +2425,7 @@
                 grid-template-columns: 1fr 1fr
             }
         }
+
         /* Navbar control size alignment across pages */
         .nav-orders-btn,
         .nav-cart-btn,
@@ -2442,6 +2443,7 @@
             width: 24px;
             height: 24px;
         }
+
         /* Static navbar behavior (match products page) */
         .nl,
         .nl::after {
@@ -2720,6 +2722,13 @@
                     <div class="f-group"><label>Phone Number</label><input type="text" class="f-inp" id="cfPhone"
                             placeholder="(707) 000-0000"></div>
                 </div>
+                <div class="f-group"><label>Type of Inquiry <span>*</span></label><select class="f-inp" id="cfType">
+                        <option value="inquiry">General Inquiry</option>
+                        <option value="quotation">Request a Quotation</option>
+                        <option value="complaint">Complaint</option>
+                        <option value="partnership">Partnership Proposal</option>
+                        <option value="other">Other</option>
+                    </select></div>
                 <div class="f-group"><label>Subject <span>*</span></label><input type="text" class="f-inp"
                         id="cfSubject" placeholder="How can we help?"></div>
                 <div class="f-group"><label>Message <span>*</span></label><textarea class="f-text" id="cfMessage"
@@ -2843,8 +2852,17 @@
     <script>
         (function () {
             function cfToast(msg, type) { let t = document.getElementById('toast'); if (!t) return; t.className = 'toast toast-' + (type === 'ok' ? 'ok' : 'err'); const icon = type === 'ok' ? '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>' : '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>'; t.innerHTML = icon + ' ' + msg; setTimeout(() => t.classList.add('show'), 10); setTimeout(() => t.classList.remove('show'), 4000); }
-            function markErr(id) { const el = document.getElementById(id); if (!el) return; el.classList.add('cf-err'); el.addEventListener('input', () => el.classList.remove('cf-err'), { once: true }); }
-            function setLoading(btn, on) { if (!btn) return; btn.disabled = on; const t = btn.querySelector('#cfBtnText'), i = btn.querySelector('#cfBtnIcon'), s = btn.querySelector('#cfBtnSpinner'); if (t) t.textContent = on ? 'Sending…' : 'Send a Message'; if (i) i.style.display = on ? 'none' : ''; if (s) s.style.display = on ? '' : 'none'; }
+            function markErr(id) { const el = document.getElementById(id); if (!el) return; el.classList.add('cf-err'); el.addEventListener('input', () => el.classList.remove('cf-err'), { once: true }); el.addEventListener('change', () => el.classList.remove('cf-err'), { once: true }); }
+            function setLoading(btn, on) {
+                if (!btn) return;
+                btn.disabled = on;
+                const t = document.getElementById('cfBtnText');
+                const i = document.getElementById('cfBtnIcon');
+                const s = document.getElementById('cfBtnSpinner');
+                if (t) t.textContent = on ? 'Sending…' : 'Send a Message';
+                if (i) i.style.display = on ? 'none' : '';
+                if (s) s.style.display = on ? '' : 'none';
+            }
             const btn = document.getElementById('cfSubmitBtn');
             if (!btn) return;
             const freshBtn = btn.cloneNode(true); btn.parentNode.replaceChild(freshBtn, btn);
@@ -2853,22 +2871,41 @@
                 const lastName = (document.getElementById('cfLastName') || { value: '' }).value.trim();
                 const email = (document.getElementById('cfEmail') || { value: '' }).value.trim();
                 const phone = (document.getElementById('cfPhone') || { value: '' }).value.trim();
+                const type = (document.getElementById('cfType') || { value: 'inquiry' }).value;
                 const subject = (document.getElementById('cfSubject') || { value: '' }).value.trim();
                 const message = (document.getElementById('cfMessage') || { value: '' }).value.trim();
+
                 let valid = true;
-                if (!firstName) { markErr('cfFirstName'); valid = false; }
-                if (!email || !email.includes('@')) { markErr('cfEmail'); valid = false; }
-                if (!subject) { markErr('cfSubject'); valid = false; }
-                if (!message || message.length < 10) { markErr('cfMessage'); valid = false; }
+                if (!firstName) { markErr('cfFirstName'); valid = false; console.log('❌ firstName empty'); }
+                if (!email || !email.includes('@')) { markErr('cfEmail'); valid = false; console.log('❌ email invalid:', email); }
+                if (!subject) { markErr('cfSubject'); valid = false; console.log('❌ subject empty'); }
+                if (!message) { markErr('cfMessage'); valid = false; console.log('❌ message empty'); }
+
                 if (!valid) { cfToast('Please fill in all required fields.', 'err'); return; }
+
                 setLoading(freshBtn, true);
+                const sessionUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+                const userId = sessionUser ? (sessionUser.id || sessionUser.user_id || null) : null;
                 try {
-                    const res = await fetch('../contact/send-contact.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ first_name: firstName, last_name: lastName, email, phone, subject, message }) });
+                    const res = await fetch('../contact/send-contact.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ first_name: firstName, last_name: lastName, email, phone, type, subject, message, user_id: userId })
+                    });
                     const data = await res.json();
-                    if (data.success) { cfToast('✓ Message sent! We will get back to you within 24 hours.', 'ok'); const form = document.getElementById('contactForm'); if (form) form.reset(); }
-                    else { cfToast(data.message || 'Failed to send. Please try again.', 'err'); }
-                } catch (err) { cfToast('Network error. Please check your connection.', 'err'); }
-                finally { setLoading(freshBtn, false); }
+                    if (data.success) {
+                        cfToast('✓ Message sent! We will get back to you within 24 hours.', 'ok');
+                        const form = document.getElementById('contactForm');
+                        if (form) form.reset();
+                    } else {
+                        cfToast(data.message || 'Failed to send. Please try again.', 'err');
+                    }
+                } catch (err) {
+                    console.error('Contact form fetch error:', err);
+                    cfToast('Network error. Please check your connection.', 'err');
+                } finally {
+                    setLoading(freshBtn, false);
+                }
             });
         })();
     </script>
@@ -3026,7 +3063,7 @@
     </div>
 
     <div class="toast" id="toast"></div>
-  <script src="../shared-cart.js"></script>
+    <script src="../shared-cart.js"></script>
 </body>
 
 </html>
