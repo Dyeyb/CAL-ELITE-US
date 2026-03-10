@@ -10,6 +10,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Raleway:wght@200;300;400;500;600&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap"
     rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../Login/auth-guard.js"></script>
   <style>
     * {
@@ -1801,6 +1802,23 @@
       position: relative
     }
 
+    .gal-empty {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      border: 1px dashed var(--gold-border);
+      color: var(--fog);
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: rgba(10, 10, 10, 0.35)
+    }
+
     .gal-item {
       position: absolute;
       top: 0;
@@ -3483,28 +3501,8 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 18l-6-6 6-6" />
           </svg>
         </button>
-        <div class="gal-track" id="galTrack">
-          <figure class="gal-item">
-            <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1000&q=80"
-              alt="Luxury facade project">
-          </figure>
-          <figure class="gal-item">
-            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80"
-              alt="High-rise structural framing">
-          </figure>
-          <figure class="gal-item">
-            <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1000&q=80"
-              alt="Engineering blueprint and planning">
-          </figure>
-          <figure class="gal-item">
-            <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1000&q=80"
-              alt="Construction meeting and execution">
-          </figure>
-          <figure class="gal-item">
-            <img src="https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=1000&q=80"
-              alt="Industrial electrical installation">
-          </figure>
-        </div>
+        <div class="gal-track" id="galTrack"></div>
+        <div class="gal-empty" id="galEmpty" aria-live="polite">Gallery images coming soon.</div>
         <button class="gal-nav next" id="galNext" aria-label="Next image">
           <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 6l6 6-6 6" />
@@ -3954,11 +3952,55 @@
     const ccio = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { const idx = Array.from(ccs).indexOf(e.target); setTimeout(() => e.target.classList.add('visible'), idx * 90); ccio.unobserve(e.target); } }); }, { threshold: 0.1 });
     ccs.forEach(c => ccio.observe(c));
 
-    const galTrack = document.getElementById('galTrack');
-    const galPrev = document.getElementById('galPrev');
-    const galNext = document.getElementById('galNext');
-    if (galTrack && galPrev && galNext) {
+    const SUPABASE_URL = 'https://pdqhbxtxvxrwtkvymjlm.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkcWhieHR4dnhyd3RrdnltamxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NTEyMzIsImV4cCI6MjA4NzEyNzIzMn0.jKq6Zw1XWDYXkxdrkW6HscOpsOuUm0gcyBCwFsAwN9U';
+    const galleryClient = (window.supabase && typeof window.supabase.createClient === 'function')
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+      : null;
+
+    function escHtml(val) {
+      return String(val || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    async function loadGalleryItems() {
+      if (!galleryClient) return [];
+      const { data, error } = await galleryClient
+        .from('gallery')
+        .select('id,title,description,image_url,sort_order,created_at')
+        .eq('section', 'gallery')
+        .eq('is_archived', false)
+        .eq('file_type', 'image')
+        .order('sort_order', { ascending: true })
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      return (data || []).filter(item => item.image_url);
+    }
+
+    function renderGallery(items) {
+      const galTrack = document.getElementById('galTrack');
+      if (!galTrack) return;
+      galTrack.innerHTML = items.map(item => `
+        <figure class="gal-item">
+          <img src="${escHtml(item.image_url)}" alt="${escHtml(item.description || item.title || 'Gallery image')}" loading="lazy">
+        </figure>
+      `).join('');
+    }
+
+    function initGalleryCarousel() {
+      const galTrack = document.getElementById('galTrack');
+      const galPrev = document.getElementById('galPrev');
+      const galNext = document.getElementById('galNext');
+      const galEmpty = document.getElementById('galEmpty');
+      if (!galTrack || !galPrev || !galNext) return;
+
       const galItems = Array.from(galTrack.querySelectorAll('.gal-item'));
+      const hasItems = galItems.length > 0;
+      if (galEmpty) galEmpty.style.display = hasItems ? 'none' : 'flex';
+      galPrev.disabled = galItems.length < 2;
+      galNext.disabled = galItems.length < 2;
+
+      if (!hasItems) return;
+
       let galIndex = 0;
       let galTimer = null;
       const mod = (n, m) => ((n % m) + m) % m;
@@ -3982,6 +4024,7 @@
       }
 
       function startGalleryAuto() {
+        if (galItems.length < 2) return;
         stopGalleryAuto();
         galTimer = setInterval(() => shiftGallery(1), 4200);
       }
@@ -3998,6 +4041,17 @@
       paintGallery();
       startGalleryAuto();
     }
+
+    (async function initGalleryFromSupabase() {
+      try {
+        const items = await loadGalleryItems();
+        renderGallery(items);
+      } catch (err) {
+        console.warn('Gallery load failed:', err);
+      } finally {
+        initGalleryCarousel();
+      }
+    })();
   </script>
   <script src="../shared-cart.js"></script>
 </body>

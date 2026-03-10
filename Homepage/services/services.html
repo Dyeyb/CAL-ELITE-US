@@ -734,7 +734,7 @@
 
     .btn-quote:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(184, 147, 42, 0.4)
+      box-shadow: 0 8px 28px rgba(184, 147, 42, 0.4);
     }
 
     .user-dropdown {
@@ -913,7 +913,7 @@
 
     .dd-mini-toggle.active::after {
       left: calc(100% - 16px);
-      background: var(--ink)
+      background: var(--ink);
     }
 
     /* ══ HERO — About-page style ══ */
@@ -1837,7 +1837,6 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: center / contain no-repeat url("../../LOGO/CalElite.png");
       opacity: 1;
     }
 
@@ -1865,7 +1864,7 @@
     }
 
     .svc-card-new:hover .scn-icon svg {
-      stroke: var(--gold-bright)
+      stroke: var(--gold-bright);
     }
 
     .scn-info {
@@ -2535,7 +2534,7 @@
       }
 
       .cat-dropdown-trigger {
-        min-width: 160px
+        min-width: 160px;
       }
     }
 
@@ -2582,8 +2581,11 @@
     <div class="nav-progress" id="navProgress"></div>
     <div class="nav-inner">
       <a href="../home/index.html" class="logo">
-        <div class="logo-mark"><img src="../../LOGO/CalElite.png" alt="Cal Elite Logo"
-            onerror="this.parentNode.innerHTML='<span style=\'font-family:Cormorant Garamond,serif;font-size:28px;font-weight:700;font-style:italic;color:var(--gold-bright)\'>C</span>'">
+        <div class="logo-mark">
+          <img src="../../LOGO/CalElite.png" alt="Cal Elite Logo" onerror="
+                this.parentNode.innerHTML =
+                  '<span style=\'font-family:Cormorant Garamond,serif;font-size:28px;font-weight:700;font-style:italic;color:var(--gold-bright)\'>C</span>'
+              " />
         </div>
         <div class="logo-words">
           <span class="logo-est">Est. 2004</span>
@@ -2596,13 +2598,15 @@
           <li><a href="../home/index.html" class="nl">Home</a></li>
           <li><a href="../product/products.html" class="nl">Products</a></li>
           <li><a href="../about/about.html" class="nl">About</a></li>
-          <li><a href="../services/services.html" class="nl active">Services</a></li>
+          <li>
+            <a href="../services/services.html" class="nl active">Services</a>
+          </li>
           <li><a href="../contact/contact.html" class="nl">Contact</a></li>
         </ul>
       </nav>
       <div class="nav-right">
         <div class="nav-search-wrap" id="searchWrap">
-          <input type="text" class="nav-search-input" id="navSearchIn" placeholder="Search…">
+          <input type="text" class="nav-search-input" id="navSearchIn" placeholder="Search…" />
           <button class="nav-search-icon" id="searchToggle" aria-label="Search">
             <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -2654,11 +2658,12 @@
               </svg>Settings</a>
             <div class="dd-sep"></div>
             <div class="dd-theme-row">
-              <div class="dd-theme-label"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14"
-                  height="14">
+              <div class="dd-theme-label">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                     d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-                </svg>Dark Mode</div>
+                </svg>Dark Mode
+              </div>
               <div class="dd-mini-toggle active" id="ddThemeToggle"></div>
             </div>
             <div class="dd-sep"></div>
@@ -2842,28 +2847,37 @@
       <div class="foot-top">
         <div>
           <div class="foot-brand">
-            <div class="foot-logo"><img src="../../LOGO/CalElite.png" alt="Cal Elite Logo"></div>
+            <div class="foot-logo">
+              <img src="../../LOGO/CalElite.png" alt="Cal Elite Logo" />
+            </div>
             <div>
               <div class="foot-bname"><em>Cal Elite</em></div>
               <div class="foot-bsub">Builders · Cal Electrical</div>
             </div>
           </div>
-          <p class="foot-tagline">Precision aluminum building materials engineered for elegance and designed to endure.
+          <p class="foot-tagline">
+            Precision aluminum building materials engineered for elegance and
+            designed to endure.
           </p>
           <div class="foot-socials">
-            <div class="soc" title="WeChat"><svg viewBox="0 0 24 24" fill="currentColor">
+            <div class="soc" title="WeChat">
+              <svg viewBox="0 0 24 24" fill="currentColor">
                 <path
                   d="M10.1 20c-4.6 0-8.1-2.3-8.1-5.5 0-1.7 1-3.6 2.7-5.1C6.5 7.9 8.3 7.2 9.9 7.4c.3-1 1.2-1.4 2-1.4.9 0 1.6.6 1.7 1.5 2.7.8 4.4 2.9 4.4 5.5 0 3.9-3.6 7-7.9 7zm-.8-4.8c2.4 0 4.4-1.4 4.4-3.2s-2-3.2-4.4-3.2-4.4 1.4-4.4 3.2 2 3.2 4.4 3.2zm-.8-1.8c-.7 0-1.2-.5-1.2-1.2s.5-1.2 1.2-1.2 1.2.5 1.2 1.2-.5 1.2-1.2 1.2z" />
-              </svg></div>
-            <div class="soc" title="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor">
+              </svg>
+            </div>
+            <div class="soc" title="WhatsApp">
+              <svg viewBox="0 0 24 24" fill="currentColor">
                 <path
                   d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-              </svg></div>
-            <div class="soc" title="Contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="1.5">
+              </svg>
+            </div>
+            <div class="soc" title="Contact">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path stroke-linecap="round" stroke-linejoin="round"
                   d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg></div>
+              </svg>
+            </div>
           </div>
         </div>
         <div>
@@ -2897,101 +2911,13 @@
         </div>
       </div>
       <div class="foot-bottom">
-        <div class="foot-copy">© 2025 Cal Elite · Builders &amp; Cal Electrical · All Rights Reserved · Foshan, China
+        <div class="foot-copy">
+          © 2025 Cal Elite · Builders &amp; Cal Electrical · All Rights
+          Reserved · Foshan, China
         </div>
       </div>
     </div>
   </footer>
-
-  <!-- SERVICE FAQ MODAL -->
-  <div class="modal-bg" id="serviceFAQModal">
-    <div class="modal-box" style="max-width: 560px">
-      <div class="modal-head">
-        <div class="modal-title">Service <em>Assessment</em></div>
-        <button class="modal-x" id="closeServiceFAQ">×</button>
-      </div>
-      <div class="modal-body">
-        <div style="margin-bottom: 24px;">
-          <label class="form-lbl" style="font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--gold);">1.
-            Is the service urgent?</label>
-          <div style="display:flex; gap:16px; margin-top:8px;">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
-                name="svcUrgent" value="Yes" checked> <span style="font-size:13px; color:var(--ash);">Yes</span></label>
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
-                name="svcUrgent" value="No"> <span style="font-size:13px; color:var(--ash);">No</span></label>
-          </div>
-        </div>
-        <div style="margin-bottom: 24px;">
-          <label class="form-lbl" style="font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--gold);">2.
-            Is it an emergency?</label>
-          <div style="display:flex; gap:16px; margin-top:8px;">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
-                name="svcEmergency" value="Yes"> <span style="font-size:13px; color:var(--ash);">Yes</span></label>
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
-                name="svcEmergency" value="No" checked> <span
-                style="font-size:13px; color:var(--ash);">No</span></label>
-          </div>
-        </div>
-        <div style="margin-bottom: 12px;">
-          <label class="form-lbl" style="font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--gold);">3.
-            Planning timeframe (how many months)?</label>
-          <input type="number" class="form-input" id="svcTimeframe" placeholder="e.g. 1" min="0"
-            style="margin-top:8px;">
-        </div>
-      </div>
-      <div class="modal-foot">
-        <button class="btn-cancel" id="cancelServiceFAQ">Cancel</button>
-        <button class="btn-p" id="proceedServiceFAQ">Next Step</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SERVICE INQUIRY MODAL -->
-  <div class="modal-bg" id="serviceInquiryModal">
-    <div class="modal-box" style="max-width: 560px">
-      <div class="modal-head">
-        <div class="modal-title">Service <em>Inquiry</em></div>
-        <button class="modal-x" id="closeServiceInquiry">×</button>
-      </div>
-      <div class="modal-body">
-        <div
-          style="padding: 12px 16px; background: rgba(220, 60, 60, 0.1); border: 1px solid rgba(220, 60, 60, 0.3); border-radius: 4px; margin-bottom: 20px;">
-          <p
-            style="color: #ff6d7a; font-size: 12px; font-weight: 600; text-align: center; letter-spacing: 1px; text-transform: uppercase;">
-            Notice: Buy and do at your own risk</p>
-        </div>
-        <div class="form-row">
-          <div><label class="form-lbl">Full Name</label><input type="text" class="form-input" id="svcInqName"
-              placeholder="Your name"></div>
-          <div><label class="form-lbl">Contact Number</label><input type="text" class="form-input" id="svcInqPhone"
-              placeholder="+63 xxx xxx xxxx"></div>
-        </div>
-        <label class="form-lbl">Email Address</label><input type="email" class="form-input" id="svcInqEmail"
-          placeholder="your@email.com">
-        <label class="form-lbl">Address</label><input type="text" class="form-input" id="svcInqAddress"
-          placeholder="Full address">
-        <div class="form-row" style="margin-top: 16px;">
-          <div><label class="form-lbl">Preferred Date</label><input type="date" class="form-input" id="svcInqDate">
-          </div>
-          <div><label class="form-lbl">Preferred Time</label><select class="form-input" id="svcInqTime">
-              <option value="Morning">Morning (8AM-12PM)</option>
-              <option value="Afternoon">Afternoon (1PM-5PM)</option>
-              <option value="Evening">Evening (6PM-9PM)</option>
-            </select></div>
-        </div>
-        <div style="margin-bottom: 4px;">
-          <label class="form-lbl">Estimated Duration (Hours)</label>
-          <input type="number" class="form-input" id="svcInqDuration" placeholder="e.g. 2" min="1">
-        </div>
-        <label class="form-lbl" style="margin-top: 12px;">Additional Notes</label><textarea class="form-textarea"
-          id="svcInqNotes" placeholder="Any special instructions..."></textarea>
-      </div>
-      <div class="modal-foot">
-        <button class="btn-cancel" id="cancelServiceInquiry">Cancel</button>
-        <button class="btn-p" id="submitServiceInquiry">Proceed to Booking</button>
-      </div>
-    </div>
-  </div>
 
   <!-- BOOKING MODAL -->
   <div class="modal-bg" id="bookingModal">
@@ -3429,37 +3355,171 @@
 
       const catIcons = {
         all: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 7h16M4 12h16M4 17h16"/></svg>',
-        install: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 12l4 4L19 6"/></svg>',
-        fabrication: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3v18m9-9H3"/></svg>',
-        maintain: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.5 6.5L7 10l7 7 3.5-3.5-7-7z"/></svg>',
-        electrical: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 2L6 14h5l-1 8 8-12h-5l0-8z"/></svg>',
+        installation:
+          '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 12l4 4L19 6"/></svg>',
+        fabrication:
+          '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3v18m9-9H3"/></svg>',
+        consultation:
+          '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>',
+        maintenance:
+          '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.5 6.5L7 10l7 7 3.5-3.5-7-7z"/></svg>',
+        custom:
+          '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3"/></svg>',
       };
 
-      let currentCat = 'all', currentPage = 1, filteredCards = [];
+      let currentCat = "all";
+      let currentPage = 1;
+      let allServices = [];
+      let filteredServices = [];
 
-      trigger.addEventListener('click', () => {
-        const isOpen = menu.classList.toggle('open');
-        trigger.classList.toggle('open', isOpen);
-        trigger.setAttribute('aria-expanded', isOpen);
-      });
-      document.addEventListener('click', (e) => {
-        if (!trigger.contains(e.target) && !menu.contains(e.target)) {
-          menu.classList.remove('open'); trigger.classList.remove('open'); trigger.setAttribute('aria-expanded', 'false');
+      function escapeHtml(value) {
+        return String(value || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function formatMoney(value) {
+        const num = Number(value);
+        if (!Number.isFinite(num)) return "";
+        return (
+          "$" +
+          num.toLocaleString("en-US", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          })
+        );
+      }
+
+      function formatPrice(service) {
+        const min = service.price_min ?? service.price;
+        const max = service.price_max;
+        if (
+          min !== null &&
+          min !== undefined &&
+          max !== null &&
+          max !== undefined
+        ) {
+          if (Number(min) === Number(max)) return formatMoney(min);
+          return `${formatMoney(min)} - ${formatMoney(max)}`;
         }
-      });
+        if (min !== null && min !== undefined) return formatMoney(min);
+        return "Request Quote";
+      }
 
-      catItems.forEach(item => {
-        item.addEventListener('click', () => {
-          const cat = item.dataset.cat, label = item.textContent.trim();
-          currentCat = cat; currentPage = 1;
-          catItems.forEach(i => i.classList.remove('active'));
-          item.classList.add('active');
-          triggerText.textContent = label;
-          triggerIcon.innerHTML = catIcons[cat] || catIcons.all;
-          menu.classList.remove('open'); trigger.classList.remove('open'); trigger.setAttribute('aria-expanded', 'false');
-          applyFilterAndPaginate();
+      function formatCategory(category) {
+        const text = String(category || "").trim();
+        if (!text) return "Service";
+        return text.charAt(0).toUpperCase() + text.slice(1);
+      }
+
+      function renderCards(services) {
+        if (!grid) return;
+        if (!services.length) {
+          grid.innerHTML =
+            '<div style="grid-column: 1 / -1; text-align:center; padding:40px 20px; color:var(--dim); font-size:12px; font-style:italic;">No services available.</div>';
+          return;
+        }
+
+        grid.innerHTML = services
+          .map((service) => {
+            const name = escapeHtml(service.name || "Service");
+            const category = formatCategory(service.category);
+            const price = formatPrice(service);
+            const duration = service.duration
+              ? escapeHtml(service.duration)
+              : "";
+            const imageUrl = escapeHtml(service.image_url || "");
+            const imgHtml = imageUrl
+              ? `<img class="scn-icon-img" src="${imageUrl}" alt="${name}" loading="lazy">`
+              : "";
+
+            return `
+                <div class="svc-card-new" data-service="${name}">
+                  <div class="scn-icon">${imgHtml}</div>
+                  <div class="scn-info">
+                    <div class="scn-title">${name}</div>
+                    <div class="scn-meta">
+                      <span class="scn-rating">${escapeHtml(category)}</span>
+                      <span class="scn-sep">â€¢</span>
+                      <span class="scn-price">${escapeHtml(price)}</span>
+                      ${duration
+                ? `<span class="scn-sep">â€¢</span><span class="scn-reviews">${duration}</span>`
+                : ""
+              }
+                    </div>
+                  </div>
+                  <button class="scn-book-btn" data-service="${name}">Book</button>
+                </div>
+              `;
+          })
+          .join("");
+
+        grid.querySelectorAll(".svc-card-new").forEach((card) => {
+          card.addEventListener("click", () => {
+            if (typeof window.openBooking === "function") {
+              window.openBooking(card.dataset.service || "");
+            }
+          });
         });
-      });
+        grid.querySelectorAll(".scn-book-btn").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (typeof window.openBooking === "function") {
+              window.openBooking(btn.dataset.service || "");
+            }
+          });
+        });
+      }
+
+      function renderPagination(totalPages) {
+        if (!pagination) return;
+        pagination.innerHTML = "";
+
+        const prev = document.createElement("button");
+        prev.className = "pg-btn";
+        prev.disabled = currentPage === 1;
+        prev.innerHTML =
+          '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 19l-7-7 7-7"/></svg>';
+        prev.addEventListener("click", () => {
+          if (currentPage > 1) {
+            currentPage -= 1;
+            applyFilterAndPaginate();
+          }
+        });
+        pagination.appendChild(prev);
+
+        for (let i = 1; i <= totalPages; i += 1) {
+          const btn = document.createElement("button");
+          btn.className = "pg-btn" + (i === currentPage ? " active" : "");
+          btn.textContent = String(i);
+          btn.addEventListener("click", () => {
+            currentPage = i;
+            applyFilterAndPaginate();
+          });
+          pagination.appendChild(btn);
+        }
+
+        const info = document.createElement("div");
+        info.className = "pg-info";
+        info.textContent = `Page ${currentPage} of ${totalPages}`;
+        pagination.appendChild(info);
+
+        const next = document.createElement("button");
+        next.className = "pg-btn";
+        next.disabled = currentPage === totalPages;
+        next.innerHTML =
+          '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5l7 7-7 7"/></svg>';
+        next.addEventListener("click", () => {
+          if (currentPage < totalPages) {
+            currentPage += 1;
+            applyFilterAndPaginate();
+          }
+        });
+        pagination.appendChild(next);
+      }
 
       function applyFilterAndPaginate() {
         filteredServices = allServices.filter((service) => {
@@ -3513,7 +3573,6 @@
         trigger.classList.toggle("open", isOpen);
         trigger.setAttribute("aria-expanded", isOpen);
       });
-
       document.addEventListener("click", (e) => {
         if (!trigger.contains(e.target) && !menu.contains(e.target)) {
           menu.classList.remove("open");
@@ -3521,7 +3580,6 @@
           trigger.setAttribute("aria-expanded", "false");
         }
       });
-
       catItems.forEach((item) => {
         item.addEventListener("click", () => {
           const cat = item.dataset.cat;
@@ -3541,15 +3599,14 @@
 
       loadServices();
     })();
-
     // ── Booking Logic ──
-    const bm = document.getElementById('bookingModal');
-    const mbm = document.getElementById('myBookingsModal');
-    const bookingsList = document.getElementById('bookingsList');
-    const ordersBadge = document.getElementById('ordersBadge');
-    const cartBadge = document.getElementById('cartBadge');
-    let bookings = JSON.parse(localStorage.getItem('ceBookings') || '[]');
-    let currentService = '';
+    const bm = document.getElementById("bookingModal");
+    const mbm = document.getElementById("myBookingsModal");
+    const bookingsList = document.getElementById("bookingsList");
+    const ordersBadge = document.getElementById("ordersBadge");
+    const cartBadge = document.getElementById("cartBadge");
+    let bookings = JSON.parse(localStorage.getItem("ceBookings") || "[]");
+    let currentService = "";
 
     function updateOrdersBadge() {
       if (!ordersBadge) return;
@@ -3590,22 +3647,7 @@
         "$" + (150 + val * 85);
     };
 
-    let pendingBookingName = "";
     window.openBooking = function (name) {
-      pendingBookingName = name;
-      const sfm = document.getElementById('serviceFAQModal');
-      if (typeof ceUser !== 'undefined' && ceUser.name) {
-        document.getElementById('svcInqName').value = ceUser.name || '';
-        document.getElementById('svcInqEmail').value = ceUser.email || '';
-        document.getElementById('svcInqPhone').value = ceUser.phone || '';
-      }
-      document.getElementById('svcTimeframe').value = ""; // clear inputs
-      document.getElementById('svcInqAddress').value = "";
-      document.getElementById('svcInqNotes').value = "";
-      sfm.classList.add('open');
-    };
-
-    window.finalizeBooking = function (name) {
       currentService = name;
       document.getElementById("bookServiceName").textContent = name;
       document.getElementById("bDate").valueAsDate = new Date();
@@ -3613,40 +3655,11 @@
       updateBookingPrice(document.getElementById("bScale")?.value || 1);
     };
 
-    // --- PRE-BOOKING MODALS LOGIC ---
-    const sfm = document.getElementById('serviceFAQModal');
-    const sim = document.getElementById('serviceInquiryModal');
-
-    function closeServiceFAQ() { sfm.classList.remove('open'); }
-    function closeServiceInquiry() { sim.classList.remove('open'); }
-
-    document.getElementById('closeServiceFAQ').addEventListener('click', closeServiceFAQ);
-    document.getElementById('cancelServiceFAQ').addEventListener('click', closeServiceFAQ);
-
-    document.getElementById('proceedServiceFAQ').addEventListener('click', () => {
-      closeServiceFAQ();
-      sim.classList.add('open');
-    });
-
-    document.getElementById('closeServiceInquiry').addEventListener('click', closeServiceInquiry);
-    document.getElementById('cancelServiceInquiry').addEventListener('click', closeServiceInquiry);
-
-    document.getElementById('submitServiceInquiry').addEventListener('click', () => {
-      const nm = document.getElementById('svcInqName').value.trim();
-      const ph = document.getElementById('svcInqPhone').value.trim();
-      const em = document.getElementById('svcInqEmail').value.trim();
-      const ad = document.getElementById('svcInqAddress').value.trim();
-
-      if (!nm || !ph || !em || !ad) {
-        if (typeof toast !== 'undefined') toast('Please complete all required fields.', 'err');
-        return;
-      }
-
-      closeServiceInquiry();
-      finalizeBooking(pendingBookingName);
-    });
-
-    window.openMyBookings = function () { renderBookings(); mbm.classList.add('open'); uw.classList.remove('open'); };
+    window.openMyBookings = function () {
+      renderBookings();
+      mbm.classList.add("open");
+      uw.classList.remove("open");
+    };
 
     ["closeBooking", "cancelBooking"].forEach((id) => {
       const b = document.getElementById(id);
@@ -3720,26 +3733,47 @@
       }
     };
 
-    document.getElementById('submitBooking').onclick = () => {
-      const date = document.getElementById('bDate').value;
-      const addr = (document.getElementById('bAddress').value || '').trim();
-      if (!date) return toast('Please select a date.', 'err');
-      if (!addr) return toast('Please enter an address.', 'err');
-      const scale = parseInt(document.getElementById('bScale')?.value || 1);
-      const newB = { id: 'BK-' + Date.now().toString(36).toUpperCase(), service: currentService, date, address: addr, time: document.getElementById('bTime')?.value || 'morning', origin: document.getElementById('bOrigin')?.value || 'Foshan Central Hub', price: 150 + (scale * 85), status: 'pending', timestamp: new Date().toISOString() };
+    document.getElementById("submitBooking").onclick = () => {
+      const date = document.getElementById("bDate").value;
+      const addr = (document.getElementById("bAddress").value || "").trim();
+      if (!date) return toast("Please select a date.", "err");
+      if (!addr) return toast("Please enter an address.", "err");
+      const scale = parseInt(document.getElementById("bScale")?.value || 1);
+      const newB = {
+        id: "BK-" + Date.now().toString(36).toUpperCase(),
+        service: currentService,
+        date,
+        address: addr,
+        time: document.getElementById("bTime")?.value || "morning",
+        origin:
+          document.getElementById("bOrigin")?.value || "Foshan Central Hub",
+        price: 150 + scale * 85,
+        status: "pending",
+        timestamp: new Date().toISOString(),
+      };
       bookings.unshift(newB);
-      localStorage.setItem('ceBookings', JSON.stringify(bookings));
+      localStorage.setItem("ceBookings", JSON.stringify(bookings));
       updateNavBadges();
-      document.getElementById('bAddress').value = '';
-      document.getElementById('bNotes').value = '';
-      toast('Booking confirmed for ' + currentService + '!', 'ok');
-      bm.classList.remove('open');
+      document.getElementById("bAddress").value = "";
+      document.getElementById("bNotes").value = "";
+      toast("Booking confirmed for " + currentService + "!", "ok");
+      bm.classList.remove("open");
     };
 
-    document.getElementById('ddBookings').onclick = e => { e.preventDefault(); openMyBookings(); };
-    document.getElementById('navOrdersBtn')?.addEventListener('click', () => openMyBookings());
-    document.getElementById('navCartBtn')?.addEventListener('click', () => window.location.href = '../product/products.html');
-    window.addEventListener('storage', updateNavBadges);
+    document.getElementById("ddBookings").onclick = (e) => {
+      e.preventDefault();
+      openMyBookings();
+    };
+    document
+      .getElementById("navOrdersBtn")
+      ?.addEventListener("click", () => openMyBookings());
+    document
+      .getElementById("navCartBtn")
+      ?.addEventListener(
+        "click",
+        () => (window.location.href = "../product/products.html"),
+      );
+    window.addEventListener("storage", updateNavBadges);
   </script>
 </body>
 
