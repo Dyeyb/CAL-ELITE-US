@@ -20,6 +20,7 @@
     }
 
     :root {
+      scroll-behavior: smooth;
       --gold: #b8932a;
       --gold-bright: #d4a843;
       --gold-light: #e8c97a;
@@ -5502,11 +5503,106 @@
 
             <div style="display:flex; gap: 12px; margin-top: auto;">
               <button class="btn-cancel" id="pdAddToCart" style="flex:1; padding: 12px 0;">Add to Cart</button>
-              <button class="btn-p" id="pdBuyNow" style="flex:1; padding:12px 0; justify-content:center;">Buy
+              <button class="btn-p" id="pdBuyNowVisual" style="flex:1; padding:12px 0; justify-content:center;">Buy
                 Now</button>
+              <button id="pdBuyNow" style="display:none;"></button>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRE-BUY FAQ MODAL -->
+  <div class="modal-bg" id="preBuyFAQModal">
+    <div class="modal-box" style="max-width:560px;">
+      <div class="modal-head">
+        <div class="modal-title">Product <em>Questionnaire</em></div><button class="modal-x"
+          id="closePreBuyFAQ">×</button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom: 24px;">
+          <h4 style="color:var(--gold); margin-bottom: 8px; font-family:'Cormorant Garamond',serif; font-size:18px;">1.
+            Do you need installation assistance?</h4>
+          <div style="display:flex; gap:16px; margin-top:8px;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
+                name="pdFaqInstall" value="Yes"> <span style="font-size:13px; color:var(--ash);">Yes</span></label>
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
+                name="pdFaqInstall" value="No"> <span style="font-size:13px; color:var(--ash);">No</span></label>
+          </div>
+        </div>
+        <div style="margin-bottom: 24px;">
+          <h4 style="color:var(--gold); margin-bottom: 8px; font-family:'Cormorant Garamond',serif; font-size:18px;">2.
+            Is this for a commercial or residential project?</h4>
+          <div style="display:flex; gap:16px; margin-top:8px;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
+                name="pdFaqProject" value="Residential"> <span
+                style="font-size:13px; color:var(--ash);">Residential</span></label>
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
+                name="pdFaqProject" value="Commercial"> <span
+                style="font-size:13px; color:var(--ash);">Commercial</span></label>
+          </div>
+        </div>
+        <div style="margin-bottom: 12px;">
+          <h4 style="color:var(--gold); margin-bottom: 8px; font-family:'Cormorant Garamond',serif; font-size:18px;">3.
+            Are there specific size or customization requirements?</h4>
+          <div style="display:flex; gap:16px; margin-top:8px;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
+                name="pdFaqCustom" value="Yes"> <span style="font-size:13px; color:var(--ash);">Yes</span></label>
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
+                name="pdFaqCustom" value="No"> <span style="font-size:13px; color:var(--ash);">No</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-cancel" id="cancelPreBuyFAQ">Cancel</button>
+        <button class="btn-p" id="proceedPreBuyFAQ" style="padding:9px 22px;">Next Step</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRE-BUY INQUIRY MODAL -->
+  <div class="modal-bg" id="preBuyInquiryModal">
+    <div class="modal-box" style="max-width:560px;">
+      <div class="modal-head">
+        <div class="modal-title">Purchase <em>Inquiry</em></div><button class="modal-x"
+          id="closePreBuyInquiry">×</button>
+      </div>
+      <div class="modal-body">
+        <div
+          style="padding: 12px 16px; background: rgba(220, 60, 60, 0.1); border: 1px solid rgba(220, 60, 60, 0.3); border-radius: 4px; margin-bottom: 20px;">
+          <p
+            style="color: #ff6d7a; font-size: 12px; font-weight: 600; text-align: center; letter-spacing: 1px; text-transform: uppercase;">
+            Notice: Buy and do at your own risk</p>
+        </div>
+        <div class="form-row">
+          <div><label class="form-lbl">Full Name</label><input type="text" class="form-input" id="inqName"
+              placeholder="Your name"></div>
+          <div><label class="form-lbl">Contact Number</label><input type="text" class="form-input" id="inqPhone"
+              placeholder="+63 xxx xxx xxxx"></div>
+        </div>
+        <label class="form-lbl">Email Address</label><input type="email" class="form-input" id="inqEmail"
+          placeholder="your@email.com">
+        <label class="form-lbl">Delivery Address</label><input type="text" class="form-input" id="inqAddress"
+          placeholder="Full delivery address">
+        <div class="form-row" style="margin-top: 16px;">
+          <div><label class="form-lbl">Preferred Date</label><input type="date" class="form-input" id="inqDate"></div>
+          <div><label class="form-lbl">Preferred Time</label><select class="form-input" id="inqTime">
+              <option value="Morning">Morning (8AM-12PM)</option>
+              <option value="Afternoon">Afternoon (1PM-5PM)</option>
+              <option value="Evening">Evening (6PM-9PM)</option>
+            </select></div>
+        </div>
+        <div style="margin-bottom: 4px;">
+          <label class="form-lbl">Estimated Duration (Hours)</label>
+          <input type="number" class="form-input" id="inqDuration" placeholder="e.g. 2" min="1">
+        </div>
+        <label class="form-lbl" style="margin-top: 12px;">Additional Notes</label><textarea class="form-textarea"
+          id="inqNotes" placeholder="Any special instructions..."></textarea>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-cancel" id="cancelPreBuyInquiry">Cancel</button>
+        <button class="btn-p" id="submitPreBuyInquiry" style="padding:9px 22px;">Proceed to Checkout</button>
       </div>
     </div>
   </div>
@@ -6062,25 +6158,32 @@
       document.getElementById('pdDesc').textContent = data.desc;
       // Disable/enable action buttons
       const addBtn = document.getElementById('pdAddToCart');
-      const buyBtn = document.getElementById('pdBuyNow');
+      const buyBtnVisual = document.getElementById('pdBuyNowVisual');
+      const buyBtnReal = document.getElementById('pdBuyNow');
       if (isOos) {
         addBtn.disabled = true;
         addBtn.textContent = 'Out of Stock';
         addBtn.style.opacity = '0.45';
         addBtn.style.cursor = 'not-allowed';
-        buyBtn.disabled = true;
-        buyBtn.textContent = 'Coming Soon';
-        buyBtn.style.opacity = '0.45';
-        buyBtn.style.cursor = 'not-allowed';
+        if (buyBtnVisual) {
+          buyBtnVisual.disabled = true;
+          buyBtnVisual.textContent = 'Coming Soon';
+          buyBtnVisual.style.opacity = '0.45';
+          buyBtnVisual.style.cursor = 'not-allowed';
+        }
+        if (buyBtnReal) buyBtnReal.disabled = true;
       } else {
         addBtn.disabled = false;
         addBtn.textContent = 'Add to Cart';
         addBtn.style.opacity = '';
         addBtn.style.cursor = '';
-        buyBtn.disabled = false;
-        buyBtn.textContent = 'Buy Now';
-        buyBtn.style.opacity = '';
-        buyBtn.style.cursor = '';
+        if (buyBtnVisual) {
+          buyBtnVisual.disabled = false;
+          buyBtnVisual.textContent = 'Buy Now';
+          buyBtnVisual.style.opacity = '';
+          buyBtnVisual.style.cursor = '';
+        }
+        if (buyBtnReal) buyBtnReal.disabled = false;
       }
       pdModal.classList.add('open');
     }
@@ -6115,7 +6218,57 @@
       }
       closeProductDetails();
       // Open checkout modal with slight delay so cart is updated
-      setTimeout(openCheckout, 80);
+      if (typeof openCheckout !== 'undefined') { setTimeout(openCheckout, 80); }
+    });
+
+    // --- PRE-BUY MODALS LOGIC ---
+    const fqm = document.getElementById('preBuyFAQModal');
+    const iqm = document.getElementById('preBuyInquiryModal');
+
+    function openPreBuyFAQ() {
+      // populate basic user data if exists
+      if (typeof ceUser !== 'undefined' && ceUser.name) {
+        document.getElementById('inqName').value = ceUser.name || '';
+        document.getElementById('inqEmail').value = ceUser.email || '';
+        document.getElementById('inqPhone').value = ceUser.phone || '';
+      }
+      fqm.classList.add('open');
+    }
+
+    function closePreBuyFAQ() { fqm.classList.remove('open'); }
+    function closePreBuyInquiry() { iqm.classList.remove('open'); }
+
+    document.getElementById('pdBuyNowVisual').addEventListener('click', () => {
+      if (!document.getElementById('pdBuyNowVisual').disabled) {
+        openPreBuyFAQ();
+      }
+    });
+
+    document.getElementById('closePreBuyFAQ').addEventListener('click', closePreBuyFAQ);
+    document.getElementById('cancelPreBuyFAQ').addEventListener('click', closePreBuyFAQ);
+
+    document.getElementById('proceedPreBuyFAQ').addEventListener('click', () => {
+      closePreBuyFAQ();
+      iqm.classList.add('open');
+    });
+
+    document.getElementById('closePreBuyInquiry').addEventListener('click', closePreBuyInquiry);
+    document.getElementById('cancelPreBuyInquiry').addEventListener('click', closePreBuyInquiry);
+
+    document.getElementById('submitPreBuyInquiry').addEventListener('click', () => {
+      const nm = document.getElementById('inqName').value.trim();
+      const ph = document.getElementById('inqPhone').value.trim();
+      const em = document.getElementById('inqEmail').value.trim();
+      const ad = document.getElementById('inqAddress').value.trim();
+
+      if (!nm || !ph || !em || !ad) {
+        if (typeof toast !== 'undefined') toast('Please complete all required fields.', 'err');
+        return;
+      }
+
+      closePreBuyInquiry();
+      // Click the real buy now button
+      document.getElementById('pdBuyNow').click();
     });
 
     // Profile modal

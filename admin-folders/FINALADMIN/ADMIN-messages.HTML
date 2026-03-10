@@ -3044,6 +3044,14 @@
           </select>
         </div>
         <div class="toolbar-right">
+          <button class="add-btn" id="blast-email-btn" onclick="openBlastModal()"
+            style="background:var(--blue); color:#fff; border:none; margin-right: 8px;">
+            <svg viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            Blast Email
+          </button>
           <button class="arch-btn" onclick="scrollToArchive()">
             <svg viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -3187,6 +3195,129 @@
       </div>
     </div><!-- end page-body -->
   </div><!-- end main -->
+
+  <!-- BLAST EMAIL MODAL -->
+  <div class="modal-overlay" id="blast-modal">
+    <div class="modal" style="max-width:800px; width:95%;">
+      <div class="modal-corner-br"></div>
+      <div class="modal-header">
+        <div class="modal-title">Blast <em>Email</em></div>
+        <button class="modal-close" onclick="closeModal('blast-modal')"><svg viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg></button>
+      </div>
+      <div class="modal-body" style="max-height: 70vh; overflow-y: auto; padding-right:15px">
+        <div style="margin-bottom: 20px; font-size: 0.95rem; color: var(--muted); line-height: 1.5;">
+          Compose an email to blast to your registered users. Select the user segment below. The targeted recipients
+          will automatically populate in the list.
+        </div>
+
+        <div
+          style="display:flex; gap:15px; margin-bottom:20px; background: var(--surface); padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
+          <div style="flex:1;">
+            <label
+              style="display:block; margin-bottom:6px; font-size:0.8rem; font-weight: 600; color:var(--gold); text-transform: uppercase; letter-spacing: 0.5px;">Email
+              Category</label>
+            <div style="position: relative;">
+              <select class="form-select" id="blast-type"
+                style="width:100%; font-size: 0.95rem; padding: 12px; background:var(--surface); color:var(--text); border:1px solid var(--border); border-radius:6px; appearance: none; outline: none; cursor: pointer;">
+                <option value="" disabled selected>Select an option...</option>
+                <option value="Reminder">Reminder</option>
+                <option value="Promo">Promo</option>
+                <option value="Announcement">Announcement</option>
+                <option value="Other">Other</option>
+              </select>
+              <svg viewBox="0 0 24 24"
+                style="position: absolute; right: 12px; top: 14px; width: 16px; height: 16px; stroke: var(--gold); fill: none; pointer-events: none;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+          <div style="flex:1;">
+            <label
+              style="display:block; margin-bottom:6px; font-size:0.8rem; font-weight: 600; color:var(--gold); text-transform: uppercase; letter-spacing: 0.5px;">Target
+              Audience</label>
+            <div style="position: relative;">
+              <select class="form-select" id="blast-status"
+                style="width:100%; font-size: 0.95rem; padding: 12px; background:var(--surface); color:var(--text); border:1px solid var(--border); border-radius:6px; appearance: none; outline: none; cursor: pointer;">
+                <option value="active">Active Users Only</option>
+                <option value="inactive">Inactive Users Only</option>
+                <option value="all">All Registered Users</option>
+              </select>
+              <svg viewBox="0 0 24 24"
+                style="position: absolute; right: 12px; top: 14px; width: 16px; height: 16px; stroke: var(--gold); fill: none; pointer-events: none;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:20px;">
+          <label
+            style="display:block; margin-bottom:8px; font-size:0.85rem; font-weight: 600; color:var(--text);">Subject
+            Line</label>
+          <input type="text" class="form-input" id="blast-subject" placeholder="Enter an engaging subject..."
+            style="width:100%; font-size: 1rem; padding: 12px; background:var(--surface); color:var(--text); border:1px solid var(--border); border-radius:6px; transition: border-color 0.2s;">
+        </div>
+
+        <div class="form-group" style="margin-bottom:24px;">
+          <label
+            style="display:block; margin-bottom:8px; font-size:0.85rem; font-weight: 600; color:var(--text);">Message
+            Content <span style="font-weight: normal; color: var(--muted); font-size: 0.75rem; margin-left: 8px;">(HTML
+              wrapper applied automatically)</span></label>
+          <textarea class="reply-textarea" id="blast-message" placeholder="Write your message here..."
+            style="width:100%; min-height:180px; font-size: 0.95rem; line-height: 1.6; background:var(--surface); color:var(--text); border:1px solid var(--border); padding:15px; border-radius:6px; resize: vertical;"></textarea>
+        </div>
+
+        <div class="form-group mb-0">
+          <div style="display:flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+            <label style="font-size:0.85rem; font-weight: 600; color:var(--text); margin: 0;">Recipient Preview</label>
+            <span
+              style="font-size: 0.75rem; color: var(--gold); background: rgba(212, 175, 55, 0.1); padding: 4px 10px; border-radius: 20px;"
+              id="blast-recipient-count">Loading...</span>
+          </div>
+          <div class="table-card"
+            style="margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; max-height: 250px; overflow-y: auto;">
+            <table style="width:100%; border-collapse: collapse;">
+              <thead
+                style="position: sticky; top: 0; background: var(--surface); z-index: 10; box-shadow: 0 1px 0 var(--border);">
+                <tr>
+                  <th
+                    style="padding: 10px 15px; text-align:left; color:var(--muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">
+                    Name</th>
+                  <th
+                    style="padding: 10px 15px; text-align:left; color:var(--muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">
+                    Email Address</th>
+                  <th
+                    style="padding: 10px 15px; text-align:right; color:var(--muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">
+                    Account Status</th>
+                </tr>
+              </thead>
+              <tbody id="blast-users-tbody">
+                <tr>
+                  <td colspan="3" style="padding: 20px; text-align:center; color:var(--muted); font-style: italic;">
+                    Loading audience...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"
+        style="padding: 20px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px;">
+        <button class="btn-cancel" onclick="closeModal('blast-modal')" style="padding: 10px 20px;">Cancel</button>
+        <button class="btn-primary" id="send-blast-btn" onclick="sendBlastEmail()"
+          style="padding: 10px 24px; font-weight: 600; letter-spacing: 0.5px;">
+          <svg viewBox="0 0 24 24"
+            style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;margin-right:6px; vertical-align: text-bottom;">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          Send Blast Email
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- VIEW / REPLY MODAL -->
   <div class="modal-overlay" id="view-modal">
@@ -3379,24 +3510,47 @@
     const PER_PAGE = 10;
     let activeArchiveId = null, activeRestoreId = null, activeDeleteId = null, activeDeleteFromArchive = false, activeViewId = null;
 
-    // Demo data — 12 realistic messages
-    allMsgs = [
-      { id: 1, sender_name: 'Maria Santos', sender_email: 'maria.santos@gmail.com', sender_phone: '+63 917 123 4567', subject: 'Inquiry about Curtain Wall Pricing', message: 'Good day! I am the procurement manager for a 22-storey commercial tower project in BGC, Taguig. We are interested in your aluminum curtain wall systems and would like a detailed quotation including material cost, installation, and lead time. The total facade area is approximately 4,800 sq.m. Please let us know your availability for a meeting or site visit.', type: 'inquiry', status: 'unread', is_starred: false, is_archived: false, replied_at: null, created_at: '2026-02-27T08:12:00Z' },
-      { id: 2, sender_name: 'Chen Wei', sender_email: 'cwei@buildmaster.cn', sender_phone: '+86 138 0013 8000', subject: 'Request for Quotation – 50 Units Sliding Windows', message: 'Hello, we are a construction company based in Guangdong with ongoing residential projects in the Philippines. We need pricing for 50 sets of your aluminum sliding windows, Series B, in white powder coat finish, size 1200x1000mm. Please include shipping, customs information, and your earliest delivery date.', type: 'quotation', status: 'unread', is_starred: true, is_archived: false, replied_at: null, created_at: '2026-02-27T07:45:00Z' },
-      { id: 3, sender_name: 'David Lee', sender_email: 'dlee@archstudio.ph', sender_phone: '+63 2 8888 5566', subject: 'Installation Timeline for Window Replacement Project', message: 'Hi there. We have a window replacement project for a 10-storey residential building in Makati — approximately 280 aluminum casement windows. We need to understand your installation capacity and lead time before committing. Do you have a showroom in Manila or Cebu we can visit?', type: 'inquiry', status: 'replied', is_starred: false, is_archived: false, replied_at: '2026-02-26T14:30:00Z', created_at: '2026-02-26T10:00:00Z' },
-      { id: 4, sender_name: 'James Reyes', sender_email: 'jreyes@reyes-const.com', sender_phone: '+63 920 555 7788', subject: 'Complaint – Delayed Delivery on PO #2026-0112', message: 'This is a formal complaint regarding the delayed delivery of our purchase order #2026-0112, placed on January 12. We were promised a 3-week lead time but it has now been 6 weeks with no update from your logistics team. This is causing a significant delay to our project and is not acceptable. Please advise immediately.', type: 'complaint', status: 'read', is_starred: true, is_archived: false, replied_at: null, created_at: '2026-02-25T09:30:00Z' },
-      { id: 5, sender_name: 'BuildPro Corporation', sender_email: 'partnerships@buildpro.ph', sender_phone: '+63 2 7777 9900', subject: 'Partnership Proposal – Exclusive Distributor Agreement', message: 'Dear Aluminum Lady Team, BuildPro Corporation is one of the leading construction supply distributors in the Visayas region with 12 branches. We are interested in discussing an exclusive distributorship agreement for your aluminum product line in Region VII. Please let us know if you are open to a meeting at your earliest convenience.', type: 'partnership', status: 'unread', is_starred: true, is_archived: false, replied_at: null, created_at: '2026-02-24T14:00:00Z' },
-      { id: 6, sender_name: 'Ana Gonzalez', sender_email: 'ana.g@homestyle.ph', sender_phone: '+63 915 888 2233', subject: 'Feedback on Showroom Experience', message: 'Hi! I just wanted to share that my experience at your Foshan showroom was absolutely excellent. Your staff were very knowledgeable and patient in explaining the different window systems. We ended up choosing the casement window series for our home renovation in Antipolo. The quality looks amazing so far. Keep up the good work!', type: 'feedback', status: 'read', is_starred: false, is_archived: false, replied_at: null, created_at: '2026-02-23T16:45:00Z' },
-      { id: 7, sender_name: 'Roberto Cruz', sender_email: 'r.cruz@megadev.com.ph', sender_phone: '+63 917 222 3344', subject: 'Quotation for Roofing Panels – 2,000 sqm', message: 'Good morning. We need a quotation for approximately 2,000 sqm of aluminum roofing panels for an industrial warehouse project in Batangas. Material spec: pre-painted, 0.7mm thickness, standing seam profile. Please include delivery to site in Batangas City and your payment terms.', type: 'quotation', status: 'unread', is_starred: false, is_archived: false, replied_at: null, created_at: '2026-02-22T08:00:00Z' },
-      { id: 8, sender_name: 'Sophia Tan', sender_email: 'sophia.tan@interiors.ph', sender_phone: '+63 927 444 5566', subject: 'Sample Request – Aluminum Partition Systems', message: 'Hello! I am an interior designer working on a corporate office fit-out for a BPO client in Cebu IT Park. I would like to request material samples of your frameless glass partition system and any available catalog for color and finish options. Our timeline is quite tight so a fast turnaround would be greatly appreciated.', type: 'inquiry', status: 'replied', is_starred: false, is_archived: false, replied_at: '2026-02-21T11:00:00Z', created_at: '2026-02-20T15:30:00Z' },
-      { id: 9, sender_name: 'Marco Villanueva', sender_email: 'marco.v@villas-dev.ph', sender_phone: '+63 918 777 0011', subject: 'Custom Pivot Door – Size & Price Inquiry', message: 'Hi, I am looking for a custom pivot door approximately 1.1m wide by 2.8m tall in a matte black finish. Do you offer custom fabrication in this size? What is the lead time and price range for a single unit? I also need to know if you can handle delivery and installation in Iloilo City.', type: 'inquiry', status: 'read', is_starred: false, is_archived: false, replied_at: null, created_at: '2026-02-19T10:15:00Z' },
-      { id: 10, sender_name: 'Lena Park', sender_email: 'lena.park@koreabuild.kr', sender_phone: '+82 10 1234 5678', subject: 'Export Inquiry – South Korea Market', message: 'Dear team, our company in Seoul is exploring sourcing aluminum building materials from Philippine or Chinese manufacturers for distribution in South Korea. We are interested in your full product line. Please send your export catalog, MOQ, and FOB pricing to our email for our initial assessment.', type: 'other', status: 'unread', is_starred: false, is_archived: false, replied_at: null, created_at: '2026-02-18T06:30:00Z' },
-      { id: 11, sender_name: 'Carlo Reyes', sender_email: 'creyes@starlite-arch.com', sender_phone: '+63 917 300 8899', subject: 'Townhouse Development – Bulk Window Order', message: 'Good afternoon. We are developing a 48-unit townhouse community in Laguna and need pricing for bulk orders of aluminum casement and awning windows. Approximate total: 380 units of varying sizes. Please provide your volume discount schedule and a sample delivery timeline for this quantity.', type: 'quotation', status: 'unread', is_starred: false, is_archived: false, replied_at: null, created_at: '2026-02-17T13:00:00Z' },
-      { id: 12, sender_name: 'Nina Flores', sender_email: 'nina.flores@bhomes.ph', sender_phone: '+63 928 555 1234', subject: 'Feedback – Excellent After-Sales Service', message: 'I wanted to take a moment to commend your after-sales team. We had a minor issue with one of the sliding doors installed last month, and your service team responded within 24 hours and resolved it completely at no extra charge. This is the kind of service that builds long-term trust. Will definitely be recommending Aluminum Lady to our partner developers.', type: 'feedback', status: 'read', is_starred: false, is_archived: false, replied_at: null, created_at: '2026-02-15T09:00:00Z' },
-    ];
-    archivedMsgs = [
-      { id: 101, sender_name: 'Old Inquiry', sender_email: 'old@example.com', sender_phone: '', subject: 'Old window inquiry from 2025', message: 'Sample archived message.', type: 'inquiry', status: 'read', is_starred: false, is_archived: true, replied_at: null, created_at: '2025-12-01T10:00:00Z', archived_at: '2026-01-15T10:00:00Z', prev_status: 'read' },
-    ];
+    async function loadData() {
+      try {
+        const res = await fetch('api/messages.php');
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message);
+
+        const msgs = data.data || [];
+        allMsgs = msgs.filter(m => !m.is_archived);
+        archivedMsgs = msgs.filter(m => m.is_archived);
+
+        updateStats();
+        applyFilter();
+        renderArchive();
+      } catch (err) {
+        toast('Failed to load messages from database: ' + err.message, 'error');
+        const tbCount = $('table-count');
+        if (tbCount) tbCount.textContent = 'ERROR LOADING';
+        $('msg-tbody').innerHTML = `<tr><td colspan="7"><div class="empty-state"><p>Error connecting to database.</p></div></td></tr>`;
+      }
+    }
+
+    // Wrap state updates in fetch to persist to DB
+    async function updateMessageDB(id, payload) {
+      try {
+        await fetch(`api/messages.php?id=${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch (e) {
+        console.error("Failed to sync message to DB", e);
+      }
+    }
+
+    async function deleteMessageDB(id) {
+      try {
+        await fetch(`api/messages.php?id=${id}`, { method: 'DELETE' });
+      } catch (e) {
+        console.error("Failed to delete message from DB", e);
+      }
+    }
 
     function updateStats() {
       $('stat-total').textContent = allMsgs.length;
@@ -3405,7 +3559,7 @@
       $('stat-starred').textContent = allMsgs.filter(m => m.is_starred).length;
       const u = allMsgs.filter(m => m.status === 'unread').length;
       const sb = $('sidebar-unread-badge');
-      sb.textContent = u; sb.style.display = u ? '' : 'none';
+      if (sb) { sb.textContent = u; sb.style.display = u ? '' : 'none'; }
       $('arch-count').textContent = archivedMsgs.length;
       $('arch-section-count').textContent = `${archivedMsgs.length} record${archivedMsgs.length !== 1 ? 's' : ''}`;
     }
@@ -3433,7 +3587,13 @@
       const pages = Math.max(1, Math.ceil(total / PER_PAGE));
       currentPage = Math.min(currentPage, pages);
       const slice = filtered.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
-      $('table-count').textContent = `${total} MESSAGE${total !== 1 ? 'S' : ''}`;
+
+      // SAFE: Only set if the element exists
+      const tbCount = $('table-count');
+      if (tbCount) {
+        tbCount.textContent = `${total} MESSAGE${total !== 1 ? 'S' : ''}`;
+      }
+
       if (!slice.length) {
         tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg><p>No messages found</p></div></td></tr>`;
         renderPagination(pages); return;
@@ -3536,31 +3696,45 @@
       if (focusReply) setTimeout(() => $('reply-textarea').focus(), 200);
     }
 
-    $('send-reply-btn').addEventListener('click', () => {
+    $('send-reply-btn').addEventListener('click', async () => {
       const txt = $('reply-textarea')?.value?.trim();
       if (!txt) { toast('Please write a reply first.', 'warn'); return; }
       const m = allMsgs.find(x => x.id === activeViewId);
-      if (m) { m.status = 'replied'; m.replied_at = new Date().toISOString(); }
+      if (m) {
+        m.status = 'replied';
+        m.replied_at = new Date().toISOString();
+        const btn = $('send-reply-btn');
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        await updateMessageDB(m.id, { status: m.status, replied_at: m.replied_at });
+        btn.disabled = false;
+        btn.innerHTML = `<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;margin-right:4px;"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg> Send Reply`;
+      }
       closeModal('view-modal');
-      updateStats(); applyFilter(); renderTable();
+      await loadData();
       notifs.unshift({ id: Date.now(), type: 'green', icon: 'reply', title: 'Reply sent', body: `You replied to ${m?.sender_name || 'sender'}.`, time: 'Just now', unread: true });
       renderNotifs();
       toast('Reply sent successfully.', 'success');
     });
 
     // ══ STAR ══
-    function toggleStar(id, e) {
+    async function toggleStar(id, e) {
       if (e) e.stopPropagation();
       const m = allMsgs.find(x => x.id === id); if (!m) return;
       m.is_starred = !m.is_starred;
-      updateStats(); applyFilter(); renderTable();
+      await updateMessageDB(id, { is_starred: m.is_starred });
+      await loadData();
       toast(m.is_starred ? 'Message starred.' : 'Star removed.', 'success');
     }
 
     // ══ MARK ALL READ ══
-    $('mark-all-read-btn').addEventListener('click', () => {
-      allMsgs.forEach(m => { if (m.status === 'unread') m.status = 'read'; });
-      updateStats(); applyFilter(); renderTable();
+    $('mark-all-read-btn').addEventListener('click', async () => {
+      const unread = allMsgs.filter(m => m.status === 'unread');
+      for (let m of unread) {
+        m.status = 'read';
+        await updateMessageDB(m.id, { status: 'read' });
+      }
+      await loadData();
       toast('All messages marked as read.', 'success');
     });
 
@@ -3572,13 +3746,22 @@
       $('archive-sender-name').textContent = m?.sender_name || 'this sender';
       $('archive-modal').classList.add('open');
     }
-    $('archive-confirm-btn').addEventListener('click', () => {
+    $('archive-confirm-btn').addEventListener('click', async () => {
       const m = allMsgs.find(x => x.id === activeArchiveId); if (!m) return;
-      m.is_archived = true; m.archived_at = new Date().toISOString(); m.prev_status = m.status;
-      archivedMsgs.unshift({ ...m });
-      allMsgs = allMsgs.filter(x => x.id !== activeArchiveId);
+
+      const btn = $('archive-confirm-btn');
+      btn.disabled = true;
+      btn.textContent = 'Archiving...';
+
+      m.is_archived = true;
+      m.archived_at = new Date().toISOString();
+      m.prev_status = m.status;
+      await updateMessageDB(m.id, { is_archived: m.is_archived, archived_at: m.archived_at, prev_status: m.prev_status });
+
+      btn.disabled = false;
+      btn.textContent = 'Archive Message';
       closeModal('archive-modal');
-      updateStats(); applyFilter(); renderTable(); renderArchive();
+      await loadData();
       toast('Message archived.', 'success');
     });
 
@@ -3589,13 +3772,21 @@
       $('restore-sender-name').textContent = m?.sender_name || 'this sender';
       $('restore-modal').classList.add('open');
     }
-    $('restore-confirm-btn').addEventListener('click', () => {
+    $('restore-confirm-btn').addEventListener('click', async () => {
       const m = archivedMsgs.find(x => x.id === activeRestoreId); if (!m) return;
-      m.is_archived = false; m.status = m.prev_status || 'read';
-      allMsgs.push({ ...m });
-      archivedMsgs = archivedMsgs.filter(x => x.id !== activeRestoreId);
+
+      const btn = $('restore-confirm-btn');
+      btn.disabled = true;
+      btn.textContent = 'Restoring...';
+
+      m.is_archived = false;
+      m.status = m.prev_status || 'read';
+      await updateMessageDB(m.id, { is_archived: m.is_archived, status: m.status });
+
+      btn.disabled = false;
+      btn.textContent = 'Restore to Inbox';
       closeModal('restore-modal');
-      updateStats(); applyFilter(); renderTable(); renderArchive();
+      await loadData();
       toast('Message restored to inbox.', 'success');
     });
 
@@ -3606,20 +3797,119 @@
       $('delete-sender-name').textContent = m?.sender_name || 'this sender';
       $('delete-modal').classList.add('open');
     }
-    $('delete-confirm-btn').addEventListener('click', () => {
-      if (activeDeleteFromArchive) archivedMsgs = archivedMsgs.filter(x => x.id !== activeDeleteId);
-      else allMsgs = allMsgs.filter(x => x.id !== activeDeleteId);
+    $('delete-confirm-btn').addEventListener('click', async () => {
+      const btn = $('delete-confirm-btn');
+      btn.disabled = true;
+      btn.textContent = 'Deleting...';
+
+      await deleteMessageDB(activeDeleteId);
+
+      btn.disabled = false;
+      btn.textContent = 'Delete Permanently';
       closeModal('delete-modal');
-      updateStats(); applyFilter(); renderTable(); renderArchive();
+      await loadData();
       toast('Message permanently deleted.', 'error');
     });
 
     // ══ MODAL UTILS ══
     function closeModal(id) { $(id).classList.remove('open'); }
-    function closeAllModals() { ['view-modal', 'archive-modal', 'restore-modal', 'delete-modal'].forEach(closeModal); }
-    ['view-modal', 'archive-modal', 'restore-modal', 'delete-modal'].forEach(id => {
+    function closeAllModals() { ['view-modal', 'archive-modal', 'restore-modal', 'delete-modal', 'blast-modal'].forEach(closeModal); }
+    ['view-modal', 'archive-modal', 'restore-modal', 'delete-modal', 'blast-modal'].forEach(id => {
       $(id).addEventListener('click', e => { if (e.target === $(id)) closeModal(id); });
     });
+
+    // ══ BLAST EMAIL ══
+    let blastUsers = [];
+    function openBlastModal() {
+      $('blast-type').value = '';
+      $('blast-status').value = 'active';
+      $('blast-subject').value = '';
+      $('blast-message').value = '';
+      $('blast-modal').classList.add('open');
+      fetchBlastUsers(); // Automatically fetch users on open
+    }
+
+    // Bind fetch to the status dropdown change
+    $('blast-status').addEventListener('change', fetchBlastUsers);
+
+    async function fetchBlastUsers() {
+      const status = $('blast-status').value;
+
+      const tbody = $('blast-users-tbody');
+      tbody.innerHTML = '<tr><td colspan="3" style="padding: 12px; text-align:center; color:var(--muted);">Loading users...</td></tr>';
+
+      try {
+        const res = await fetch('api/users.php');
+        const json = await res.json();
+        if (!json.success) throw new Error(json.message);
+
+        let users = json.data || [];
+        users = users.filter(u => u.user_type === 'user');
+
+        if (status !== 'all') {
+          users = users.filter(u => u.status === status && !u.is_archived);
+        }
+
+        blastUsers = users;
+        const countSpan = $('blast-recipient-count');
+
+        if (!users.length) {
+          countSpan.textContent = '0 Recipients';
+          tbody.innerHTML = '<tr><td colspan="3" style="padding: 20px; text-align:center; color:var(--muted); font-style: italic;">No users found for this segment.</td></tr>';
+          return;
+        }
+
+        countSpan.textContent = `${users.length} Recipient${users.length === 1 ? '' : 's'}`;
+        tbody.innerHTML = users.map(u => `
+          <tr style="border-bottom: 1px solid var(--border); transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.02)'" onmouseout="this.style.backgroundColor='transparent'">
+            <td style="padding: 10px 15px; color: var(--text);">${esc(u.first_name)} ${esc(u.last_name)}</td>
+            <td style="padding: 10px 15px; color: var(--text);">${esc(u.email)}</td>
+            <td style="padding: 10px 15px; text-align: right;">${statusBadge(u.status, false)}</td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        $('blast-recipient-count').textContent = 'Error';
+        tbody.innerHTML = `<tr><td colspan="3" style="padding: 20px; text-align:center; color: var(--red);">Error loading users</td></tr>`;
+        toast('Failed to fetch users: ' + err.message, 'error');
+      }
+    }
+
+    async function sendBlastEmail() {
+      if (!blastUsers.length) { toast('No users fetched to send to.', 'warn'); return; }
+      const subject = $('blast-subject').value.trim();
+      const message = $('blast-message').value.trim();
+      if (!subject || !message) { toast('Subject and message are required.', 'warn'); return; }
+
+      const btn = $('send-blast-btn');
+      btn.disabled = true;
+      btn.innerHTML = 'Sending...';
+
+      try {
+        const payload = {
+          type: $('blast-type').value || 'Announcement',
+          subject: subject,
+          body: message,
+          recipients: blastUsers.map(u => u.email)
+        };
+        const res = await fetch('api/messages/blast.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (!json.success) throw new Error(json.message);
+
+        toast('Blast email sent successfully!', 'success');
+        closeModal('blast-modal');
+      } catch (err) {
+        toast('Failed to send blast: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;margin-right:4px;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg> Send Blast`;
+      }
+    }
 
     // ══ FILTER EVENTS ══
     $('tbl-search').addEventListener('input', applyFilter);
@@ -3627,9 +3917,7 @@
     $('filter-type').addEventListener('change', applyFilter);
 
     // ══ INIT ══
-    updateStats();
-    applyFilter();
-    renderArchive();
+    loadData();
   </script>
 </body>
 
