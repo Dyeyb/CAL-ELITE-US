@@ -94,7 +94,7 @@ $payload = [
 
     // Notes & metadata
     'notes' => trim($in['notes'] ?? '') ?: null,
-    'service_type' => 'service_inquiry',
+    'service_type' => trim($in['service_type'] ?? '') ?: 'service_inquiry',
     'status' => 'pending',
 ];
 

@@ -3233,23 +3233,7 @@
               </svg>
             </div>
           </div>
-          <div style="flex:1;">
-            <label
-              style="display:block; margin-bottom:6px; font-size:0.8rem; font-weight: 600; color:var(--gold); text-transform: uppercase; letter-spacing: 0.5px;">Target
-              Audience</label>
-            <div style="position: relative;">
-              <select class="form-select" id="blast-status"
-                style="width:100%; font-size: 0.95rem; padding: 12px; background:var(--surface); color:var(--text); border:1px solid var(--border); border-radius:6px; appearance: none; outline: none; cursor: pointer;">
-                <option value="active">Active Users Only</option>
-                <option value="inactive">Inactive Users Only</option>
-                <option value="all">All Registered Users</option>
-              </select>
-              <svg viewBox="0 0 24 24"
-                style="position: absolute; right: 12px; top: 14px; width: 16px; height: 16px; stroke: var(--gold); fill: none; pointer-events: none;">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
+          <!-- Target Audience dropdown removed to pull directly from inquiries -->
         </div>
 
         <div class="form-group" style="margin-bottom:20px;">
@@ -3668,6 +3652,25 @@
       if (m.status === 'unread') { m.status = 'read'; updateStats(); applyFilter(); renderTable(); }
       const av = avStyle(m.sender_name);
       const repliedStamp = m.replied_at ? `<div class="replied-stamp"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Replied on ${fdt(m.replied_at)}</div>` : '';
+
+      let specificDetailsHTML = '';
+      if (m._source === 'product_inquiry') {
+        specificDetailsHTML = `
+          <div class="view-detail-item"><div class="vdi-label">Product</div><div class="vdi-val">${esc(m.product_name)}</div></div>
+          <div class="view-detail-item"><div class="vdi-label">Quantity</div><div class="vdi-val">${esc(m.quantity)}</div></div>
+          ${m.company_name ? `<div class="view-detail-item"><div class="vdi-label">Company</div><div class="vdi-val">${esc(m.company_name)}</div></div>` : ''}
+          ${m.delivery_address ? `<div class="view-detail-item" style="grid-column: 1 / -1"><div class="vdi-label">Delivery Address</div><div class="vdi-val">${esc(m.delivery_address)}</div></div>` : ''}
+        `;
+      } else if (m._source === 'service_inquiry') {
+        specificDetailsHTML = `
+          <div class="view-detail-item"><div class="vdi-label">Service Type</div><div class="vdi-val">${esc(m.service_type)}</div></div>
+          <div class="view-detail-item"><div class="vdi-label">Assessment</div><div class="vdi-val">${esc(m.service_assessment || 'None')}</div></div>
+          <div class="view-detail-item"><div class="vdi-label">Pref. Date / Time</div><div class="vdi-val">${esc(m.preferred_date || 'Any')} / ${esc(m.preferred_time || 'Any')}</div></div>
+          <div class="view-detail-item"><div class="vdi-label">Est. Duration</div><div class="vdi-val">${esc(m.estimated_duration || 'Not specified')}</div></div>
+          ${m.address ? `<div class="view-detail-item" style="grid-column: 1 / -1"><div class="vdi-label">Service Address</div><div class="vdi-val">${esc(m.address)}</div></div>` : ''}
+        `;
+      }
+
       $('view-modal-body').innerHTML = `
     <div class="msg-view-sender">
       <div class="msg-view-av" style="${av}">${avInitials(m.sender_name)}</div>
@@ -3685,9 +3688,9 @@
     <div class="msg-body-block">${esc(m.message)}</div>
     <div class="detail-grid">
       <div class="view-detail-item"><div class="vdi-label">Received</div><div class="vdi-val">${fdt(m.created_at)}</div></div>
-      <div class="view-detail-item"><div class="vdi-label">Message Type</div><div class="vdi-val">${TYPE_CFG[m.type]?.label || m.type || '—'}</div></div>
-      <div class="view-detail-item"><div class="vdi-label">Status</div><div class="vdi-val">${m.is_starred ? 'Starred' : ''}${m.is_starred && m.status ? ' · ' : ''}${m.status ? m.status.charAt(0).toUpperCase() + m.status.slice(1) : ''}</div></div>
-      <div class="view-detail-item"><div class="vdi-label">Replied At</div><div class="vdi-val">${m.replied_at ? fdt(m.replied_at) : 'Not yet replied'}</div></div>
+      <div class="view-detail-item"><div class="vdi-label">Message Origin</div><div class="vdi-val">${m._source === 'product_inquiry' ? 'Product Quote' : m._source === 'service_inquiry' ? 'Service Booking' : 'Contact Form'}</div></div>
+      ${specificDetailsHTML}
+      <div class="view-detail-item" style="grid-column: 1 / -1"><div class="vdi-label">Replied At</div><div class="vdi-val">${m.replied_at ? fdt(m.replied_at) : 'Not yet replied'}</div></div>
     </div>
     <div class="reply-label">Write a Reply</div>
     <textarea class="reply-textarea" id="reply-textarea" placeholder="Type your reply to ${esc(m.sender_name)}…"></textarea>
@@ -3701,20 +3704,49 @@
       if (!txt) { toast('Please write a reply first.', 'warn'); return; }
       const m = allMsgs.find(x => x.id === activeViewId);
       if (m) {
-        m.status = 'replied';
-        m.replied_at = new Date().toISOString();
+        if (!m.sender_email || m.sender_email === 'Unknown') {
+          toast('Cannot reply: No valid email address found.', 'error');
+          return;
+        }
+
         const btn = $('send-reply-btn');
         btn.disabled = true;
         btn.textContent = 'Sending...';
-        await updateMessageDB(m.id, { status: m.status, replied_at: m.replied_at });
-        btn.disabled = false;
-        btn.innerHTML = `<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;margin-right:4px;"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg> Send Reply`;
+
+        try {
+          // 1. Send the actual email via our new endpoint
+          const payload = {
+            to: m.sender_email,
+            subject: `Re: ${m.subject}`,
+            body: txt,
+            messageId: m.id
+          };
+
+          const mailRes = await fetch('api/messages/reply.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const mailJson = await mailRes.json();
+          if (!mailJson.success) throw new Error(mailJson.message || 'Failed to send email.');
+
+          // 2. Mark as replied in the database
+          m.status = 'replied';
+          m.replied_at = new Date().toISOString();
+          await updateMessageDB(m.id, { status: m.status, replied_at: m.replied_at });
+
+          toast('Reply sent successfully.', 'success');
+          notifs.unshift({ id: Date.now(), type: 'green', icon: 'reply', title: 'Reply sent', body: `You replied to ${m.sender_name}.`, time: 'Just now', unread: true });
+          renderNotifs();
+          closeModal('view-modal');
+          await loadData();
+        } catch (err) {
+          toast('Error sending reply: ' + err.message, 'error');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = `<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;margin-right:4px;"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg> Send Reply`;
+        }
       }
-      closeModal('view-modal');
-      await loadData();
-      notifs.unshift({ id: Date.now(), type: 'green', icon: 'reply', title: 'Reply sent', body: `You replied to ${m?.sender_name || 'sender'}.`, time: 'Just now', unread: true });
-      renderNotifs();
-      toast('Reply sent successfully.', 'success');
     });
 
     // ══ STAR ══
@@ -3822,49 +3854,41 @@
     let blastUsers = [];
     function openBlastModal() {
       $('blast-type').value = '';
-      $('blast-status').value = 'active';
       $('blast-subject').value = '';
       $('blast-message').value = '';
       $('blast-modal').classList.add('open');
       fetchBlastUsers(); // Automatically fetch users on open
     }
 
-    // Bind fetch to the status dropdown change
-    $('blast-status').addEventListener('change', fetchBlastUsers);
-
     async function fetchBlastUsers() {
-      const status = $('blast-status').value;
-
       const tbody = $('blast-users-tbody');
-      tbody.innerHTML = '<tr><td colspan="3" style="padding: 12px; text-align:center; color:var(--muted);">Loading users...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="3" style="padding: 12px; text-align:center; color:var(--muted);">Loading emails...</td></tr>';
 
       try {
-        const res = await fetch('api/users.php');
-        const json = await res.json();
-        if (!json.success) throw new Error(json.message);
+        let finalUsers = [];
 
-        let users = json.data || [];
-        users = users.filter(u => u.user_type === 'user');
+        // Get all distinct emails from inquiries (messages)
+        allMsgs.forEach(m => {
+          if (m.sender_email && !finalUsers.some(f => f.email === m.sender_email)) {
+            finalUsers.push({ name: m.sender_name || 'Unknown', email: m.sender_email, status: 'Inquiry Guest' });
+          }
+        });
 
-        if (status !== 'all') {
-          users = users.filter(u => u.status === status && !u.is_archived);
-        }
-
-        blastUsers = users;
+        blastUsers = finalUsers;
         const countSpan = $('blast-recipient-count');
 
-        if (!users.length) {
+        if (!finalUsers.length) {
           countSpan.textContent = '0 Recipients';
-          tbody.innerHTML = '<tr><td colspan="3" style="padding: 20px; text-align:center; color:var(--muted); font-style: italic;">No users found for this segment.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="3" style="padding: 20px; text-align:center; color:var(--muted); font-style: italic;">No users or emails found for this segment.</td></tr>';
           return;
         }
 
-        countSpan.textContent = `${users.length} Recipient${users.length === 1 ? '' : 's'}`;
-        tbody.innerHTML = users.map(u => `
+        countSpan.textContent = `${finalUsers.length} Recipient${finalUsers.length === 1 ? '' : 's'}`;
+        tbody.innerHTML = finalUsers.map(u => `
           <tr style="border-bottom: 1px solid var(--border); transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.02)'" onmouseout="this.style.backgroundColor='transparent'">
-            <td style="padding: 10px 15px; color: var(--text);">${esc(u.first_name)} ${esc(u.last_name)}</td>
+            <td style="padding: 10px 15px; color: var(--text);">${esc(u.name)}</td>
             <td style="padding: 10px 15px; color: var(--text);">${esc(u.email)}</td>
-            <td style="padding: 10px 15px; text-align: right;">${statusBadge(u.status, false)}</td>
+            <td style="padding: 10px 15px; text-align: right;"><span class="badge b-read">${esc(u.status)}</span></td>
           </tr>
         `).join('');
       } catch (err) {

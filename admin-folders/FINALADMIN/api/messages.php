@@ -1,7 +1,5 @@
 <?php
-define('SB_URL', 'https://pdqhbxtxvxrwtkvymjlm.supabase.co');
-define('SB_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkcWhieHR4dnhyd3RrdnltamxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NTEyMzIsImV4cCI6MjA4NzEyNzIzMn0.jKq6Zw1XWDYXkxdrkW6HscOpsOuUm0gcyBCwFsAwN9U');
-define('SB_TABLE', 'Messages');
+require_once __DIR__ . '/db-config.php';
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
@@ -47,19 +45,90 @@ function out(bool $ok, string $msg, $data = null, int $code = 200): void
 $method = strtoupper($_SERVER['REQUEST_METHOD']);
 
 if ($method === 'GET') {
-    $res = sb('GET', SB_TABLE . '?order=created_at.desc');
-
-    if ($res['status'] === 200 && is_array($res['body'])) {
-        out(true, 'Messages fetched successfully.', $res['body']);
-    } else {
-        out(false, 'Failed to fetch messages.', null, 500);
+    // 1. Fetch from inquiries
+    $resInq = supabase_request('GET', 'inquiries?select=*');
+    $inquiries = ($resInq['status'] === 200 && is_array($resInq['body'])) ? $resInq['body'] : [];
+    foreach ($inquiries as &$m) {
+        $m['_source'] = 'inquiries';
+        $m['type'] = $m['inquiry_type'] ?? 'inquiry';
+        $m['sender_name'] = $m['full_name'] ?? 'Unknown';
+        $m['sender_email'] = $m['email'] ?? 'Unknown';
+        $m['sender_phone'] = $m['phone'] ?? '';
     }
+
+    // 2. Fetch from product_inquiry
+    $resProd = supabase_request('GET', 'product_inquiry?select=*');
+    $prodInqs = ($resProd['status'] === 200 && is_array($resProd['body'])) ? $resProd['body'] : [];
+    foreach ($prodInqs as &$m) {
+        $m['_source'] = 'product_inquiry';
+        $m['type'] = 'quotation';
+        $m['sender_name'] = trim(($m['first_name'] ?? '') . ' ' . ($m['last_name'] ?? ''));
+        $m['sender_email'] = $m['email'] ?? 'Unknown';
+        $m['sender_phone'] = $m['phone'] ?? '';
+        $m['subject'] = 'Product Quote: ' . ($m['product_name'] ?? 'Multiple Items');
+        $m['message'] = "Quantity: " . ($m['quantity'] ?? 1) . "\nNotes: " . ($m['order_notes'] ?? 'None');
+    }
+
+    // 3. Fetch from service_inquiry
+    $resSvc = supabase_request('GET', 'service_inquiry?select=*');
+    $svcInqs = ($resSvc['status'] === 200 && is_array($resSvc['body'])) ? $resSvc['body'] : [];
+    foreach ($svcInqs as &$m) {
+        $m['_source'] = 'service_inquiry';
+        $m['type'] = 'inquiry';
+        $m['sender_name'] = $m['full_name'] ?? 'Unknown';
+        $m['sender_email'] = $m['email'] ?? 'Unknown';
+        $m['sender_phone'] = $m['contact_number'] ?? '';
+        $m['subject'] = 'Service Booking: ' . ($m['service_type'] ?? 'General');
+        $m['message'] = "Assessment: " . ($m['service_assessment'] ?? 'None') . "\nPreferred Date/Time: " . ($m['preferred_date'] ?? '') . " " . ($m['preferred_time'] ?? '') . "\nDuration: " . ($m['estimated_duration'] ?? '') . "\nNotes: " . ($m['notes'] ?? 'None');
+    }
+
+    // Combined
+    $all = array_merge($inquiries, $prodInqs, $svcInqs);
+
+    // Filter out rows without IDs or basic dates (or standardize dates)
+    foreach ($all as &$msg) {
+        $msg['id'] = $msg['_source'] . '_' . ($msg['id'] ?? $msg['inquiry_id'] ?? $msg['service_id'] ?? uniqid());
+        $msg['status'] = $msg['status'] ?? 'unread';
+        $msg['is_starred'] = $msg['is_starred'] ?? false;
+        $msg['is_archived'] = $msg['is_archived'] ?? false;
+        // Standardize date field
+        $msg['created_at'] = $msg['created_at'] ?? date('c');
+    }
+
+    // Sort by created_at DESC
+    usort($all, function ($a, $b) {
+        return strtotime($b['created_at']) - strtotime($a['created_at']);
+    });
+
+    out(true, 'Messages fetched successfully.', $all);
 }
 
 if ($method === 'PATCH') {
-    $id = trim($_GET['id'] ?? '');
-    if (!$id)
+    $idParam = trim($_GET['id'] ?? '');
+    if (!$idParam)
         out(false, 'Message ID is required.', null, 400);
+
+    // ID is formatted as "source_table_ID" e.g., "inquiries_12" or "product_inquiry_45"
+    // Find the last underscore
+    $lastUnderscorePos = strrpos($idParam, '_');
+    if ($lastUnderscorePos === false) {
+        // Fallback for old messages
+        $table = 'inquiries';
+        $actualId = $idParam;
+        $idColumn = 'id';
+    } else {
+        $table = substr($idParam, 0, $lastUnderscorePos);
+        $actualId = substr($idParam, $lastUnderscorePos + 1);
+
+        if ($table === 'product_inquiry') {
+            $idColumn = 'inquiry_id';
+        } else if ($table === 'service_inquiry') {
+            $idColumn = 'service_id';
+        } else {
+            $table = 'inquiries'; // default fallback
+            $idColumn = 'id';
+        }
+    }
 
     $input = json_decode(file_get_contents('php://input'), true);
     if (!isset($input))
@@ -67,7 +136,7 @@ if ($method === 'PATCH') {
 
     $input['updated_at'] = date('c');
 
-    $res = sb('PATCH', SB_TABLE . '?id=eq.' . urlencode($id), $input);
+    $res = supabase_request('PATCH', $table . '?' . $idColumn . '=eq.' . urlencode($actualId), $input);
     if (in_array($res['status'], [200, 204])) {
         out(true, 'Message updated successfully.', is_array($res['body']) ? ($res['body'][0] ?? null) : null);
     }
@@ -75,11 +144,30 @@ if ($method === 'PATCH') {
 }
 
 if ($method === 'DELETE') {
-    $id = trim($_GET['id'] ?? '');
-    if (!$id)
+    $idParam = trim($_GET['id'] ?? '');
+    if (!$idParam)
         out(false, 'Message ID is required.', null, 400);
 
-    $res = sb('DELETE', SB_TABLE . '?id=eq.' . urlencode($id));
+    $lastUnderscorePos = strrpos($idParam, '_');
+    if ($lastUnderscorePos === false) {
+        $table = 'inquiries';
+        $actualId = $idParam;
+        $idColumn = 'id';
+    } else {
+        $table = substr($idParam, 0, $lastUnderscorePos);
+        $actualId = substr($idParam, $lastUnderscorePos + 1);
+
+        if ($table === 'product_inquiry') {
+            $idColumn = 'inquiry_id';
+        } else if ($table === 'service_inquiry') {
+            $idColumn = 'service_id';
+        } else {
+            $table = 'inquiries';
+            $idColumn = 'id';
+        }
+    }
+
+    $res = supabase_request('DELETE', $table . '?' . $idColumn . '=eq.' . urlencode($actualId));
     if (in_array($res['status'], [200, 204])) {
         out(true, 'Message permanently deleted.');
     }
