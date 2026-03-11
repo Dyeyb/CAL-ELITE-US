@@ -3446,7 +3446,7 @@
               </svg>
               Archive <span class="arch-count" id="arch-count-badge">0</span>
             </button>
-            <button class="add-btn" id="add-svc-btn">
+            <button class="add-btn" id="add-svc-btn" type="button" onclick="openAdd()">
               <svg viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
@@ -3471,7 +3471,6 @@
                 <tr>
                   <th>Service</th>
                   <th>Category</th>
-                  <th>Price Range</th>
                   <th>Status</th>
                   <th>Created</th>
                   <th>Updated</th>
@@ -3494,12 +3493,6 @@
                   </td>
                   <td>
                     <div class="skeleton-block" style="width: 90px"></div>
-                  </td>
-                  <td>
-                    <div class="skeleton-block" style="width: 80px"></div>
-                  </td>
-                  <td>
-                    <div class="skeleton-block" style="width: 65px"></div>
                   </td>
                   <td>
                     <div class="skeleton-block" style="width: 85px"></div>
@@ -3529,9 +3522,6 @@
                   </td>
                   <td>
                     <div class="skeleton-block" style="width: 80px"></div>
-                  </td>
-                  <td>
-                    <div class="skeleton-block" style="width: 65px"></div>
                   </td>
                   <td>
                     <div class="skeleton-block" style="width: 85px"></div>
@@ -3572,7 +3562,6 @@
                   <tr>
                     <th>Service</th>
                     <th>Category</th>
-                    <th>Price Range</th>
                     <th>Prev. Status</th>
                     <th>Archived</th>
                     <th>Actions</th>
@@ -3580,7 +3569,7 @@
                 </thead>
                 <tbody id="archive-table-body">
                   <tr>
-                    <td colspan="6">
+                    <td colspan="5">
                       <div class="empty-state">
                         <svg viewBox="0 0 24 24">
                           <path
@@ -3629,8 +3618,7 @@
                 id="form-name"
                 placeholder="e.g. Aluminum Window Installation"
               />
-            </div>
-            <div class="form-group full">
+            </div>            <div class="form-group full">
               <label class="form-label"
                 >Description <span class="req">*</span></label
               ><textarea
@@ -3661,16 +3649,6 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Price (&#8369;) <span class="req">*</span></label
-              ><input
-                class="form-input"
-                type="number"
-                id="form-price"
-                placeholder="0.00"
-                min="0"
-              />
-            </div>
-            <div class="form-group">
               <label class="form-label">Service Image <span class="req">*</span></label
               ><input
                 class="form-input"
@@ -3679,15 +3657,7 @@
                 accept="image/jpeg,image/png,image/webp,image/gif"
               />
             </div>
-            <div class="form-group full">
-              <label class="form-label">Duration / Turnaround</label
-              ><input
-                class="form-input"
-                type="text"
-                id="form-duration"
-                placeholder="e.g. 3–5 business days"
-              />
-            </div>
+
           </div>
         </div>
         <div class="modal-footer">
@@ -3856,12 +3826,7 @@
         currentPage = 1;
       const PER_PAGE = 8;
       let editingId = null,
-        editingImageUrl = "",
-        editingImageKey = "",
-        archivingId = null,
-        restoringId = null,
-        deletingId = null,
-        viewingId = null;
+        editingImageUrl = "";
       const $ = (id) => document.getElementById(id);
       const fd = (d) =>
         d
@@ -3934,18 +3899,6 @@
         const [c, l] = m[s] || ["badge-inactive", s || "—"];
         return `<span class="badge ${c}"><span class="badge-dot"></span>${l}</span>`;
       }
-      function fmtPrice(price, min, max) {
-        if (price !== undefined && price !== null && price !== "") {
-          return `<span style="font-family:'DM Mono',monospace;font-size:0.72rem">₱${Number(price).toLocaleString()}</span>`;
-        }
-        if (!min && !max) return '<span style="color:var(--dim)">—</span>';
-        if (min && max)
-          return `<span style="font-family:'DM Mono',monospace;font-size:0.72rem">₱${Number(min).toLocaleString()} – ₱${Number(max).toLocaleString()}</span>`;
-        if (min)
-          return `<span style="font-family:'DM Mono',monospace;font-size:0.72rem">From ₱${Number(min).toLocaleString()}</span>`;
-        return `<span style="font-family:'DM Mono',monospace;font-size:0.72rem">Up to ₱${Number(max).toLocaleString()}</span>`;
-      }
-
       function toast(msg, type = "success") {
         const t = document.createElement("div");
         t.className = `toast ${type}`;
@@ -4121,7 +4074,7 @@
         const s = q.toLowerCase();
         const res = all
           .filter((sv) =>
-            `${sv.name} ${sv.description} ${sv.category} ${sv.status}`
+            `${sv.name} ${sv.description || ""} ${sv.category} ${sv.status}`
               .toLowerCase()
               .includes(s),
           )
@@ -4253,7 +4206,7 @@
           fs = $("filter-status").value,
           fc = $("filter-category").value;
         filtered = allSvcs.filter((s) => {
-          const n = `${s.name} ${s.description} ${s.category}`.toLowerCase();
+          const n = `${s.name}  ${s.category}`.toLowerCase();
           return (
             (!q || n.includes(q)) &&
             (!fs || s.status === fs) &&
@@ -4276,12 +4229,12 @@
         $("table-count").textContent =
           `${total} RECORD${total !== 1 ? "S" : ""}`;
         if (!sl.length) {
-          tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg><p>No services found</p></div></td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg><p>No services found</p></div></td></tr>`;
         } else
           tbody.innerHTML = sl
             .map(
               (s) =>
-                `<tr><td><div class="svc-cell">${catIcon(s.category)}<div><div class="svc-name">${esc(s.name)}</div><div class="svc-desc-small">${esc(s.description || "—")}</div></div></div></td><td>${catBadge(s.category)}</td><td>${fmtPrice(s.price, s.price_min, s.price_max)}</td><td>${sBadge(s.status)}</td><td style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted)">${fd(s.created_at)}</td><td style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted)">${fd(s.updated_at)}</td><td><div class="action-btns"><button class="action-btn view" onclick="openView('${s.service_id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button><button class="action-btn edit" onclick="openEdit('${s.service_id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="action-btn archive" onclick="openArchive('${s.service_id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></button></div></td></tr>`,
+                `<tr><td><div class="svc-cell">${catIcon(s.category)}<div><div class="svc-name">${esc(s.name)}</div><div class="svc-desc-small">${esc(s.description || "—")}</div></div></div></td><td>${catBadge(s.category)}</td><td>${sBadge(s.status)}</td><td style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted)">${fd(s.created_at)}</td><td style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted)">${fd(s.updated_at)}</td><td><div class="action-btns"><button class="action-btn view" onclick="openView('${s.service_id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button><button class="action-btn edit" onclick="openEdit('${s.service_id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="action-btn archive" onclick="openArchive('${s.service_id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></button></div></td></tr>`,
             )
             .join("");
         $("page-info").textContent = `PAGE ${currentPage} OF ${pages}`;
@@ -4301,13 +4254,13 @@
         $("archive-table-count").textContent =
           `${archivedSvcs.length} ARCHIVED`;
         if (!archivedSvcs.length) {
-          tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg><p>Archive vault empty</p></div></td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg><p>Archive vault empty</p></div></td></tr>`;
           return;
         }
         tbody.innerHTML = archivedSvcs
           .map(
             (s) =>
-              `<tr><td><div class="svc-cell">${catIcon(s.category, true)}<div><div class="svc-name" style="color:var(--muted)">${esc(s.name)}</div><div class="svc-desc-small">${esc(s.description || "—")}</div></div></div></td><td>${catBadge(s.category)}</td><td>${fmtPrice(s.price, s.price_min, s.price_max)}</td><td>${sBadge(s.prev_status || s.status || "inactive")}</td><td style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted)">${fd(s.archived_at || s.updated_at)}</td><td><div class="action-btns"><button class="action-btn restore" onclick="openRestore('${s.service_id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button><button class="action-btn delete" onclick="openDelete('${s.service_id}',true)"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td></tr>`,
+              `<tr><td><div class="svc-cell">${catIcon(s.category, true)}<div><div class="svc-name" style="color:var(--muted)">${esc(s.name)}</div><div class="svc-desc-small">${esc(s.description || "—")}</div></div></div></td><td>${catBadge(s.category)}</td><td>${sBadge(s.status || "inactive")}</td><td style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted)">${fd(s.updated_at)}</td><td><div class="action-btns"><button class="action-btn restore" onclick="openRestore('${s.service_id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button><button class="action-btn delete" onclick="openDelete('${s.service_id}',true)"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td></tr>`,
           )
           .join("");
       }
@@ -4322,26 +4275,15 @@
       function openAdd() {
         editingId = null;
         editingImageUrl = "";
-        editingImageKey = "";
         $("modal-title").innerHTML = "Add <em>Service</em>";
         $("save-btn-text").textContent = "Add Service";
-        [
-          "form-name",
-          "form-desc",
-          "form-price",
-          "form-duration",
-        ].forEach((i) => ($(i).value = ""));
+        ["form-name", "form-desc"].forEach(
+          (i) => ($(i).value = ""),
+        );
         $("form-image-file").value = "";
         $("form-category").value = "";
         $("form-status").value = "";
-        [
-          "form-name",
-          "form-desc",
-          "form-category",
-          "form-status",
-          "form-price",
-          "form-image-file",
-        ].forEach(
+        ["form-name", "form-desc", "form-category", "form-status", "form-image-file"].forEach(
           (i) => $(i).classList.remove("error"),
         );
         $("svc-modal").classList.add("open");
@@ -4353,24 +4295,14 @@
         if (!s) return;
         editingId = id;
         editingImageUrl = s.image_url || "";
-        editingImageKey = s.image_key || "";
         $("modal-title").innerHTML = "Edit <em>Service</em>";
         $("save-btn-text").textContent = "Save Changes";
         $("form-name").value = s.name || "";
         $("form-desc").value = s.description || "";
         $("form-category").value = s.category || "";
         $("form-status").value = s.status || "";
-        $("form-price").value = s.price ?? s.price_min ?? "";
-        $("form-image-file").value = "";
-        $("form-duration").value = s.duration || "";
-        [
-          "form-name",
-          "form-desc",
-          "form-category",
-          "form-status",
-          "form-price",
-          "form-image-file",
-        ].forEach(
+                $("form-image-file").value = "";
+                ["form-name", "form-desc", "form-category", "form-status", "form-image-file"].forEach(
           (i) => $(i).classList.remove("error"),
         );
         $("svc-modal").classList.add("open");
@@ -4385,9 +4317,7 @@
           desc = $("form-desc").value.trim(),
           cat = $("form-category").value,
           st = $("form-status").value,
-          price = $("form-price").value,
-          imageFile = $("form-image-file").files[0] || null,
-          dur = $("form-duration").value.trim();
+          imageFile = $("form-image-file").files[0] || null;
         let v = true;
         const se = (id, e) => {
           $(id).classList[e ? "add" : "remove"]("error");
@@ -4397,7 +4327,6 @@
         se("form-desc", !desc);
         se("form-category", !cat);
         se("form-status", !st);
-        se("form-price", !price);
         se("form-image-file", !editingId && !imageFile);
         if (!v) {
           toast("Complete required fields.", "error");
@@ -4405,18 +4334,16 @@
         }
         const sb = $("modal-save-btn");
         sb.disabled = true;
-        $("save-btn-text").textContent = editingId ? "Saving…" : "Adding…";
+        $("save-btn-text").textContent = editingId ? "Saving�" : "Adding�";
         sb.insertAdjacentHTML(
           "afterbegin",
           '<span class="spinner" id="ss"></span>',
         );
         try {
           let imageUrl = editingImageUrl;
-          let imageKey = editingImageKey;
           if (imageFile) {
             const uploaded = await uploadImage(imageFile);
             imageUrl = uploaded.image_url || "";
-            imageKey = uploaded.image_key || "";
           }
           if (!imageUrl) {
             throw new Error("Service image is required.");
@@ -4427,12 +4354,7 @@
             description: desc,
             category: cat,
             status: st,
-            price: price ? Number(price) : null,
-            price_min: price ? Number(price) : null,
-            price_max: null,
             image_url: imageUrl,
-            image_key: imageKey,
-            duration: dur,
           };
           const d = editingId
             ? await api("PUT", "id=" + encodeURIComponent(editingId), b)
@@ -4457,14 +4379,13 @@
           if (sp) sp.remove();
         }
       }
-
-      function openView(id) {
+function openView(id) {
         const s = allSvcs.find((x) => String(x.service_id) === String(id));
         if (!s) return;
         viewingId = id;
         const cfg = CAT_CONFIG[s.category] || CAT_CONFIG.custom;
         $("view-modal-body").innerHTML =
-          `<div class="view-svc-header"><div class="view-svc-icon" style="background:${cfg.bg};color:${cfg.color};border:1px solid ${cfg.color}44">${cfg.icon}</div><div><div class="view-name">${esc(s.name)}</div><div class="view-sub">${cfg.label} · ${s.duration || "Duration not set"}</div></div></div><div class="view-details"><div class="view-detail-item"><div class="view-detail-label">Service ID</div><div class="view-detail-val">#${esc(s.service_id)}</div></div><div class="view-detail-item"><div class="view-detail-label">Status</div><div class="view-detail-val" style="margin-top:4px">${sBadge(s.status)}</div></div><div class="view-detail-item"><div class="view-detail-label">Category</div><div class="view-detail-val" style="margin-top:4px">${catBadge(s.category)}</div></div><div class="view-detail-item"><div class="view-detail-label">Price Range</div><div class="view-detail-val" style="margin-top:2px">${fmtPrice(s.price, s.price_min, s.price_max)}</div></div><div class="view-detail-item"><div class="view-detail-label">Created</div><div class="view-detail-val">${fd(s.created_at)}</div></div><div class="view-detail-item"><div class="view-detail-label">Last Updated</div><div class="view-detail-val">${fd(s.updated_at)}</div></div><div class="view-detail-item full"><div class="view-detail-label">Description</div><div class="view-detail-val">${esc(s.description || "—")}</div></div></div>`;
+          `<div class="view-svc-header"><div class="view-svc-icon" style="background:${cfg.bg};color:${cfg.color};border:1px solid ${cfg.color}44">${cfg.icon}</div><div><div class="view-name">${esc(s.name)}</div><div class="view-sub">${cfg.label}</div></div></div><div class="view-details"><div class="view-detail-item"><div class="view-detail-label">Service ID</div><div class="view-detail-val">#${esc(s.service_id)}</div></div><div class="view-detail-item"><div class="view-detail-label">Status</div><div class="view-detail-val" style="margin-top:4px">${sBadge(s.status)}</div></div><div class="view-detail-item"><div class="view-detail-label">Category</div><div class="view-detail-val" style="margin-top:4px">${catBadge(s.category)}</div></div><div class="view-detail-item"><div class="view-detail-label">Created</div><div class="view-detail-val">${fd(s.created_at)}</div></div><div class="view-detail-item"><div class="view-detail-label">Last Updated</div><div class="view-detail-val">${fd(s.updated_at)}</div></div><div class="view-detail-item full"><div class="view-detail-label">Description</div><div class="view-detail-val">${esc(s.description || "—")}</div></div></div>`;
         $("view-modal").classList.add("open");
       }
       $("view-close-btn").onclick = () =>
@@ -4534,7 +4455,7 @@
           );
           const d = await api("PUT", "id=" + encodeURIComponent(restoringId), {
             is_archived: false,
-            status: s?.prev_status || "active",
+            status: "active",
           });
           $("restore-modal").classList.remove("open");
           toast("Service restored.", "success");
@@ -4611,10 +4532,8 @@
       $("filter-category").addEventListener("change", applyFilter);
       [
         "form-name",
-        "form-price",
-        "form-image-file",
-        "form-duration",
-      ].forEach((id) => {
+                "form-image-file",
+              ].forEach((id) => {
         $(id).addEventListener("keydown", (e) => {
           if (e.key === "Enter") saveSvc();
         });
