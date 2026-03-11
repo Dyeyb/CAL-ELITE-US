@@ -4294,6 +4294,84 @@
       }
     }
 
+    /* ══ FAQ RADIO CARDS (Buy Now Questionnaire) ══ */
+    .faq-radio-card {
+      flex: 1;
+      cursor: pointer;
+    }
+
+    .faq-radio-card input[type="radio"] {
+      display: none;
+    }
+
+    .faq-radio-inner {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 12px 16px;
+      border: 1.5px solid rgba(255, 255, 255, 0.07);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.03);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--fog);
+      letter-spacing: 0.3px;
+      transition: all .25s ease;
+      user-select: none;
+    }
+
+    .faq-radio-inner svg {
+      flex-shrink: 0;
+      opacity: .5;
+      transition: opacity .2s;
+    }
+
+    .faq-radio-card:hover .faq-radio-inner {
+      border-color: rgba(184, 147, 42, 0.3);
+      background: rgba(184, 147, 42, 0.05);
+      color: var(--chalk);
+    }
+
+    .faq-radio-card input[type="radio"]:checked+.faq-radio-inner {
+      border-color: var(--gold);
+      background: rgba(184, 147, 42, 0.1);
+      color: var(--gold-light);
+      box-shadow: 0 0 0 1px rgba(184, 147, 42, 0.2);
+    }
+
+    .faq-radio-card input[type="radio"]:checked+.faq-radio-inner svg {
+      opacity: 1;
+      color: var(--gold-bright);
+    }
+
+    /* ══ INQUIRY SUCCESS ANIMATION ══ */
+    @keyframes inqCheckPop {
+      0% {
+        opacity: 0;
+        transform: scale(0.4) rotate(-10deg);
+      }
+
+      70% {
+        opacity: 1;
+        transform: scale(1.1) rotate(2deg);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
     /* ══ ORDERS BUTTON ══ */
     .nav-orders-btn {
       width: 34px;
@@ -5515,94 +5593,327 @@
 
   <!-- PRE-BUY FAQ MODAL -->
   <div class="modal-bg" id="preBuyFAQModal">
-    <div class="modal-box" style="max-width:560px;">
-      <div class="modal-head">
-        <div class="modal-title">Product <em>Questionnaire</em></div><button class="modal-x"
-          id="closePreBuyFAQ">×</button>
+    <div class="modal-box"
+      style="max-width:540px; background:linear-gradient(160deg,#0e0e18,#12121e); border:1px solid rgba(184,147,42,0.22);">
+      <!-- Header -->
+      <div class="modal-head"
+        style="background:linear-gradient(135deg,rgba(184,147,42,0.10),rgba(0,0,0,0.3)); border-bottom:1px solid rgba(184,147,42,0.18); padding:20px 24px; display:flex; align-items:center; gap:14px;">
+        <div
+          style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#b8932a,#d4a843);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="17" height="17" fill="none" stroke="#05050a" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+        </div>
+        <div>
+          <div
+            style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:2px;">
+            Step 1 of 2</div>
+          <div class="modal-title" style="margin:0;">Product <em>Questionnaire</em></div>
+        </div>
+        <button class="modal-x" id="closePreBuyFAQ" style="margin-left:auto;">×</button>
       </div>
-      <div class="modal-body">
-        <div style="margin-bottom: 24px;">
-          <h4 style="color:var(--gold); margin-bottom: 8px; font-family:'Cormorant Garamond',serif; font-size:18px;">1.
-            Do you need installation assistance?</h4>
-          <div style="display:flex; gap:16px; margin-top:8px;">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
-                name="pdFaqInstall" value="Yes"> <span style="font-size:13px; color:var(--ash);">Yes</span></label>
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
-                name="pdFaqInstall" value="No"> <span style="font-size:13px; color:var(--ash);">No</span></label>
+      <!-- Body -->
+      <div class="modal-body" style="padding:28px 24px;">
+        <p style="font-size:12px;color:var(--smoke);margin-bottom:24px;line-height:1.7;">Help us understand your project
+          better. Your answers allow our team to prepare an accurate quote and schedule.</p>
+
+        <!-- Q1 -->
+        <div style="margin-bottom:22px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <div
+              style="width:22px;height:22px;border-radius:50%;background:rgba(184,147,42,0.12);border:1px solid rgba(184,147,42,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);">
+              1</div>
+            <span
+              style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--platinum);">Do
+              you need installation assistance?</span>
+          </div>
+          <div style="display:flex;gap:12px;">
+            <label class="faq-radio-card"><input type="radio" name="pdFaqInstall" value="Yes"><span
+                class="faq-radio-inner"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                  viewBox="0 0 24 24">
+                  <path
+                    d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
+                </svg>Yes, needed</span></label>
+            <label class="faq-radio-card"><input type="radio" name="pdFaqInstall" value="No"><span
+                class="faq-radio-inner"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M18 6L6 18M6 6l12 12" />
+                </svg>No, self-install</span></label>
           </div>
         </div>
-        <div style="margin-bottom: 24px;">
-          <h4 style="color:var(--gold); margin-bottom: 8px; font-family:'Cormorant Garamond',serif; font-size:18px;">2.
-            Is this for a commercial or residential project?</h4>
-          <div style="display:flex; gap:16px; margin-top:8px;">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
-                name="pdFaqProject" value="Residential"> <span
-                style="font-size:13px; color:var(--ash);">Residential</span></label>
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
-                name="pdFaqProject" value="Commercial"> <span
-                style="font-size:13px; color:var(--ash);">Commercial</span></label>
+
+        <!-- Divider -->
+        <div
+          style="height:1px;background:linear-gradient(90deg,transparent,rgba(184,147,42,0.18),transparent);margin-bottom:22px;">
+        </div>
+
+        <!-- Q2 -->
+        <div style="margin-bottom:22px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <div
+              style="width:22px;height:22px;border-radius:50%;background:rgba(184,147,42,0.12);border:1px solid rgba(184,147,42,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);">
+              2</div>
+            <span
+              style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--platinum);">Is
+              this for a residential or commercial project?</span>
+          </div>
+          <div style="display:flex;gap:12px;">
+            <label class="faq-radio-card"><input type="radio" name="pdFaqProject" value="Residential"><span
+                class="faq-radio-inner"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                  viewBox="0 0 24 24">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                  <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>Residential</span></label>
+            <label class="faq-radio-card"><input type="radio" name="pdFaqProject" value="Commercial"><span
+                class="faq-radio-inner"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                  viewBox="0 0 24 24">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                  <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
+                </svg>Commercial</span></label>
           </div>
         </div>
-        <div style="margin-bottom: 12px;">
-          <h4 style="color:var(--gold); margin-bottom: 8px; font-family:'Cormorant Garamond',serif; font-size:18px;">3.
-            Are there specific size or customization requirements?</h4>
-          <div style="display:flex; gap:16px; margin-top:8px;">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
-                name="pdFaqCustom" value="Yes"> <span style="font-size:13px; color:var(--ash);">Yes</span></label>
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio"
-                name="pdFaqCustom" value="No"> <span style="font-size:13px; color:var(--ash);">No</span></label>
+
+        <!-- Divider -->
+        <div
+          style="height:1px;background:linear-gradient(90deg,transparent,rgba(184,147,42,0.18),transparent);margin-bottom:22px;">
+        </div>
+
+        <!-- Q3 -->
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <div
+              style="width:22px;height:22px;border-radius:50%;background:rgba(184,147,42,0.12);border:1px solid rgba(184,147,42,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);">
+              3</div>
+            <span
+              style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--platinum);">Are
+              there specific size or customization requirements?</span>
+          </div>
+          <div style="display:flex;gap:12px;">
+            <label class="faq-radio-card"><input type="radio" name="pdFaqCustom" value="Yes"><span
+                class="faq-radio-inner"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                  viewBox="0 0 24 24">
+                  <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                  <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>Yes, custom</span></label>
+            <label class="faq-radio-card"><input type="radio" name="pdFaqCustom" value="No"><span
+                class="faq-radio-inner"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                  viewBox="0 0 24 24">
+                  <polyline points="9 11 12 14 22 4" />
+                  <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                </svg>Standard size</span></label>
           </div>
         </div>
       </div>
-      <div class="modal-foot">
+      <!-- Footer -->
+      <div class="modal-foot" style="border-top:1px solid rgba(184,147,42,0.12); padding:16px 24px;">
         <button class="btn-cancel" id="cancelPreBuyFAQ">Cancel</button>
-        <button class="btn-p" id="proceedPreBuyFAQ" style="padding:9px 22px;">Next Step</button>
+        <button class="btn-p" id="proceedPreBuyFAQ"
+          style="padding:10px 28px; display:flex; align-items:center; gap:8px;">Next Step <svg width="13" height="13"
+            fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6" />
+          </svg></button>
       </div>
     </div>
   </div>
 
   <!-- PRE-BUY INQUIRY MODAL -->
   <div class="modal-bg" id="preBuyInquiryModal">
-    <div class="modal-box" style="max-width:560px;">
-      <div class="modal-head">
-        <div class="modal-title">Purchase <em>Inquiry</em></div><button class="modal-x"
-          id="closePreBuyInquiry">×</button>
-      </div>
-      <div class="modal-body">
+    <div class="modal-box"
+      style="max-width:560px; background:linear-gradient(160deg,#0e0e18,#12121e); border:1px solid rgba(184,147,42,0.22); max-height:90vh; overflow-y:auto;">
+      <!-- Header -->
+      <div class="modal-head"
+        style="background:linear-gradient(135deg,rgba(184,147,42,0.10),rgba(0,0,0,0.3)); border-bottom:1px solid rgba(184,147,42,0.18); padding:20px 24px; display:flex; align-items:center; gap:14px; position:sticky; top:0; z-index:2;">
         <div
-          style="padding: 12px 16px; background: rgba(220, 60, 60, 0.1); border: 1px solid rgba(220, 60, 60, 0.3); border-radius: 4px; margin-bottom: 20px;">
-          <p
-            style="color: #ff6d7a; font-size: 12px; font-weight: 600; text-align: center; letter-spacing: 1px; text-transform: uppercase;">
-            Notice: Buy and do at your own risk</p>
+          style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#b8932a,#d4a843);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="17" height="17" fill="none" stroke="#05050a" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        </div>
+        <div>
+          <div
+            style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:2px;">
+            Step 2 of 2</div>
+          <div class="modal-title" style="margin:0;">Purchase <em>Inquiry</em></div>
+        </div>
+        <button class="modal-x" id="closePreBuyInquiry" style="margin-left:auto;">×</button>
+      </div>
+      <!-- Body -->
+      <div class="modal-body" style="padding:28px 24px;">
+
+        <!-- Product Summary Card -->
+        <div id="inqProductCard"
+          style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(184,147,42,0.06);border:1px solid rgba(184,147,42,0.2);border-radius:6px;margin-bottom:22px;">
+          <div
+            style="width:44px;height:44px;border-radius:4px;background:rgba(184,147,42,0.1);border:1px solid rgba(184,147,42,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">
+            <img id="inqProductImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;">
+            <svg id="inqProductImgFallback" width="18" height="18" fill="none" stroke="#b8932a" stroke-width="1.5"
+              viewBox="0 0 24 24">
+              <rect x="2" y="2" width="20" height="20" rx="2" ry="2" />
+              <line x1="8" y1="6" x2="16" y2="6" />
+              <line x1="8" y1="10" x2="16" y2="10" />
+              <line x1="8" y1="14" x2="12" y2="14" />
+            </svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div id="inqProductName"
+              style="font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--platinum);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+              —</div>
+            <div style="display:flex;gap:10px;margin-top:3px;flex-wrap:wrap;">
+              <span id="inqProductSku"
+                style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--smoke);"></span>
+              <span id="inqProductStock"
+                style="font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);opacity:.8;"></span>
+            </div>
+          </div>
+          <!-- Quantity Stepper -->
+          <div
+            style="display:flex;align-items:center;border:1px solid rgba(184,147,42,0.25);border-radius:4px;overflow:hidden;flex-shrink:0;">
+            <button type="button" id="inqQtyMinus"
+              style="width:30px;height:34px;background:rgba(184,147,42,0.06);border:none;color:var(--gold-bright);font-size:18px;line-height:1;cursor:pointer;">−</button>
+            <input type="number" id="inqQty" value="1" min="1" max="999"
+              style="width:44px;height:34px;text-align:center;background:rgba(184,147,42,0.04);border:none;border-left:1px solid rgba(184,147,42,0.18);border-right:1px solid rgba(184,147,42,0.18);color:var(--platinum);font-family:'DM Mono',monospace;font-size:13px;outline:none;">
+            <button type="button" id="inqQtyPlus"
+              style="width:30px;height:34px;background:rgba(184,147,42,0.06);border:none;color:var(--gold-bright);font-size:18px;line-height:1;cursor:pointer;">+</button>
+          </div>
+        </div>
+
+        <!-- Section: Contact -->
+
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+          <svg width="12" height="12" fill="none" stroke="#b8932a" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          <span
+            style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:#b8932a;opacity:.8;">Contact
+            Information</span>
         </div>
         <div class="form-row">
-          <div><label class="form-lbl">Full Name</label><input type="text" class="form-input" id="inqName"
-              placeholder="Your name"></div>
+          <div><label class="form-lbl">Full Name <span style="color:#e05555;">*</span></label><input type="text"
+              class="form-input" id="inqName" placeholder="Your full name"></div>
           <div><label class="form-lbl">Contact Number</label><input type="text" class="form-input" id="inqPhone"
-              placeholder="+63 xxx xxx xxxx"></div>
+              placeholder="+63 9XX XXX XXXX"></div>
         </div>
-        <label class="form-lbl">Email Address</label><input type="email" class="form-input" id="inqEmail"
-          placeholder="your@email.com">
-        <label class="form-lbl">Delivery Address</label><input type="text" class="form-input" id="inqAddress"
-          placeholder="Full delivery address">
-        <div class="form-row" style="margin-top: 16px;">
+        <label class="form-lbl">Email Address <span style="color:#e05555;">*</span></label>
+        <input type="email" class="form-input" id="inqEmail" placeholder="your@email.com">
+
+        <!-- Divider -->
+        <div
+          style="height:1px;background:linear-gradient(90deg,transparent,rgba(184,147,42,0.18),transparent);margin:20px 0;">
+        </div>
+
+        <!-- Section: Delivery -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+          <svg width="12" height="12" fill="none" stroke="#b8932a" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <circle cx="12" cy="11" r="3" />
+          </svg>
+          <span
+            style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:#b8932a;opacity:.8;">Delivery
+            Details</span>
+        </div>
+        <label class="form-lbl">Delivery Address <span style="color:#e05555;">*</span></label>
+        <input type="text" class="form-input" id="inqAddress" placeholder="Street, Barangay, City, Province">
+
+        <!-- Divider -->
+        <div
+          style="height:1px;background:linear-gradient(90deg,transparent,rgba(184,147,42,0.18),transparent);margin:20px 0;">
+        </div>
+
+        <!-- Section: Schedule -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+          <svg width="12" height="12" fill="none" stroke="#b8932a" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          <span
+            style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:#b8932a;opacity:.8;">Preferred
+            Schedule</span>
+        </div>
+        <div class="form-row">
           <div><label class="form-lbl">Preferred Date</label><input type="date" class="form-input" id="inqDate"></div>
           <div><label class="form-lbl">Preferred Time</label><select class="form-input" id="inqTime">
-              <option value="Morning">Morning (8AM-12PM)</option>
-              <option value="Afternoon">Afternoon (1PM-5PM)</option>
-              <option value="Evening">Evening (6PM-9PM)</option>
+              <option value="morning">Morning (8AM–12PM)</option>
+              <option value="afternoon">Afternoon (1PM–5PM)</option>
+              <option value="evening">Evening (6PM–9PM)</option>
             </select></div>
         </div>
-        <div style="margin-bottom: 4px;">
-          <label class="form-lbl">Estimated Duration (Hours)</label>
-          <input type="number" class="form-input" id="inqDuration" placeholder="e.g. 2" min="1">
+        <label class="form-lbl">Estimated Duration (Hours)</label>
+        <input type="number" class="form-input" id="inqDuration" placeholder="e.g. 2" min="1">
+
+        <!-- Divider -->
+        <div
+          style="height:1px;background:linear-gradient(90deg,transparent,rgba(184,147,42,0.18),transparent);margin:20px 0;">
         </div>
-        <label class="form-lbl" style="margin-top: 12px;">Additional Notes</label><textarea class="form-textarea"
-          id="inqNotes" placeholder="Any special instructions..."></textarea>
+
+        <!-- Notes -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <svg width="12" height="12" fill="none" stroke="#b8932a" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
+          <span
+            style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:#b8932a;opacity:.8;">Additional
+            Notes</span>
+        </div>
+        <textarea class="form-textarea" id="inqNotes" placeholder="Any special instructions or requirements…"
+          style="min-height:80px;"></textarea>
       </div>
-      <div class="modal-foot">
-        <button class="btn-cancel" id="cancelPreBuyInquiry">Cancel</button>
-        <button class="btn-p" id="submitPreBuyInquiry" style="padding:9px 22px;">Proceed to Checkout</button>
+      <!-- Footer -->
+      <div class="modal-foot"
+        style="border-top:1px solid rgba(184,147,42,0.12); padding:16px 24px; position:sticky; bottom:0; background:#12121e; z-index:2;">
+        <button class="btn-cancel" id="cancelPreBuyInquiry">Back</button>
+        <button class="btn-p" id="submitPreBuyInquiry"
+          style="padding:10px 28px; display:flex; align-items:center; gap:8px;">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <polyline points="22 2 11 13" />
+            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+          </svg>
+          Submit Inquiry
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INQUIRY SUCCESS MODAL -->
+  <div class="modal-bg" id="inquirySuccessModal">
+    <div class="modal-box"
+      style="max-width:460px; background:linear-gradient(160deg,#0e0e18,#12121e); border:1px solid rgba(184,147,42,0.22); text-align:center; padding:0; overflow:hidden;">
+      <!-- Gold top bar -->
+      <div style="height:3px; background:linear-gradient(90deg,transparent,#b8932a,#d4a843,#b8932a,transparent);"></div>
+      <div style="padding:44px 36px 36px;">
+        <!-- Animated checkmark circle -->
+        <div
+          style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,rgba(184,147,42,0.15),rgba(212,168,67,0.08));border:2px solid rgba(184,147,42,0.4);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 0 30px rgba(184,147,42,0.15);">
+          <svg width="32" height="32" fill="none" stroke="#d4a843" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" viewBox="0 0 24 24"
+            style="animation:inqCheckPop .5s cubic-bezier(0.34,1.56,0.64,1) both;">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <div
+          style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--platinum);margin-bottom:10px;">
+          Inquiry <em style="color:var(--gold-bright);">Received</em></div>
+        <p style="font-size:13px;color:var(--ash);line-height:1.7;max-width:300px;margin:0 auto 28px;">Thank you for
+          your inquiry. Our team will review your request and reach out to you within <strong
+            style="color:var(--chalk);">24–48 hours</strong> to confirm your schedule and details.</p>
+        <!-- Reference tag -->
+        <div id="inqRefTag"
+          style="display:inline-block;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--gold);background:rgba(184,147,42,0.08);border:1px solid rgba(184,147,42,0.25);border-radius:4px;padding:6px 14px;margin-bottom:28px;">
+        </div>
+        <br>
+        <button class="btn-p" id="closeInquirySuccess" style="padding:10px 32px;">Done</button>
       </div>
     </div>
   </div>
@@ -5719,17 +6030,22 @@
   <div class="co-modal-bg" id="checkoutModal">
     <div class="co-box" id="coBox">
       <!-- Header -->
-      <div class="co-head">
+      <div class="co-head"
+        style="background: linear-gradient(135deg, rgba(184,147,42,0.12) 0%, rgba(0,0,0,0.35) 100%); border-bottom: 1px solid rgba(184,147,42,0.25);">
         <div class="co-head-left">
-          <div class="co-head-icon">
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+          <div class="co-head-icon"
+            style="background: linear-gradient(135deg, #b8932a, #d4a843); box-shadow: 0 4px 18px rgba(184,147,42,0.35);">
+            <svg width="20" height="20" fill="none" stroke="#05050a" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" viewBox="0 0 24 24">
+              <path
                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
           </div>
           <div>
-            <div class="co-title">Place <em>Order</em></div>
-            <div class="co-subtitle">Cal Elite Builders · Secure Checkout</div>
+            <div
+              style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; color:var(--gold,#b8932a); opacity:0.7; margin-bottom:3px;">
+              Cal Elite Builders</div>
+            <div class="co-title" style="margin:0;">Place <em>Order</em></div>
           </div>
         </div>
         <button class="co-close" id="coClose">×</button>
@@ -5760,9 +6076,27 @@
       <div class="co-body">
         <!-- PANEL 1: Review Items -->
         <div class="co-panel active" id="coPanel1">
-          <div class="co-section-title">Review Your Items</div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+            <svg width="13" height="13" fill="none" stroke="#b8932a" stroke-width="2" viewBox="0 0 24 24">
+              <path
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+            <span
+              style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; color:#b8932a; opacity:0.75;">Review
+              Your Items</span>
+          </div>
           <div class="co-items-list" id="coItemsList"></div>
-          <div class="co-section-title">Special Instructions</div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; margin-top:16px;">
+            <svg width="13" height="13" fill="none" stroke="#b8932a" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+            </svg>
+            <span
+              style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; color:#b8932a; opacity:0.75;">Special
+              Instructions</span>
+          </div>
           <div class="co-form-group">
             <label class="co-label">Order Notes (optional)</label>
             <textarea class="co-textarea" id="coNotes"
@@ -5771,7 +6105,15 @@
         </div>
         <!-- PANEL 2: Delivery Details -->
         <div class="co-panel" id="coPanel2">
-          <div class="co-section-title">Contact Information</div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+            <svg width="13" height="13" fill="none" stroke="#b8932a" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <span
+              style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; color:#b8932a; opacity:0.75;">Contact
+              Information</span>
+          </div>
           <div class="co-form-row">
             <div class="co-form-group">
               <label class="co-label">Full Name <span>*</span></label>
@@ -5786,7 +6128,15 @@
             <label class="co-label">Email Address</label>
             <input type="email" class="co-input" id="coEmail" placeholder="your@email.com">
           </div>
-          <div class="co-section-title" style="margin-top:8px;">Delivery Address</div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; margin-top:16px;">
+            <svg width="13" height="13" fill="none" stroke="#b8932a" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span
+              style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; color:#b8932a; opacity:0.75;">Delivery
+              Address</span>
+          </div>
           <div class="co-form-group">
             <label class="co-label">Street / Building / Unit <span>*</span></label>
             <input type="text" class="co-input" id="coStreet" placeholder="House No., Street Name, Subdivision">
@@ -5815,7 +6165,17 @@
               <input type="text" class="co-input" id="coLandmark" placeholder="Near, across from…">
             </div>
           </div>
-          <div class="co-section-title" style="margin-top:8px;">Preferred Delivery Date</div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; margin-top:16px;">
+            <svg width="13" height="13" fill="none" stroke="#b8932a" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+            <span
+              style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; color:#b8932a; opacity:0.75;">Preferred
+              Delivery Date</span>
+          </div>
           <div class="co-form-row">
             <div class="co-form-group">
               <label class="co-label">Requested Delivery Date <span>*</span></label>
@@ -5844,7 +6204,15 @@
         </div>
         <!-- PANEL 3: Payment -->
         <div class="co-panel" id="coPanel3">
-          <div class="co-section-title">Choose Payment Method</div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+            <svg width="13" height="13" fill="none" stroke="#b8932a" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+              <line x1="1" y1="10" x2="23" y2="10" />
+            </svg>
+            <span
+              style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; color:#b8932a; opacity:0.75;">Choose
+              Payment Method</span>
+          </div>
           <div class="co-payment-options">
             <div class="co-pay-opt selected" id="payOptCOD" onclick="selectPayment('cod')">
               <div class="co-pay-radio"></div>
@@ -5896,7 +6264,14 @@
         </div>
         <!-- PANEL 4: Confirm Order -->
         <div class="co-panel" id="coPanel4">
-          <div class="co-section-title">Order Summary</div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+            <svg width="13" height="13" fill="none" stroke="#b8932a" stroke-width="2" viewBox="0 0 24 24">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            <span
+              style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; color:#b8932a; opacity:0.75;">Order
+              Summary</span>
+          </div>
           <div class="co-summary-box">
             <div class="co-summary-head">Items · Subtotal · Fees</div>
             <div class="co-summary-body" id="coSummaryBody"></div>
@@ -5937,7 +6312,18 @@
               <div class="co-confirm-detail" id="coConfirmContact">—</div>
             </div>
           </div>
-          <div class="co-terms" id="coTermsRow" onclick="toggleTerms()">
+          <!-- Blank question label (separated from checkbox) -->
+          <div style="margin-bottom:8px; padding-bottom:10px; border-bottom:1px solid rgba(184,147,42,0.12);">
+            <div
+              style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; color:#b8932a; opacity:0.6; margin-bottom:4px;">
+              Confirmation</div>
+            <div
+              style="font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:600; color:rgba(242,240,234,0.9); line-height:1.3;">
+              &nbsp;</div>
+          </div>
+          <!-- Checkbox separated as its own card -->
+          <div class="co-terms" id="coTermsRow" onclick="toggleTerms()"
+            style="margin-top:12px; border-radius:7px; transition: border-color 0.25s, background 0.25s;">
             <div class="co-check" id="coCheck">
               <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display:none"
                 id="coCheckIcon">
@@ -6225,8 +6611,73 @@
     const fqm = document.getElementById('preBuyFAQModal');
     const iqm = document.getElementById('preBuyInquiryModal');
 
+    // Hold FAQ answers and the product being inquired about
+    let _faqAnswers = { installation: null, project: null, custom: null };
+    let _buyProduct = { dbId: null, ref: null, name: null, sku: null, stocks: 999, imgSrc: null };
+
+    // ── Quantity stepper ──────────────────────────────────────────────────────
+    function _inqQtyAdj(delta) {
+      const inp = document.getElementById('inqQty');
+      const max = parseInt(inp.max) || 999;
+      let val = parseInt(inp.value) || 1;
+      val = Math.min(max, Math.max(1, val + delta));
+      inp.value = val;
+    }
+    document.getElementById('inqQtyMinus').addEventListener('click', () => _inqQtyAdj(-1));
+    document.getElementById('inqQtyPlus').addEventListener('click', () => _inqQtyAdj(+1));
+    document.getElementById('inqQty').addEventListener('change', function () {
+      const max = parseInt(this.max) || 999;
+      this.value = Math.min(max, Math.max(1, parseInt(this.value) || 1));
+    });
+
+    // ── Populate the inquiry modal product card ───────────────────────────────
+    function _populateProductCard() {
+      document.getElementById('inqProductName').textContent = _buyProduct.name || '—';
+      document.getElementById('inqProductSku').textContent = _buyProduct.sku ? 'SKU: ' + _buyProduct.sku : '';
+      const stockEl = document.getElementById('inqProductStock');
+      if (_buyProduct.stocks != null) {
+        stockEl.textContent = 'Stock: ' + _buyProduct.stocks;
+        stockEl.style.color = _buyProduct.stocks > 5 ? 'var(--gold)' : '#e05555';
+      } else {
+        stockEl.textContent = '';
+      }
+      // Set quantity max to available stock
+      const qtyEl = document.getElementById('inqQty');
+      qtyEl.max = _buyProduct.stocks || 999;
+      qtyEl.value = 1;
+
+      // Product image
+      const img = document.getElementById('inqProductImg');
+      const svg = document.getElementById('inqProductImgFallback');
+      if (_buyProduct.imgSrc) {
+        img.src = _buyProduct.imgSrc;
+        img.style.display = 'block';
+        svg.style.display = 'none';
+      } else {
+        img.style.display = 'none';
+        svg.style.display = '';
+      }
+    }
+
     function openPreBuyFAQ() {
-      // populate basic user data if exists
+      // Capture product from the currently-open product details modal
+      if (currentPdCard) {
+        const data = getProductData(currentPdCard);
+        _buyProduct = {
+          dbId: currentPdCard.getAttribute('data-db-id') || null,
+          ref: null,   // product_id column (e.g. PRD-001) — not stored on card, send null
+          name: data.name || null,
+          sku: data.sku || null,
+          stocks: parseInt(data.stocks) || 0,
+          imgSrc: data.imgSrc || null,
+        };
+      }
+
+      // Reset FAQ radio selections
+      document.querySelectorAll('[name="pdFaqInstall"],[name="pdFaqProject"],[name="pdFaqCustom"]').forEach(r => r.checked = false);
+      _faqAnswers = { installation: null, project: null, custom: null };
+
+      // Pre-fill contact info from session
       if (typeof ceUser !== 'undefined' && ceUser.name) {
         document.getElementById('inqName').value = ceUser.name || '';
         document.getElementById('inqEmail').value = ceUser.email || '';
@@ -6239,37 +6690,143 @@
     function closePreBuyInquiry() { iqm.classList.remove('open'); }
 
     document.getElementById('pdBuyNowVisual').addEventListener('click', () => {
-      if (!document.getElementById('pdBuyNowVisual').disabled) {
-        openPreBuyFAQ();
-      }
+      if (!document.getElementById('pdBuyNowVisual').disabled) openPreBuyFAQ();
     });
 
     document.getElementById('closePreBuyFAQ').addEventListener('click', closePreBuyFAQ);
     document.getElementById('cancelPreBuyFAQ').addEventListener('click', closePreBuyFAQ);
 
     document.getElementById('proceedPreBuyFAQ').addEventListener('click', () => {
+      // Capture FAQ answers
+      const installEl = document.querySelector('[name="pdFaqInstall"]:checked');
+      const projectEl = document.querySelector('[name="pdFaqProject"]:checked');
+      const customEl = document.querySelector('[name="pdFaqCustom"]:checked');
+      _faqAnswers.installation = installEl ? installEl.value : null;
+      _faqAnswers.project = projectEl ? projectEl.value.toLowerCase() : null;
+      _faqAnswers.custom = customEl ? customEl.value : null;
+
       closePreBuyFAQ();
+      _populateProductCard();   // Fill in product card before showing inquiry modal
       iqm.classList.add('open');
     });
 
     document.getElementById('closePreBuyInquiry').addEventListener('click', closePreBuyInquiry);
     document.getElementById('cancelPreBuyInquiry').addEventListener('click', closePreBuyInquiry);
 
-    document.getElementById('submitPreBuyInquiry').addEventListener('click', () => {
+    document.getElementById('submitPreBuyInquiry').addEventListener('click', async () => {
       const nm = document.getElementById('inqName').value.trim();
       const ph = document.getElementById('inqPhone').value.trim();
       const em = document.getElementById('inqEmail').value.trim();
       const ad = document.getElementById('inqAddress').value.trim();
 
-      if (!nm || !ph || !em || !ad) {
-        if (typeof toast !== 'undefined') toast('Please complete all required fields.', 'err');
+      if (!nm || !em || !ad) {
+        if (typeof toast !== 'undefined') toast('Please fill in Full Name, Email and Delivery Address.', 'err');
+        return;
+      }
+      if (!em.includes('@')) {
+        if (typeof toast !== 'undefined') toast('Please enter a valid email address.', 'err');
         return;
       }
 
+      const qty = Math.max(1, parseInt(document.getElementById('inqQty').value) || 1);
+      if (_buyProduct.stocks > 0 && qty > _buyProduct.stocks) {
+        if (typeof toast !== 'undefined') toast(`Only ${_buyProduct.stocks} unit(s) in stock.`, 'err');
+        return;
+      }
+
+      const submitBtn = document.getElementById('submitPreBuyInquiry');
+      const origHTML = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="animation:spin .8s linear infinite"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Submitting\u2026';
+
+      // Build payload including product + quantity
+      const inquiryPayload = {
+        // Product reference
+        product_db_id: _buyProduct.dbId || null,
+        product_ref: _buyProduct.ref || null,
+        product_name: _buyProduct.name || null,
+        product_sku: _buyProduct.sku || null,
+        quantity: qty,
+
+        // FAQ answers
+        installation_assistance: _faqAnswers.installation ? _faqAnswers.installation === 'Yes' : null,
+        project_type: _faqAnswers.project || null,
+        customization_required: _faqAnswers.custom ? _faqAnswers.custom === 'Yes' : null,
+
+        // Contact
+        full_name: nm,
+        email: em,
+        contact_number: ph || null,
+
+        // Delivery
+        delivery_address: ad || null,
+
+        // Schedule
+        preferred_date: document.getElementById('inqDate').value || null,
+        preferred_time: document.getElementById('inqTime').value || null,
+        estimated_duration: document.getElementById('inqDuration').value.trim() || null,
+
+        // Notes
+        additional_notes: document.getElementById('inqNotes').value.trim() || null,
+        inquiry_type: 'product_inquiry',
+        status: 'pending'
+      };
+
+      let success = false;
+      let refNum = 'INQ-' + Date.now().toString().slice(-6);
+
+      try {
+        const res = await fetch('product-inquiry.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(inquiryPayload)
+        });
+        const json = await res.json();
+        if (json.success) {
+          success = true;
+          const row = json.data || {};
+          if (row.product_id) refNum = 'INQ-' + String(row.product_id).padStart(6, '0');
+        } else {
+          if (typeof toast !== 'undefined') toast(json.message || 'Submission failed. Please try again.', 'err');
+        }
+      } catch (err) {
+        console.error('Inquiry submission error:', err);
+        if (typeof toast !== 'undefined') toast('Network error — check your connection and try again.', 'err');
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = origHTML;
+
+      if (!success) return;  // keep modal open for retry
+
+      // ── Success: close modals, reset form, show success modal ──
       closePreBuyInquiry();
-      // Click the real buy now button
-      document.getElementById('pdBuyNow').click();
+      closeProductDetails();
+
+      // Reset form inputs
+      ['inqName', 'inqPhone', 'inqEmail', 'inqAddress', 'inqDate', 'inqDuration', 'inqNotes'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      document.getElementById('inqQty').value = 1;
+      document.querySelectorAll('[name="pdFaqInstall"],[name="pdFaqProject"],[name="pdFaqCustom"]').forEach(r => r.checked = false);
+      _buyProduct = { dbId: null, ref: null, name: null, sku: null, stocks: 999, imgSrc: null };
+
+      // Show success modal
+      document.getElementById('inqRefTag').textContent = refNum;
+      document.getElementById('inquirySuccessModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
     });
+
+    // Success modal close handlers
+    const inqSuccModal = document.getElementById('inquirySuccessModal');
+    function closeInquirySuccess() {
+      inqSuccModal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('closeInquirySuccess').addEventListener('click', closeInquirySuccess);
+    inqSuccModal.addEventListener('click', e => { if (e.target === inqSuccModal) closeInquirySuccess(); });
+
 
     // Profile modal
     const pm = document.getElementById('profileModal');
