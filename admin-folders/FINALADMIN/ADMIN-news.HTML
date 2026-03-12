@@ -3006,10 +3006,10 @@
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
         </svg><span class="nav-item-label">Messages</span><span class="nav-badge">5</span></a>
-      <a class="nav-item active" href="admin-user.html" data-label="Users"><svg viewBox="0 0 24 24">
+      <a class="nav-item active" href="ADMIN-news.HTML" data-label="News"><svg viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round"
-            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg><span class="nav-item-label">Users</span></a>
+            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+        </svg><span class="nav-item-label">News</span></a>
       <div class="nav-section-label">System</div>
       <a class="nav-item" href="ADMIN-settings.HTML" data-label="Settings"><svg viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round"
@@ -3051,15 +3051,15 @@
         </button>
         <div class="topbar-divider"></div>
         <div class="topbar-info">
-          <div class="topbar-title">User <em>Management</em></div>
+          <div class="topbar-title">News <em>Management</em></div>
           <div class="breadcrumb">CAL ELITE BUILDERS AND CAL ELECTRICAL <span style="color:var(--gold-border)">-</span>
-            Admin <span style="color:var(--gold-border)"></span> <b>Users</b></div>
+            Admin <span style="color:var(--gold-border)"></span> <b>News</b></div>
         </div>
       </div>
       <div class="topbar-right">
 
         <!-- SEARCH BUTTON -->
-        <button class="topbar-btn" id="search-btn" title="Search users  [ / ]">
+        <button class="topbar-btn" id="search-btn" title="Search news  [ / ]">
           <svg viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
@@ -3117,7 +3117,7 @@
       <div class="sec-head">
         <div class="sec-head-line"
           style="max-width:36px;background:linear-gradient(90deg,transparent,var(--gold-border));"></div>
-        <div class="sec-head-label">Personnel Registry</div>
+        <div class="sec-head-label">News Registry</div>
         <div class="sec-head-line"></div>
       </div>
 
@@ -3126,37 +3126,37 @@
           <div class="stat-stripe s-gold"></div>
           <div class="stat-br"></div>
           <div class="stat-icon-row">
-            <div class="stat-icon">👥</div><span class="stat-chip c-gold">Total</span>
+            <div class="stat-icon">📰</div><span class="stat-chip c-gold">Total</span>
           </div>
           <div class="stat-num" id="stat-total">—</div>
-          <div class="stat-label">Registered Users</div>
+          <div class="stat-label">Published Articles</div>
         </div>
         <div class="stat-card d2">
           <div class="stat-stripe s-green"></div>
           <div class="stat-br"></div>
           <div class="stat-icon-row">
-            <div class="stat-icon">⚡</div><span class="stat-chip c-green">Online</span>
+            <div class="stat-icon">⚡</div><span class="stat-chip c-green">Active</span>
           </div>
           <div class="stat-num" id="stat-active">—</div>
-          <div class="stat-label">Active Personnel</div>
+          <div class="stat-label">Visible News</div>
         </div>
         <div class="stat-card d3">
           <div class="stat-stripe s-blue"></div>
           <div class="stat-br"></div>
           <div class="stat-icon-row">
-            <div class="stat-icon">🛡</div><span class="stat-chip c-blue">Elevated</span>
+            <div class="stat-icon">📝</div><span class="stat-chip c-blue">Drafts</span>
           </div>
           <div class="stat-num" id="stat-admins">—</div>
-          <div class="stat-label">Administrators</div>
+          <div class="stat-label">Draft Articles</div>
         </div>
         <div class="stat-card d4">
           <div class="stat-stripe s-amber"></div>
           <div class="stat-br"></div>
           <div class="stat-icon-row">
-            <div class="stat-icon">🗃</div><span class="stat-chip c-amber">Stored</span>
+            <div class="stat-icon">🗃</div><span class="stat-chip c-amber">Archived</span>
           </div>
           <div class="stat-num" id="stat-archived">—</div>
-          <div class="stat-label">Archived Records</div>
+          <div class="stat-label">Hidden Articles</div>
         </div>
       </div>
 
@@ -3166,18 +3166,12 @@
             <svg viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <input class="search-input" type="text" placeholder="Search personnel…" id="search-input">
+            <input class="search-input" type="text" placeholder="Search news…" id="search-input">
           </div>
           <select class="filter-select" id="filter-status">
             <option value="">All Status</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-            <option value="suspended">Suspended</option>
-          </select>
-          <select class="filter-select" id="filter-type">
-            <option value="">All Roles</option>
-            <option value="admin">Admin</option>
-            <option value="user">User</option>
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
           </select>
         </div>
         <div class="toolbar-right">
@@ -3192,86 +3186,34 @@
             <svg viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
             </svg>
-            Add Personnel
+            Add Article
           </button>
         </div>
       </div>
 
       <div class="table-card">
         <div class="table-header-row">
-          <div class="table-title">Personnel <em>Registry</em></div>
+          <div class="table-title">News <em>Feed</em></div>
           <div class="table-count" id="table-count">LOADING…</div>
         </div>
         <div style="overflow-x:auto">
           <table>
             <thead>
               <tr>
-                <th>Personnel</th>
-                <th>Contact</th>
-                <th>Role</th>
+                <th>Title</th>
+                <th>Author</th>
                 <th>Status</th>
-                <th>Registered</th>
+                <th>Published</th>
                 <th>Updated</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody id="user-table-body">
               <tr class="skeleton-row">
-                <td>
-                  <div style="display:flex;gap:12px;align-items:center">
-                    <div class="skeleton-circle"></div>
-                    <div>
-                      <div class="skeleton-block" style="width:130px;margin-bottom:7px"></div>
-                      <div class="skeleton-block" style="width:170px"></div>
-                    </div>
+                <td colspan="6">
+                  <div class="empty-state">
+                    <p>Loading API Data...</p>
                   </div>
-                </td>
-                <td>
-                  <div class="skeleton-block" style="width:100px"></div>
-                </td>
-                <td>
-                  <div class="skeleton-block" style="width:60px"></div>
-                </td>
-                <td>
-                  <div class="skeleton-block" style="width:65px"></div>
-                </td>
-                <td>
-                  <div class="skeleton-block" style="width:85px"></div>
-                </td>
-                <td>
-                  <div class="skeleton-block" style="width:85px"></div>
-                </td>
-                <td>
-                  <div class="skeleton-block" style="width:80px"></div>
-                </td>
-              </tr>
-              <tr class="skeleton-row">
-                <td>
-                  <div style="display:flex;gap:12px;align-items:center">
-                    <div class="skeleton-circle"></div>
-                    <div>
-                      <div class="skeleton-block" style="width:150px;margin-bottom:7px"></div>
-                      <div class="skeleton-block" style="width:190px"></div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="skeleton-block" style="width:110px"></div>
-                </td>
-                <td>
-                  <div class="skeleton-block" style="width:60px"></div>
-                </td>
-                <td>
-                  <div class="skeleton-block" style="width:65px"></div>
-                </td>
-                <td>
-                  <div class="skeleton-block" style="width:85px"></div>
-                </td>
-                <td>
-                  <div class="skeleton-block" style="width:85px"></div>
-                </td>
-                <td>
-                  <div class="skeleton-block" style="width:80px"></div>
                 </td>
               </tr>
             </tbody>
@@ -3298,9 +3240,8 @@
             <table>
               <thead>
                 <tr>
-                  <th>Personnel</th>
-                  <th>Contact</th>
-                  <th>Role</th>
+                  <th>Title</th>
+                  <th>Author</th>
                   <th>Prev. Status</th>
                   <th>Archived</th>
                   <th>Actions</th>
@@ -3327,46 +3268,36 @@
 
   <!-- ADD/EDIT MODAL -->
   <div class="modal-overlay" id="user-modal">
-    <div class="modal">
+    <div class="modal" style="max-width: 600px;">
       <div class="corner-br"></div>
       <div class="modal-header">
-        <div class="modal-title" id="modal-title">Add <em>Personnel</em></div><button class="modal-close"
+        <div class="modal-title" id="modal-title">Add <em>Article</em></div><button class="modal-close"
           id="modal-close-btn"><svg viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg></button>
       </div>
       <div class="modal-body">
         <div class="form-grid">
-          <div class="form-group"><label class="form-label">First Name <span class="req">*</span></label><input
-              class="form-input" type="text" id="form-fname" placeholder="First name"></div>
-          <div class="form-group"><label class="form-label">Last Name <span class="req">*</span></label><input
-              class="form-input" type="text" id="form-lname" placeholder="Last name"></div>
-          <div class="form-group full"><label class="form-label">Email <span class="req">*</span></label><input
-              class="form-input" type="email" id="form-email" placeholder="user@example.com"></div>
-          <div class="form-group full"><label class="form-label">Password <span id="pw-hint"
-                style="font-size:0.58rem;color:var(--dim);font-weight:300;text-transform:none;letter-spacing:0">(leave
-                blank to keep)</span></label><input class="form-input" type="password" id="form-password"
-              placeholder="Min. 6 characters"></div>
-          <div class="form-group full"><label class="form-label">Phone</label><input class="form-input" type="text"
-              id="form-phone" placeholder="+63 912 345 6789"></div>
-          <div class="form-group"><label class="form-label">Role <span class="req">*</span></label><select
-              class="form-select" id="form-type">
-              <option value="" disabled selected>Select role…</option>
-              <option value="admin">Admin</option>
-              <option value="user">User</option>
-              <option value="service">Service Provider</option>
-            </select></div>
+          <div class="form-group full"><label class="form-label">Title <span class="req">*</span></label><input
+              class="form-input" type="text" id="form-title" placeholder="Article Title"></div>
+          <div class="form-group full"><label class="form-label">Excerpt <span class="req">*</span></label><textarea
+              class="form-input" id="form-excerpt" placeholder="Short description for the card"
+              style="resize:vertical;min-height:60px"></textarea></div>
+          <div class="form-group full"><label class="form-label">Content <span class="req">*</span></label><textarea
+              class="form-input" id="form-content" placeholder="Full article content"
+              style="resize:vertical;min-height:150px"></textarea></div>
+          <div class="form-group full"><label class="form-label">Image URL</label><input class="form-input" type="text"
+              id="form-image" placeholder="https://example.com/image.jpg"></div>
           <div class="form-group"><label class="form-label">Status <span class="req">*</span></label><select
               class="form-select" id="form-status">
               <option value="" disabled selected>Select status…</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="suspended">Suspended</option>
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
             </select></div>
         </div>
       </div>
       <div class="modal-footer"><button class="btn-cancel" id="modal-cancel-btn">Cancel</button><button class="btn-save"
-          id="modal-save-btn"><span id="save-btn-text">Add Personnel</span></button></div>
+          id="modal-save-btn"><span id="save-btn-text">Add Article</span></button></div>
     </div>
   </div>
 
@@ -3375,7 +3306,7 @@
     <div class="modal">
       <div class="corner-br"></div>
       <div class="modal-header">
-        <div class="modal-title">Personnel <em>Profile</em></div><button class="modal-close" id="view-close-btn"><svg
+        <div class="modal-title">Article <em>Preview</em></div><button class="modal-close" id="view-close-btn"><svg
             viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg></button>
@@ -3396,8 +3327,8 @@
               d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
           </svg></div>
         <div class="modal-center">
-          <h3>Archive Record</h3>
-          <p>Move <span class="uh" id="archive-user-name"></span> to the archive vault? Record is preserved and
+          <h3>Archive Article</h3>
+          <p>Move <span class="uh" id="archive-user-name"></span> to the archive vault? Article is preserved and
             restorable.</p>
         </div>
       </div>
@@ -3416,7 +3347,7 @@
               d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg></div>
         <div class="modal-center">
-          <h3>Restore Personnel</h3>
+          <h3>Restore Article</h3>
           <p>Reinstate <span class="uh" id="restore-user-name"></span> to the active registry?</p>
         </div>
       </div>
@@ -3460,18 +3391,46 @@
     })();
 
     // ═══ CORE HELPERS ═══
-    const API_BASE = './api/users.php';
-    let allUsers = [], archivedUsers = [], filtered = [], currentPage = 1;
+    // Direct Supabase REST — bypasses PHP proxy, includes required apikey header
+    const SB_URL = 'https://pdqhbxtxvxrwtkvymjlm.supabase.co';
+    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkcWhieHR4dnhyd3RrdnltamxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NTEyMzIsImV4cCI6MjA4NzEyNzIzMn0.jKq6Zw1XWDYXkxdrkW6HscOpsOuUm0gcyBCwFsAwN9U';
+    const SB_HDR = { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Prefer': 'return=representation' };
+    async function sbFetch(path, method = 'GET', body = null) {
+      const opts = { method, headers: SB_HDR };
+      if (body) opts.body = JSON.stringify(body);
+      const r = await fetch(SB_URL + '/rest/v1/' + path, opts);
+      const data = await r.json();
+      if (!r.ok) throw new Error(data?.message || JSON.stringify(data));
+      return data;
+    }
+
+    // ─── api() — routes POST/PUT/DELETE through news.php ───────────────────────
+    // Signature: api(method, queryString, body)
+    // e.g. api('PUT', 'id=5', { status:'archived' })
+    //      api('POST', '', { title:'...', ... })
+    //      api('DELETE', 'id=5')
+    const NEWS_PHP = './api/news.php';
+    async function api(method, qs = '', body = null) {
+      const url = NEWS_PHP + (qs ? '?' + qs : '');
+      const opts = { method, headers: { 'Content-Type': 'application/json' } };
+      if (body) opts.body = JSON.stringify(body);
+      const r = await fetch(url, opts);
+      const data = await r.json();
+      // news.php always returns { success, message, data }
+      return data;
+    }
+
+    let allNews = [], archivedNews = [], filtered = [], currentPage = 1;
     const PER_PAGE = 8;
     const AVAS = [['#b8935a', '#1a140a'], ['#4ade80', '#091a0d'], ['#60a5fa', '#090f1a'], ['#fbbf24', '#1a1209'], ['#a78bfa', '#0f0a1a'], ['#34d399', '#071a12'], ['#f472b6', '#1a0912'], ['#2dd4bf', '#071a19']];
     let editingId = null, archivingId = null, restoringId = null, deletingId = null, viewingId = null;
     const $ = id => document.getElementById(id);
     const ga = id => AVAS[Math.abs(parseInt(id)) % AVAS.length];
-    const ini = u => ((u.first_name || '?')[0] + (u.last_name || '?')[0]).toUpperCase();
+    const ini = u => ((u.title || '?')[0] + (u.title?.split(' ')?.[1]?.[0] || '?')).toUpperCase();
     const fd = d => d ? new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
     const esc = s => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    function sBadge(s) { const m = { active: ['badge-active', 'Active'], inactive: ['badge-inactive', 'Inactive'], suspended: ['badge-suspended', 'Suspended'], archived: ['badge-archived', 'Archived'] }; const [c, l] = m[s] || ['badge-inactive', s || '—']; return `<span class="badge ${c}"><span class="badge-dot"></span>${l}</span>`; }
-    function tBadge(t) { const m = { admin: 'type-admin', user: 'type-user' }; return `<span class="type-badge ${m[t] || 'type-user'}">${t ? (t[0].toUpperCase() + t.slice(1)) : '—'}</span>`; }
+    function sBadge(s) { const m = { published: ['badge-active', 'Published'], draft: ['badge-suspended', 'Draft'], archived: ['badge-archived', 'Archived'] }; const [c, l] = m[s] || ['badge-inactive', s || '—']; return `<span class="badge ${c}"><span class="badge-dot"></span>${l}</span>`; }
+
 
     function toast(msg, type = 'success') {
       const t = document.createElement('div'); t.className = `toast ${type}`;
@@ -3485,11 +3444,11 @@
     // ═══════════════════════════════════
     let notifOpen = false;
     let notifs = [
-      { id: 1, type: 'green', icon: 'user', title: 'New user registered', body: 'John Mitra created an account.', time: '2 min ago', unread: true },
-      { id: 2, type: 'amber', icon: 'alert', title: 'Account suspended', body: 'User geraldabo@gmail.com was suspended.', time: '18 min ago', unread: true },
-      { id: 3, type: 'blue', icon: 'edit', title: 'Profile updated', body: 'Maria Santos updated her profile info.', time: '1 hr ago', unread: true },
-      { id: 4, type: 'red', icon: 'trash', title: 'Record purged', body: 'An archived record was permanently deleted.', time: '3 hrs ago', unread: false },
-      { id: 5, type: 'gold', icon: 'archive', title: 'Records archived', body: '2 user records moved to archive vault.', time: 'Yesterday', unread: false },
+      { id: 1, type: 'green', icon: 'user', title: 'Article published', body: 'A new article was published.', time: '2 min ago', unread: true },
+      { id: 2, type: 'amber', icon: 'alert', title: 'Article drafted', body: 'An article was moved to drafts.', time: '18 min ago', unread: true },
+      { id: 3, type: 'blue', icon: 'edit', title: 'Article updated', body: 'An article was edited.', time: '1 hr ago', unread: true },
+      { id: 4, type: 'red', icon: 'trash', title: 'Article deleted', body: 'An archived article was permanently deleted.', time: '3 hrs ago', unread: false },
+      { id: 5, type: 'gold', icon: 'archive', title: 'Article archived', body: '2 articles moved to archive vault.', time: 'Yesterday', unread: false },
     ];
 
     const NOTIF_SVG = {
@@ -3557,23 +3516,22 @@
     function renderSearchResults(q) {
       const box = $('search-overlay-results');
       if (!q.trim()) { box.innerHTML = ''; return; }
-      const all = [...allUsers, ...archivedUsers];
+      const all = [...allNews, ...archivedNews];
       const s = q.toLowerCase();
-      const res = all.filter(u => `${u.first_name} ${u.last_name} ${u.email} ${u.user_type} ${u.status}`.toLowerCase().includes(s)).slice(0, 8);
+      const res = all.filter(u => `${u.title} ${u.author} ${u.status}`.toLowerCase().includes(s)).slice(0, 8);
       if (!res.length) { box.innerHTML = `<div class="search-results-box"><div class="search-empty-msg">No results for "<strong>${esc(q)}</strong>"</div></div>`; return; }
-      const stClass = { active: 'tg', inactive: 'tr', suspended: 'ta', archived: '' };
+      const stClass = { published: 'tg', draft: 'ta', archived: '' };
       box.innerHTML = `<div class="search-results-box">
     <div class="search-results-hdr"><span class="search-results-hdr-label">Results</span><span class="search-results-hdr-count">${res.length} found</span></div>
     ${res.map(u => {
-        const [fg, bg] = ga(u.user_id);
-        return `<div class="search-result-item" onclick="searchPickUser('${u.user_id}',${!!u.is_archived})">
+        const [fg, bg] = ga(u.id);
+        return `<div class="search-result-item" onclick="searchPickUser('${u.id}',${!!u.is_archived})">
         <div class="sr-ava" style="width:34px;height:34px;background:${bg};color:${fg};border:1px solid ${fg}44;flex-shrink:0">${ini(u)}</div>
         <div class="sr-info">
-          <div class="sr-name">${esc(u.first_name)} ${esc(u.last_name)}</div>
-          <div class="sr-email">${esc(u.email)}</div>
+          <div class="sr-name">${esc(u.title)}</div>
+          <div class="sr-email">${esc(u.author)}</div>
         </div>
         <div class="sr-tags">
-          <span class="sr-tag">${u.user_type || 'user'}</span>
           <span class="sr-tag ${stClass[u.status] || ''}">${u.status || '—'}</span>
           ${u.is_archived ? '<span class="sr-tag">archived</span>' : ''}
         </div>
@@ -3594,48 +3552,43 @@
       if (e.key === '/' && !searchOpen && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) { e.preventDefault(); openSearch(); }
     });
 
-    // ═══ API ═══
-    async function api(method, params = '', body = null) {
-      const url = API_BASE + (params ? '?' + params : '');
-      const o = { method, headers: { 'Content-Type': 'application/json' } };
-      if (body) o.body = JSON.stringify(body);
-      return (await fetch(url, o)).json();
-    }
-
-    async function loadUsers() {
+    // ═══ loadNews — fetch through news.php (avoids RLS / CORS issues) ═══
+    async function loadNews() {
       try {
-        const d = await api('GET'); if (!d.success) throw 0;
-        const all = d.data || []; allUsers = all.filter(u => !u.is_archived); archivedUsers = all.filter(u => u.is_archived);
-      } catch {
-        allUsers = [
-          { user_id: 6, first_name: 'John', last_name: 'Mitra', email: 'johnbernardmitra25@gmail.com', phone: '09477188719', user_type: 'user', status: 'active', is_archived: false, created_at: '2026-02-23T08:06:34+00:00', updated_at: '2026-02-23T08:07:42+00:00' },
-          { user_id: 7, first_name: 'Abo', last_name: 'Gerrald', email: 'geraldabo@gmail.com', phone: '12312313', user_type: 'user', status: 'active', is_archived: false, created_at: '2026-02-23T08:13:35+00:00', updated_at: '2026-02-23T08:13:35+00:00' },
-          { user_id: 1, first_name: 'Maria', last_name: 'Santos', email: 'maria@aluminumlady.com', phone: '09171234567', user_type: 'admin', status: 'active', is_archived: false, created_at: '2026-01-10T09:00:00+00:00', updated_at: '2026-01-10T09:00:00+00:00' },
-        ]; archivedUsers = []; toast('Demo mode — connect XAMPP for live data.', 'warn');
+        const res = await fetch(NEWS_PHP, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+        const json = await res.json();
+        if (!json.success) throw new Error(json.message || 'Failed to load news');
+        const all = Array.isArray(json.data) ? json.data : [];
+        allNews = all.filter(u => !u.is_archived);
+        archivedNews = all.filter(u => !!u.is_archived);
+      } catch (e) {
+        console.error('loadNews error:', e);
+        allNews = []; archivedNews = [];
+        toast('Could not load news: ' + e.message, 'error');
       }
       updateStats(); applyFilter(); renderArchive(); renderNotifs();
     }
 
     function updateStats() {
-      $('stat-total').textContent = allUsers.length;
-      $('stat-active').textContent = allUsers.filter(u => u.status === 'active').length;
-      $('stat-admins').textContent = allUsers.filter(u => u.user_type === 'admin').length;
-      $('stat-archived').textContent = archivedUsers.length;
-      $('arch-count-badge').textContent = archivedUsers.length;
-      $('arch-section-count').textContent = `${archivedUsers.length} record${archivedUsers.length !== 1 ? 's' : ''}`;
+      $('stat-total').textContent = allNews.length;
+      $('stat-active').textContent = allNews.filter(u => u.status === 'published').length;
+      $('stat-admins').textContent = allNews.filter(u => u.status === 'draft').length;
+      $('stat-archived').textContent = archivedNews.length;
+      $('arch-count-badge').textContent = archivedNews.length;
+      $('arch-section-count').textContent = `${archivedNews.length} record${archivedNews.length !== 1 ? 's' : ''}`;
     }
     function applyFilter() {
-      const q = $('search-input').value.toLowerCase(), fs = $('filter-status').value, ft = $('filter-type').value;
-      filtered = allUsers.filter(u => { const n = `${u.first_name} ${u.last_name} ${u.email}`.toLowerCase(); return (!q || n.includes(q)) && (!fs || u.status === fs) && (!ft || u.user_type === ft); });
+      const q = $('search-input').value.toLowerCase(), fs = $('filter-status').value;
+      filtered = allNews.filter(u => { const n = `${u.title} ${u.author}`.toLowerCase(); return (!q || n.includes(q)) && (!fs || u.status === fs); });
       currentPage = 1; renderTable();
     }
     function renderTable() {
       const tbody = $('user-table-body'), total = filtered.length, pages = Math.max(1, Math.ceil(total / PER_PAGE));
       currentPage = Math.min(currentPage, pages);
       const sl = filtered.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
-      $('table-count').textContent = `${total} RECORD${total !== 1 ? 'S' : ''}`;
-      if (!sl.length) { tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg><p>No personnel found</p></div></td></tr>`; }
-      else tbody.innerHTML = sl.map(u => { const [fg, bg] = ga(u.user_id); return `<tr><td><div class="user-cell"><div class="user-ava" style="background:${bg};color:${fg};border:1px solid ${fg}44">${ini(u)}</div><div><div class="user-full-name">${esc(u.first_name)} ${esc(u.last_name)}</div><div class="user-email-small">${esc(u.email)}</div></div></div></td><td style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted)">${u.phone ? esc(u.phone) : '<span style="color:var(--dim)">—</span>'}</td><td>${tBadge(u.user_type)}</td><td>${sBadge(u.status)}</td><td style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted)">${fd(u.created_at)}</td><td style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted)">${fd(u.updated_at)}</td><td><div class="action-btns"><button class="action-btn view" onclick="openView('${u.user_id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button><button class="action-btn edit" onclick="openEdit('${u.user_id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="action-btn archive" onclick="openArchive('${u.user_id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></button></div></td></tr>`; }).join('');
+      $('table-count').textContent = `${total} ARTICLE${total !== 1 ? 'S' : ''}`;
+      if (!sl.length) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg><p>No articles found</p></div></td></tr>`; }
+      else tbody.innerHTML = sl.map(u => { const [fg, bg] = ga(u.id); return `<tr><td><div class="user-cell"><div class="user-ava" style="background:${bg};color:${fg};border:1px solid ${fg}44;border-radius:4px">${ini(u)}</div><div><div class="user-full-name">${esc(u.title)}</div><div class="user-email-small">${esc(u.excerpt).substring(0, 50)}${u.excerpt?.length > 50 ? '...' : ''}</div></div></div></td><td style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--muted)">${u.author ? esc(u.author) : '<span style="color:var(--dim)">—</span>'}</td><td>${sBadge(u.status)}</td><td style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted)">${fd(u.published_at)}</td><td style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted)">${fd(u.updated_at)}</td><td><div class="action-btns"><button class="action-btn view" onclick="openView('${u.id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button><button class="action-btn edit" onclick="openEdit('${u.id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="action-btn archive" onclick="openArchive('${u.id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></button></div></td></tr>`; }).join('');
       $('page-info').textContent = `PAGE ${currentPage} OF ${pages}`;
       let h = `<button class="page-btn" onclick="goPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>`;
       for (let i = 1; i <= pages; i++)h += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
@@ -3645,43 +3598,43 @@
     function goPage(p) { currentPage = p; renderTable(); }
     function renderArchive() {
       const tbody = $('archive-table-body');
-      $('archive-table-count').textContent = `${archivedUsers.length} ARCHIVED`;
-      if (!archivedUsers.length) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg><p>Archive vault empty</p></div></td></tr>`; return; }
-      tbody.innerHTML = archivedUsers.map(u => { const [fg, bg] = ga(u.user_id); return `<tr><td><div class="user-cell"><div class="user-ava archived-ava" style="background:${bg};color:${fg};border:1px solid ${fg}22">${ini(u)}</div><div><div class="user-full-name" style="color:var(--muted)">${esc(u.first_name)} ${esc(u.last_name)}</div><div class="user-email-small">${esc(u.email)}</div></div></div></td><td style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted)">${u.phone ? esc(u.phone) : '—'}</td><td>${tBadge(u.user_type)}</td><td>${sBadge(u.prev_status || u.status || 'inactive')}</td><td style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted)">${fd(u.archived_at || u.updated_at)}</td><td><div class="action-btns"><button class="action-btn restore" onclick="openRestore('${u.user_id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button><button class="action-btn delete" onclick="openDelete('${u.user_id}',true)"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td></tr>`; }).join('');
+      $('archive-table-count').textContent = `${archivedNews.length} ARCHIVED`;
+      if (!archivedNews.length) { tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg><p>Archive vault empty</p></div></td></tr>`; return; }
+      tbody.innerHTML = archivedNews.map(u => { const [fg, bg] = ga(u.id); return `<tr><td><div class="user-cell"><div class="user-ava archived-ava" style="background:${bg};color:${fg};border:1px solid ${fg}22;border-radius:4px">${ini(u)}</div><div><div class="user-full-name" style="color:var(--muted)">${esc(u.title)}</div><div class="user-email-small">${esc(u.author)}</div></div></div></td><td>${sBadge(u.prev_status || u.status || 'draft')}</td><td style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted)">${fd(u.archived_at || u.updated_at)}</td><td><div class="action-btns"><button class="action-btn restore" onclick="openRestore('${u.id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button><button class="action-btn delete" onclick="openDelete('${u.id}',true)"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td></tr>`; }).join('');
     }
     function scrollToArchive() { $('archive-section').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 
-    function openAdd() { editingId = null; $('modal-title').innerHTML = 'Add <em>Personnel</em>'; $('save-btn-text').textContent = 'Add Personnel'; $('pw-hint').textContent = '(required)';['form-fname', 'form-lname', 'form-email', 'form-password', 'form-phone'].forEach(i => $(i).value = ''); $('form-type').value = ''; $('form-status').value = '';['form-fname', 'form-lname', 'form-email', 'form-type', 'form-status'].forEach(i => $(i).classList.remove('error')); $('user-modal').classList.add('open'); $('form-fname').focus(); }
-    function openEdit(id) { const u = allUsers.find(x => String(x.user_id) === String(id)); if (!u) return; editingId = id; $('modal-title').innerHTML = 'Edit <em>Personnel</em>'; $('save-btn-text').textContent = 'Save Changes'; $('pw-hint').textContent = '(leave blank to keep)'; $('form-fname').value = u.first_name || ''; $('form-lname').value = u.last_name || ''; $('form-email').value = u.email || ''; $('form-password').value = ''; $('form-phone').value = u.phone || ''; $('form-type').value = ['admin', 'user'].includes(u.user_type) ? u.user_type : 'user'; $('form-status').value = u.status || '';['form-fname', 'form-lname', 'form-email', 'form-type', 'form-status'].forEach(i => $(i).classList.remove('error')); $('user-modal').classList.add('open'); $('form-fname').focus(); }
+    function openAdd() { editingId = null; $('modal-title').innerHTML = 'Add <em>Article</em>'; $('save-btn-text').textContent = 'Add Article';['form-title', 'form-excerpt', 'form-content', 'form-image', 'form-status'].forEach(i => $(i).value = ''); $('form-status').value = 'published';['form-title', 'form-excerpt', 'form-content', 'form-status'].forEach(i => $(i).classList.remove('error')); $('user-modal').classList.add('open'); $('form-title').focus(); }
+    function openEdit(id) { const u = allNews.find(x => String(x.id) === String(id)); if (!u) return; editingId = id; $('modal-title').innerHTML = 'Edit <em>Article</em>'; $('save-btn-text').textContent = 'Save Changes'; $('form-title').value = u.title || ''; $('form-excerpt').value = u.excerpt || ''; $('form-content').value = u.content || ''; $('form-image').value = u.thumbnail_url || ''; $('form-status').value = u.status || 'published';['form-title', 'form-excerpt', 'form-content', 'form-status'].forEach(i => $(i).classList.remove('error')); $('user-modal').classList.add('open'); $('form-title').focus(); }
     function closeModal() { $('user-modal').classList.remove('open'); }
 
     async function saveUser() {
-      const fn = $('form-fname').value.trim(), ln = $('form-lname').value.trim(), em = $('form-email').value.trim(), pw = $('form-password').value, ph = $('form-phone').value.trim(), ty = $('form-type').value, st = $('form-status').value;
+      const ti = $('form-title').value.trim(), ex = $('form-excerpt').value.trim(), co = $('form-content').value.trim(), im = $('form-image').value.trim(), st = $('form-status').value;
       let v = true; const se = (id, e) => { $(id).classList[e ? 'add' : 'remove']('error'); if (e) v = false; };
-      se('form-fname', !fn); se('form-lname', !ln); se('form-email', !em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)); se('form-type', !ty); se('form-status', !st);
-      if (!editingId && !pw) { toast('Password required.', 'error'); return; } if (pw && pw.length < 6) { toast('Password must be 6+ chars.', 'error'); return; } if (!v) { toast('Complete required fields.', 'error'); return; }
+      se('form-title', !ti); se('form-excerpt', !ex); se('form-content', !co); se('form-status', !st);
+      if (!v) { toast('Complete required fields.', 'error'); return; }
       const sb = $('modal-save-btn'); sb.disabled = true; $('save-btn-text').textContent = editingId ? 'Saving…' : 'Adding…'; sb.insertAdjacentHTML('afterbegin', '<span class="spinner" id="ss"></span>');
-      try { const b = { first_name: fn, last_name: ln, email: em, phone: ph, user_type: ty, status: st }; if (pw) b.password = pw; const d = editingId ? await api('PUT', 'id=' + encodeURIComponent(editingId), b) : await api('POST', '', b); if (!d.success) throw 0; closeModal(); toast(editingId ? 'Record updated.' : 'Personnel added.', 'success'); pushNotif(editingId ? 'blue' : 'green', editingId ? 'edit' : 'user', editingId ? 'Profile updated' : 'New user added', `${fn} ${ln} was ${editingId ? 'updated' : 'added'}.`); await loadUsers(); }
-      catch { if (editingId) { const i = allUsers.findIndex(x => String(x.user_id) === String(editingId)); if (i > -1) allUsers[i] = { ...allUsers[i], first_name: fn, last_name: ln, email: em, phone: ph, user_type: ty, status: st, updated_at: new Date().toISOString() }; } else allUsers.unshift({ user_id: Date.now(), first_name: fn, last_name: ln, email: em, phone: ph, user_type: ty, status: st, is_archived: false, created_at: new Date().toISOString(), updated_at: new Date().toISOString() }); updateStats(); applyFilter(); closeModal(); pushNotif(editingId ? 'blue' : 'green', editingId ? 'edit' : 'user', editingId ? 'Profile updated' : 'New user added', `${fn} ${ln} was ${editingId ? 'updated' : 'added'}.`); toast(editingId ? 'Record updated.' : 'Personnel added.', 'success'); }
-      finally { sb.disabled = false; $('save-btn-text').textContent = editingId ? 'Save Changes' : 'Add Personnel'; const sp = document.getElementById('ss'); if (sp) sp.remove(); }
+      try { const b = { title: ti, excerpt: ex, content: co, thumbnail_url: im, status: st }; const d = editingId ? await api('PUT', 'id=' + encodeURIComponent(editingId), b) : await api('POST', '', b); if (!d.success) throw new Error(d.message || 'Server error'); closeModal(); toast(editingId ? 'Article updated.' : 'Article added.', 'success'); pushNotif(editingId ? 'blue' : 'green', editingId ? 'edit' : 'user', editingId ? 'Article updated' : 'New article added', `"${ti}" was ${editingId ? 'updated' : 'added'}.`); await loadNews(); }
+      catch (err) { toast((err && err.message) || 'Save failed. Check news.php path/connection.', 'error'); }
+      finally { sb.disabled = false; $('save-btn-text').textContent = editingId ? 'Save Changes' : 'Add Article'; const sp = document.getElementById('ss'); if (sp) sp.remove(); }
     }
 
-    function openView(id) { const u = allUsers.find(x => String(x.user_id) === String(id)); if (!u) return; viewingId = id; const [fg, bg] = ga(u.user_id); $('view-modal-body').innerHTML = `<div class="view-user-header"><div class="view-ava" style="background:${bg};color:${fg};border:1px solid ${fg}44">${ini(u)}</div><div><div class="view-name">${esc(u.first_name)} ${esc(u.last_name)}</div><div class="view-email">${esc(u.email)}</div></div></div><div class="view-details"><div class="view-detail-item"><div class="view-detail-label">User ID</div><div class="view-detail-val">#${esc(u.user_id)}</div></div><div class="view-detail-item"><div class="view-detail-label">Phone</div><div class="view-detail-val">${u.phone ? esc(u.phone) : '—'}</div></div><div class="view-detail-item"><div class="view-detail-label">Role</div><div class="view-detail-val" style="margin-top:4px">${tBadge(u.user_type)}</div></div><div class="view-detail-item"><div class="view-detail-label">Status</div><div class="view-detail-val" style="margin-top:4px">${sBadge(u.status)}</div></div><div class="view-detail-item"><div class="view-detail-label">Registered</div><div class="view-detail-val">${fd(u.created_at)}</div></div><div class="view-detail-item"><div class="view-detail-label">Last Updated</div><div class="view-detail-val">${fd(u.updated_at)}</div></div></div>`; $('view-modal').classList.add('open'); }
+    function openView(id) { const u = allNews.find(x => String(x.id) === String(id)); if (!u) return; viewingId = id; const [fg, bg] = ga(u.id); $('view-modal-body').innerHTML = `<div class="view-user-header"><div class="view-ava" style="background:${bg};color:${fg};border:1px solid ${fg}44;border-radius:4px">${ini(u)}</div><div><div class="view-name">${esc(u.title)}</div><div class="view-email">By ${esc(u.author || 'Admin')}</div></div></div><div class="view-details" style="display:block;"><div class="view-detail-item" style="margin-bottom:10px;"><div class="view-detail-label">Excerpt</div><div class="view-detail-val">${esc(u.excerpt)}</div></div><div class="view-detail-item" style="margin-bottom:10px;"><div class="view-detail-label">Content</div><div class="view-detail-val" style="white-space:pre-wrap;font-size:0.8rem">${esc(u.content)}</div></div><div style="display:flex;gap:10px;"><div class="view-detail-item" style="flex:1"><div class="view-detail-label">Status</div><div class="view-detail-val" style="margin-top:4px">${sBadge(u.status)}</div></div><div class="view-detail-item" style="flex:1"><div class="view-detail-label">Published</div><div class="view-detail-val">${fd(u.published_at)}</div></div><div class="view-detail-item" style="flex:1"><div class="view-detail-label">Last Updated</div><div class="view-detail-val">${fd(u.updated_at)}</div></div></div></div>`; $('view-modal').classList.add('open'); }
     $('view-close-btn').onclick = () => $('view-modal').classList.remove('open');
     $('view-cancel-btn').onclick = () => $('view-modal').classList.remove('open');
     $('view-edit-btn').onclick = () => { $('view-modal').classList.remove('open'); openEdit(viewingId); };
 
-    function openArchive(id) { const u = allUsers.find(x => String(x.user_id) === String(id)); if (!u) return; archivingId = id; $('archive-user-name').textContent = `${u.first_name} ${u.last_name}`; $('archive-modal').classList.add('open'); }
+    function openArchive(id) { const u = allNews.find(x => String(x.id) === String(id)); if (!u) return; archivingId = id; $('archive-user-name').textContent = `"${u.title}"`; $('archive-modal').classList.add('open'); }
     $('archive-cancel-btn').onclick = () => $('archive-modal').classList.remove('open');
-    $('archive-confirm-btn').onclick = async () => { const b = $('archive-confirm-btn'); b.disabled = true; $('arch-btn-text').textContent = 'Archiving…'; b.insertAdjacentHTML('afterbegin', '<span class="spinner" id="as"></span>'); try { const d = await api('PUT', 'id=' + encodeURIComponent(archivingId), { is_archived: true, status: 'archived' }); if (!d.success) throw 0; $('archive-modal').classList.remove('open'); toast('Record archived.', 'warn'); await loadUsers(); } catch { const i = allUsers.findIndex(x => String(x.user_id) === String(archivingId)); if (i > -1) { const u = { ...allUsers[i], is_archived: true, prev_status: allUsers[i].status, archived_at: new Date().toISOString() }; archivedUsers.unshift(u); allUsers.splice(i, 1); } updateStats(); applyFilter(); renderArchive(); $('archive-modal').classList.remove('open'); toast('Record archived.', 'warn'); } finally { b.disabled = false; $('arch-btn-text').textContent = 'Move to Archive'; const s = document.getElementById('as'); if (s) s.remove(); } };
+    $('archive-confirm-btn').onclick = async () => { const b = $('archive-confirm-btn'); b.disabled = true; $('arch-btn-text').textContent = 'Archiving…'; b.insertAdjacentHTML('afterbegin', '<span class="spinner" id="as"></span>'); try { const d = await api('PUT', 'id=' + encodeURIComponent(archivingId), { is_archived: true, status: 'archived' }); if (!d.success) throw new Error(d.message || 'Archive failed'); $('archive-modal').classList.remove('open'); toast('Article archived.', 'warn'); await loadNews(); } catch { const i = allNews.findIndex(x => String(x.id) === String(archivingId)); if (i > -1) { const u = { ...allNews[i], is_archived: true, prev_status: allNews[i].status, archived_at: new Date().toISOString() }; archivedNews.unshift(u); allNews.splice(i, 1); } updateStats(); applyFilter(); renderArchive(); $('archive-modal').classList.remove('open'); toast('Article archived.', 'warn'); } finally { b.disabled = false; $('arch-btn-text').textContent = 'Move to Archive'; const s = document.getElementById('as'); if (s) s.remove(); } };
 
-    function openRestore(id) { const u = archivedUsers.find(x => String(x.user_id) === String(id)); if (!u) return; restoringId = id; $('restore-user-name').textContent = `${u.first_name} ${u.last_name}`; $('restore-modal').classList.add('open'); }
+    function openRestore(id) { const u = archivedNews.find(x => String(x.id) === String(id)); if (!u) return; restoringId = id; $('restore-user-name').textContent = `"${u.title}"`; $('restore-modal').classList.add('open'); }
     $('restore-cancel-btn').onclick = () => $('restore-modal').classList.remove('open');
-    $('restore-confirm-btn').onclick = async () => { const b = $('restore-confirm-btn'); b.disabled = true; $('restore-btn-text').textContent = 'Restoring…'; b.insertAdjacentHTML('afterbegin', '<span class="spinner" id="rs"></span>'); try { const u = archivedUsers.find(x => String(x.user_id) === String(restoringId)); const d = await api('PUT', 'id=' + encodeURIComponent(restoringId), { is_archived: false, status: u?.prev_status || 'active' }); if (!d.success) throw 0; $('restore-modal').classList.remove('open'); toast('Personnel restored.', 'success'); await loadUsers(); } catch { const i = archivedUsers.findIndex(x => String(x.user_id) === String(restoringId)); if (i > -1) { const u = { ...archivedUsers[i], is_archived: false, status: archivedUsers[i].prev_status || 'active' }; delete u.prev_status; delete u.archived_at; allUsers.unshift(u); archivedUsers.splice(i, 1); } updateStats(); applyFilter(); renderArchive(); $('restore-modal').classList.remove('open'); toast('Personnel restored.', 'success'); } finally { b.disabled = false; $('restore-btn-text').textContent = 'Restore Record'; const s = document.getElementById('rs'); if (s) s.remove(); } };
+    $('restore-confirm-btn').onclick = async () => { const b = $('restore-confirm-btn'); b.disabled = true; $('restore-btn-text').textContent = 'Restoring…'; b.insertAdjacentHTML('afterbegin', '<span class="spinner" id="rs"></span>'); try { const u = archivedNews.find(x => String(x.id) === String(restoringId)); const d = await api('PUT', 'id=' + encodeURIComponent(restoringId), { is_archived: false, status: u?.prev_status || 'published' }); if (!d.success) throw new Error(d.message || 'Restore failed'); $('restore-modal').classList.remove('open'); toast('Article restored.', 'success'); await loadNews(); } catch { const i = archivedNews.findIndex(x => String(x.id) === String(restoringId)); if (i > -1) { const u = { ...archivedNews[i], is_archived: false, status: archivedNews[i].prev_status || 'published' }; delete u.prev_status; delete u.archived_at; allNews.unshift(u); archivedNews.splice(i, 1); } updateStats(); applyFilter(); renderArchive(); $('restore-modal').classList.remove('open'); toast('Article restored.', 'success'); } finally { b.disabled = false; $('restore-btn-text').textContent = 'Restore Record'; const s = document.getElementById('rs'); if (s) s.remove(); } };
 
-    function openDelete(id, fa = false) { const p = fa ? archivedUsers : allUsers, u = p.find(x => String(x.user_id) === String(id)); if (!u) return; deletingId = { id, fa }; $('delete-user-name').textContent = `${u.first_name} ${u.last_name}`; $('delete-modal').classList.add('open'); }
+    function openDelete(id, fa = false) { const p = fa ? archivedNews : allNews, u = p.find(x => String(x.id) === String(id)); if (!u) return; deletingId = { id, fa }; $('delete-user-name').textContent = `"${u.title}"`; $('delete-modal').classList.add('open'); }
     $('delete-cancel-btn').onclick = () => $('delete-modal').classList.remove('open');
-    $('delete-confirm-btn').onclick = async () => { const b = $('delete-confirm-btn'); b.disabled = true; $('del-btn-text').textContent = 'Purging…'; b.insertAdjacentHTML('afterbegin', '<span class="spinner" id="ds"></span>'); const { id, fa } = deletingId; try { const d = await api('DELETE', 'id=' + encodeURIComponent(id)); if (!d.success) throw 0; $('delete-modal').classList.remove('open'); toast('Record purged.', 'error'); await loadUsers(); } catch { if (fa) archivedUsers = archivedUsers.filter(u => String(u.user_id) !== String(id)); else allUsers = allUsers.filter(u => String(u.user_id) !== String(id)); updateStats(); applyFilter(); renderArchive(); $('delete-modal').classList.remove('open'); toast('Record purged.', 'error'); } finally { b.disabled = false; $('del-btn-text').textContent = 'Purge Record'; const s = document.getElementById('ds'); if (s) s.remove(); } };
+    $('delete-confirm-btn').onclick = async () => { const b = $('delete-confirm-btn'); b.disabled = true; $('del-btn-text').textContent = 'Purging…'; b.insertAdjacentHTML('afterbegin', '<span class="spinner" id="ds"></span>'); const { id, fa } = deletingId; try { const d = await api('DELETE', 'id=' + encodeURIComponent(id)); if (!d.success) throw new Error(d.message || 'Delete failed'); $('delete-modal').classList.remove('open'); toast('Article purged.', 'error'); await loadNews(); } catch { if (fa) archivedNews = archivedNews.filter(u => String(u.id) !== String(id)); else allNews = allNews.filter(u => String(u.id) !== String(id)); updateStats(); applyFilter(); renderArchive(); $('delete-modal').classList.remove('open'); toast('Article purged.', 'error'); } finally { b.disabled = false; $('del-btn-text').textContent = 'Purge Record'; const s = document.getElementById('ds'); if (s) s.remove(); } };
 
     document.querySelectorAll('.modal-overlay').forEach(el => el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); }));
     $('collapse-btn').addEventListener('click', () => { $('sidebar').classList.toggle('collapsed'); $('main').classList.toggle('collapsed'); });
@@ -3694,10 +3647,10 @@
     $('modal-save-btn').onclick = saveUser;
     $('search-input').addEventListener('input', applyFilter);
     $('filter-status').addEventListener('change', applyFilter);
-    $('filter-type').addEventListener('change', applyFilter);
-    ['form-fname', 'form-lname', 'form-email', 'form-password', 'form-phone'].forEach(id => { $(id).addEventListener('keydown', e => { if (e.key === 'Enter') saveUser(); }); });
+    // filter-type removed (not present in this page)
+    ['form-title', 'form-excerpt', 'form-content', 'form-image'].forEach(id => { $(id).addEventListener('keydown', e => { if (e.key === 'Enter' && id !== 'form-content' && id !== 'form-excerpt') saveUser(); }); });
 
-    loadUsers();
+    loadNews();
   </script>
 </body>
 
