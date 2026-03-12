@@ -140,7 +140,7 @@ if ($method === 'PATCH') {
     if (in_array($res['status'], [200, 204])) {
         out(true, 'Message updated successfully.', is_array($res['body']) ? ($res['body'][0] ?? null) : null);
     }
-    out(false, 'Failed to update message.', null, 500);
+    out(false, 'Failed to update message. Supabase response: ' . json_encode($res), null, 500);
 }
 
 if ($method === 'DELETE') {

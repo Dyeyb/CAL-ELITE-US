@@ -3518,11 +3518,28 @@
     // Wrap state updates in fetch to persist to DB
     async function updateMessageDB(id, payload) {
       try {
-        await fetch(`api/messages.php?id=${id}`, {
+        // Create a copy of the payload to modify for the request to avoid mutating local state prematurely
+        const dbPayload = { ...payload };
+
+        const res = await fetch(`api/messages.php?id=${id}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(dbPayload)
         });
+        const data = await res.json();
+
+        // If it failed because of missing schema column (e.g. is_archived), we can at least drop it and try again
+        // just to update the 'status' and 'replied_at' which do exist.
+        if (!data.success && data.message && data.message.includes('is_archived')) {
+          delete dbPayload.is_archived;
+          delete dbPayload.archived_at;
+          delete dbPayload.prev_status;
+          await fetch(`api/messages.php?id=${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dbPayload)
+          });
+        }
       } catch (e) {
         console.error("Failed to sync message to DB", e);
       }
@@ -3583,7 +3600,7 @@
         renderPagination(pages); return;
       }
       tbody.innerHTML = slice.map(m => `
-  <tr class="${m.status === 'unread' ? 'msg-unread-row' : ''}" onclick="openView(${m.id})">
+  <tr class="${m.status === 'unread' ? 'msg-unread-row' : ''}" onclick="openView('${m.id}')">
     <td style="padding:13px 8px 13px 18px">${m.status === 'unread' ? '<div class="unread-indicator"></div>' : ''}</td>
     <td onclick="event.stopPropagation()">
       <div class="sender-cell">
@@ -3603,10 +3620,10 @@
     <td style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--muted);white-space:nowrap">${fd(m.created_at)}</td>
     <td onclick="event.stopPropagation()">
       <div class="action-btns">
-        <button class="action-btn view" title="View" onclick="openView(${m.id})"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
-        <button class="action-btn reply" title="Reply" onclick="openView(${m.id},true)"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg></button>
-        <button class="action-btn star${m.is_starred ? ' starred' : ''}" title="${m.is_starred ? 'Unstar' : 'Star'}" onclick="toggleStar(${m.id},event)"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></button>
-        <button class="action-btn archive" title="Archive" onclick="openArchiveConfirm(${m.id},event)"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></button>
+        <button class="action-btn view" title="View" onclick="openView('${m.id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+        <button class="action-btn reply" title="Reply" onclick="openView('${m.id}',true)"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg></button>
+        <button class="action-btn star${m.is_starred ? ' starred' : ''}" title="${m.is_starred ? 'Unstar' : 'Star'}" onclick="toggleStar('${m.id}',event)"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></button>
+        <button class="action-btn archive" title="Archive" onclick="openArchiveConfirm('${m.id}',event)"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></button>
       </div>
     </td>
   </tr>`).join('');
@@ -3636,8 +3653,8 @@
     <td>${statusBadge(m.prev_status || m.status || 'read', false)}</td>
     <td style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--muted)">${fd(m.archived_at || m.created_at)}</td>
     <td><div class="action-btns">
-      <button class="action-btn restore" title="Restore" onclick="openRestoreConfirm(${m.id})"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button>
-      <button class="action-btn delete" title="Delete permanently" onclick="openDeleteConfirm(${m.id},true)"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+      <button class="action-btn restore" title="Restore" onclick="openRestoreConfirm('${m.id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button>
+      <button class="action-btn delete" title="Delete permanently" onclick="openDeleteConfirm('${m.id}',true)"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
     </div></td>
   </tr>`).join('');
     }
@@ -3646,7 +3663,7 @@
 
     // ══ VIEW MODAL ══
     function openView(id, focusReply = false) {
-      const m = allMsgs.find(x => x.id === id); if (!m) return;
+      const m = allMsgs.find(x => x.id == id); if (!m) return;
       activeViewId = id;
       // Mark as read
       if (m.status === 'unread') { m.status = 'read'; updateStats(); applyFilter(); renderTable(); }
@@ -3702,7 +3719,7 @@
     $('send-reply-btn').addEventListener('click', async () => {
       const txt = $('reply-textarea')?.value?.trim();
       if (!txt) { toast('Please write a reply first.', 'warn'); return; }
-      const m = allMsgs.find(x => x.id === activeViewId);
+      const m = allMsgs.find(x => x.id == activeViewId);
       if (m) {
         if (!m.sender_email || m.sender_email === 'Unknown') {
           toast('Cannot reply: No valid email address found.', 'error');
@@ -3730,16 +3747,34 @@
           const mailJson = await mailRes.json();
           if (!mailJson.success) throw new Error(mailJson.message || 'Failed to send email.');
 
-          // 2. Mark as replied in the database
+          // 2. Mark as replied and archived in the database 
+          // (will retry without archive fields if they don't exist in DB schema yet)
+          m.prev_status = m.status;
           m.status = 'replied';
           m.replied_at = new Date().toISOString();
-          await updateMessageDB(m.id, { status: m.status, replied_at: m.replied_at });
+          m.is_archived = true;
+          m.archived_at = new Date().toISOString();
+
+          await updateMessageDB(m.id, {
+            status: m.status,
+            replied_at: m.replied_at,
+            is_archived: m.is_archived,
+            archived_at: m.archived_at,
+            prev_status: m.prev_status
+          });
+
+          // 3. Immediately move to archive arrays in the UI
+          allMsgs = allMsgs.filter(msg => msg.id != m.id);
+          archivedMsgs.unshift(m);
+
+          updateStats();
+          applyFilter();
+          renderArchive();
 
           toast('Reply sent successfully.', 'success');
           notifs.unshift({ id: Date.now(), type: 'green', icon: 'reply', title: 'Reply sent', body: `You replied to ${m.sender_name}.`, time: 'Just now', unread: true });
           renderNotifs();
           closeModal('view-modal');
-          await loadData();
         } catch (err) {
           toast('Error sending reply: ' + err.message, 'error');
         } finally {
@@ -3752,7 +3787,7 @@
     // ══ STAR ══
     async function toggleStar(id, e) {
       if (e) e.stopPropagation();
-      const m = allMsgs.find(x => x.id === id); if (!m) return;
+      const m = allMsgs.find(x => x.id == id); if (!m) return;
       m.is_starred = !m.is_starred;
       await updateMessageDB(id, { is_starred: m.is_starred });
       await loadData();
@@ -3774,12 +3809,12 @@
     function openArchiveConfirm(id, e) {
       if (e) e.stopPropagation();
       activeArchiveId = id;
-      const m = allMsgs.find(x => x.id === id);
+      const m = allMsgs.find(x => x.id == id);
       $('archive-sender-name').textContent = m?.sender_name || 'this sender';
       $('archive-modal').classList.add('open');
     }
     $('archive-confirm-btn').addEventListener('click', async () => {
-      const m = allMsgs.find(x => x.id === activeArchiveId); if (!m) return;
+      const m = allMsgs.find(x => x.id == activeArchiveId); if (!m) return;
 
       const btn = $('archive-confirm-btn');
       btn.disabled = true;
@@ -3800,12 +3835,12 @@
     // ══ RESTORE ══
     function openRestoreConfirm(id) {
       activeRestoreId = id;
-      const m = archivedMsgs.find(x => x.id === id);
+      const m = archivedMsgs.find(x => x.id == id);
       $('restore-sender-name').textContent = m?.sender_name || 'this sender';
       $('restore-modal').classList.add('open');
     }
     $('restore-confirm-btn').addEventListener('click', async () => {
-      const m = archivedMsgs.find(x => x.id === activeRestoreId); if (!m) return;
+      const m = archivedMsgs.find(x => x.id == activeRestoreId); if (!m) return;
 
       const btn = $('restore-confirm-btn');
       btn.disabled = true;
@@ -3825,7 +3860,7 @@
     // ══ DELETE ══
     function openDeleteConfirm(id, fromArchive = false) {
       activeDeleteId = id; activeDeleteFromArchive = fromArchive;
-      const m = fromArchive ? archivedMsgs.find(x => x.id === id) : allMsgs.find(x => x.id === id);
+      const m = fromArchive ? archivedMsgs.find(x => x.id == id) : allMsgs.find(x => x.id == id);
       $('delete-sender-name').textContent = m?.sender_name || 'this sender';
       $('delete-modal').classList.add('open');
     }
